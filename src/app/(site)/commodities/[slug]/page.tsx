@@ -25,6 +25,13 @@ import { MarketComparisonTable } from '@/components/commodity/MarketComparisonTa
 import { FundamentalsSection } from '@/components/commodity/FundamentalsSection';
 import { ReportingMarketCardsGrid, type MarketPriceCard } from '@/components/commodity/ReportingMarketCard';
 import { RegionalIntelligence, type StatePriceBreakdown } from '@/components/commodity/RegionalIntelligence';
+import { GradeIntelligence } from '@/components/commodity/GradeIntelligence';
+import { SeasonalIntelligence } from '@/components/commodity/SeasonalIntelligence';
+import {
+  getCommoditySpecifications,
+  getCommoditySeasonality,
+  getObservedGrades,
+} from '@/lib/intelligence/quality-queries';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -113,15 +120,18 @@ export default async function CommodityProfilePage({
 
   const windowed = applyRange(observations, range.days);
 
-  const [seriesOptions, movements, intelligence, fundamentals, intelligenceSummary] = isSupabaseConfigured()
+  const [seriesOptions, movements, intelligence, fundamentals, intelligenceSummary, specifications, seasonality, observedGrades] = isSupabaseConfigured()
     ? await Promise.all([
         getCommoditySeriesOptions(commodity.id),
         getMarketMovements(200),
         getCommodityIntelligenceOverview(commodity.slug),
         getCommodityFundamentals(commodity.id, 10),
         getCommodityIntelligenceSummary(commodity.slug),
+        getCommoditySpecifications(commodity.id),
+        getCommoditySeasonality(commodity.id),
+        getObservedGrades(commodity.id),
       ])
-    : [[], [], null, [], null];
+    : [[], [], null, [], null, [], [], []];
 
   const movement = movements.find((m) => m.commodityId === commodity.id) ?? null;
 
@@ -379,6 +389,25 @@ export default async function CommodityProfilePage({
               stateBreakdown={stateBreakdown}
               commodityName={commodity.name}
               commoditySlug={commodity.slug}
+            />
+          </section>
+
+          {/* Grade & Quality Intelligence */}
+          <section aria-label="Grade and quality intelligence">
+            <SectionHeader title="Grade & Quality Intelligence" />
+            <GradeIntelligence
+              grades={observedGrades}
+              specifications={specifications}
+              commodityName={commodity.name}
+            />
+          </section>
+
+          {/* Seasonal Intelligence */}
+          <section aria-label="Seasonal intelligence">
+            <SectionHeader title="Seasonal Intelligence" />
+            <SeasonalIntelligence
+              phases={seasonality}
+              commodityName={commodity.name}
             />
           </section>
 
