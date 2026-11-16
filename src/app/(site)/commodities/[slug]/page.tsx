@@ -24,6 +24,7 @@ import { MarketComparisonChart } from '@/components/commodity/MarketComparisonCh
 import { MarketComparisonTable } from '@/components/commodity/MarketComparisonTable';
 import { FundamentalsSection } from '@/components/commodity/FundamentalsSection';
 import { ReportingMarketCardsGrid, type MarketPriceCard } from '@/components/commodity/ReportingMarketCard';
+import { RegionalIntelligence, type StatePriceBreakdown } from '@/components/commodity/RegionalIntelligence';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -209,6 +210,9 @@ export default async function CommodityProfilePage({
     collectedAt: row.collectedAt,
   }));
 
+  // Prepare state-level price breakdown for regional intelligence
+  const stateBreakdown = prepareStateBreakdown(observations);
+
   return (
     <PageContainer>
       {/* New Commodity Hero */}
@@ -364,6 +368,17 @@ export default async function CommodityProfilePage({
               marketPrices={marketPriceData}
               commodityName={commodity.name}
               seriesLabel={latestSeriesLabel}
+            />
+          </section>
+
+          {/* Regional Intelligence - Nigerian & State Breakdown */}
+          <section aria-label="Regional intelligence">
+            <SectionHeader title="Nigerian & Regional Intelligence" />
+            <RegionalIntelligence
+              intelligence={intelligenceSummary}
+              stateBreakdown={stateBreakdown}
+              commodityName={commodity.name}
+              commoditySlug={commodity.slug}
             />
           </section>
 
@@ -615,6 +630,46 @@ function uniqueStrings(values: (string | null | undefined)[]): string[] {
     result.push(value);
   }
   return result;
+}
+
+/** Group observations by state and calculate price statistics. */
+function prepareStateBreakdown(observations: PriceObservation[]): StatePriceBreakdown[] {
+  const stateMap = new Map<string, PriceObservation[]>();
+
+  for (const obs of observations) {
+    const state = obs.stateName ?? 'Unknown';
+    if (!stateMap.has(state)) {
+      stateMap.set(state, []);
+    }
+    stateMap.get(state)!.push(obs);
+  }
+
+  const breakdown: StatePriceBreakdown[] = [];
+
+  for (const [stateName, stateObs] of stateMap) {
+    const prices = stateObs
+      .map((o) => o.normalizedAmount ?? o.reportedAmount)
+      .filter((p): p is number => p !== null && p !== undefined);
+
+    const markets = new Set(stateObs.map((o) => o.marketId));
+    const latestDate = stateObs.reduce((latest, o) => 
+      o.collectedAt > latest ? o.collectedAt : latest, 
+      stateObs[0]?.collectedAt ?? ''
+    );
+
+    breakdown.push({
+      stateName,
+      marketCount: markets.size,
+      observationCount: stateObs.length,
+      avgPrice: prices.length > 0 ? prices.reduce((a, b) => a + b, 0) / prices.length : null,
+      minPrice: prices.length > 0 ? Math.min(...prices) : null,
+      maxPrice: prices.length > 0 ? Math.max(...prices) : null,
+      latestDate,
+      currencyCode: stateObs[0]?.currencyCode ?? 'NGN',
+    });
+  }
+
+  return breakdown;
 }
 
 /* ------------------------------------------------------------- fallbacks -- */
