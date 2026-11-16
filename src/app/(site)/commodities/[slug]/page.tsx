@@ -6,6 +6,7 @@ import { getDataSource } from '@/lib/data';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { getMarketMovements, getCommoditySeriesOptions } from '@/lib/trade/queries';
 import { getCommodityIntelligenceOverview, getCommodityFundamentals } from '@/lib/intelligence/commodity-intelligence';
+import { getCommodityIntelligenceSummary } from '@/lib/intelligence/service';
 import { PRICE_RANGES } from '@/components/data/CommodityPriceView';
 import { PageContainer, PageHeader, SectionHeader } from '@/components/terminal/TerminalShell';
 import { MarketOverviewCard } from '@/components/market/MarketOverview';
@@ -21,6 +22,8 @@ import { PricePerformanceMetrics } from '@/components/commodity/PricePerformance
 import { CommodityPriceChart } from '@/components/commodity/CommodityPriceChart';
 import { MarketComparisonChart } from '@/components/commodity/MarketComparisonChart';
 import { MarketComparisonTable } from '@/components/commodity/MarketComparisonTable';
+import { FundamentalsSection } from '@/components/commodity/FundamentalsSection';
+import { ReportingMarketCardsGrid, type MarketPriceCard } from '@/components/commodity/ReportingMarketCard';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -109,14 +112,15 @@ export default async function CommodityProfilePage({
 
   const windowed = applyRange(observations, range.days);
 
-  const [seriesOptions, movements, intelligence, fundamentals] = isSupabaseConfigured()
+  const [seriesOptions, movements, intelligence, fundamentals, intelligenceSummary] = isSupabaseConfigured()
     ? await Promise.all([
         getCommoditySeriesOptions(commodity.id),
         getMarketMovements(200),
         getCommodityIntelligenceOverview(commodity.slug),
         getCommodityFundamentals(commodity.id, 10),
+        getCommodityIntelligenceSummary(commodity.slug),
       ])
-    : [[], [], null, []];
+    : [[], [], null, [], null];
 
   const movement = movements.find((m) => m.commodityId === commodity.id) ?? null;
 
@@ -191,6 +195,20 @@ export default async function CommodityProfilePage({
     collectedAt: row.collectedAt,
   }));
 
+  // Prepare market cards data for the card grid
+  const marketCardsData: MarketPriceCard[] = byMarket.map((row) => ({
+    marketId: row.marketId,
+    marketName: row.marketName ?? `Market ${row.marketId}`,
+    marketSlug: null, // Market slugs not yet available in rollup
+    stateName: row.stateName,
+    amount: row.amount ?? 0,
+    currencyCode: row.currencyCode,
+    unitCode: row.unitCode,
+    gradeName: row.gradeName,
+    priceType: row.priceType ?? 'unknown',
+    collectedAt: row.collectedAt,
+  }));
+
   return (
     <PageContainer>
       {/* New Commodity Hero */}
@@ -253,17 +271,12 @@ export default async function CommodityProfilePage({
             </dl>
           </section>
 
-          {/* ─── Intelligence Overview ─── */}
-          <IntelligenceOverviewPanel
-            intelligence={intelligence}
-            commoditySlug={commodity.slug}
-            commodityName={commodity.name}
-          />
-
-          {/* ─── Fundamental Signals ─── */}
-          <FundamentalSignalsPanel
+          {/* ─── Commodity Fundamentals (Stage 5) ─── */}
+          <FundamentalsSection
+            intelligence={intelligenceSummary}
             signals={fundamentals}
             commodityName={commodity.name}
+            commoditySlug={commodity.slug}
           />
 
           {/* ------------------------------------------------------ movement -- */}
@@ -468,6 +481,17 @@ export default async function CommodityProfilePage({
                     : '.'}
                 </p>
               </>
+            )}
+
+            {/* Market Cards Grid — visual overview */}
+            {byMarket.length > 0 && (
+              <div className="mt-4">
+                <ReportingMarketCardsGrid
+                  markets={marketCardsData}
+                  commodityName={commodity.name}
+                  commoditySlug={commodity.slug}
+                />
+              </div>
             )}
           </section>
 
