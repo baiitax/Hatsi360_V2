@@ -18,6 +18,9 @@ import { IntelligenceBadge } from '@/components/intelligence/IntelligenceIndicat
 import { CommodityHero } from '@/components/commodity/CommodityHero';
 import { MarketSnapshot } from '@/components/commodity/MarketSnapshot';
 import { PricePerformanceMetrics } from '@/components/commodity/PricePerformanceMetrics';
+import { CommodityPriceChart } from '@/components/commodity/CommodityPriceChart';
+import { MarketComparisonChart } from '@/components/commodity/MarketComparisonChart';
+import { MarketComparisonTable } from '@/components/commodity/MarketComparisonTable';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -175,6 +178,19 @@ export default async function CommodityProfilePage({
       ].join(' · ')
     : undefined;
 
+  // Prepare market price data for comparison chart and table
+  const marketPriceData = byMarket.map((row) => ({
+    marketId: row.marketId,
+    marketName: row.marketName ?? `Market ${row.marketId}`,
+    stateName: row.stateName,
+    amount: row.amount ?? 0,
+    currencyCode: row.currencyCode,
+    unitCode: row.unitCode,
+    gradeName: row.gradeName,
+    priceType: row.priceType ?? 'unknown',
+    collectedAt: row.collectedAt,
+  }));
+
   return (
     <PageContainer>
       {/* New Commodity Hero */}
@@ -295,6 +311,45 @@ export default async function CommodityProfilePage({
                 currencyCode: o.currencyCode,
                 priceType: o.priceType,
               }))}
+              seriesLabel={latestSeriesLabel}
+            />
+          </section>
+
+          {/* Price History Chart - NEW */}
+          <section aria-label="Price history chart">
+            <SectionHeader title="Price History" />
+            <CommodityPriceChart
+              observations={observations.map((o) => ({
+                id: o.id,
+                amount: o.normalizedAmount ?? o.reportedAmount ?? 0,
+                collectedAt: o.collectedAt,
+                marketName: o.marketName,
+                gradeName: o.gradeName,
+                unitCode: o.unitCode ?? o.unitName,
+                currencyCode: o.currencyCode,
+                priceType: o.priceType,
+              }))}
+              commodityName={commodity.name}
+              seriesLabel={latestSeriesLabel}
+            />
+          </section>
+
+          {/* Market Comparison Chart - NEW */}
+          <section aria-label="Market comparison chart">
+            <SectionHeader title="Market Price Comparison" />
+            <MarketComparisonChart
+              marketPrices={marketPriceData}
+              commodityName={commodity.name}
+              seriesLabel={latestSeriesLabel}
+            />
+          </section>
+
+          {/* Market Comparison Table - NEW */}
+          <section aria-label="Market comparison table">
+            <SectionHeader title="Detailed Market Comparison" />
+            <MarketComparisonTable
+              marketPrices={marketPriceData}
+              commodityName={commodity.name}
               seriesLabel={latestSeriesLabel}
             />
           </section>
@@ -470,6 +525,7 @@ interface MarketRollup {
   currencyCode: string;
   unitCode: string | null;
   gradeName: string | null;
+  priceType: string;
   verificationStatus: PriceObservation['verificationStatus'];
   collectedAt: string;
 }
@@ -517,6 +573,7 @@ function groupByMarket(observations: PriceObservation[]): MarketRollup[] {
       currencyCode: observation.currencyCode,
       unitCode: observation.unitCode ?? null,
       gradeName: observation.gradeName ?? null,
+      priceType: observation.priceType,
       verificationStatus: observation.verificationStatus,
       collectedAt: observation.collectedAt,
     }))
