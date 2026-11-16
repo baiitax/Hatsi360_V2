@@ -58,7 +58,7 @@ export function FundamentalsSection({
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
                   href={`/intelligence/${commoditySlug}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-terminal-border px-3 py-1.5 text-xs font-medium text-terminal-text transition-colors hover:border-harvest-500/40 hover:text-harvest-300"
+                  className="inline-flex items-center gap-2 rounded-lg border border-terminal-border px-4 py-2.5 min-h-[44px] text-xs font-medium text-terminal-text transition-colors hover:border-harvest-500/40 hover:text-harvest-300 focus:outline-none focus:ring-2 focus:ring-harvest-500/20"
                 >
                   Check intelligence hub
                   <ArrowRight className="size-3" />
@@ -86,7 +86,7 @@ export function FundamentalsSection({
         </div>
         <Link
           href={`/intelligence/${commoditySlug}`}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-terminal-border px-3 py-1.5 text-xs font-medium text-terminal-text transition-colors hover:border-harvest-500/40 hover:text-harvest-300"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-terminal-border px-4 py-2.5 min-h-[44px] text-xs font-medium text-terminal-text transition-colors hover:border-harvest-500/40 hover:text-harvest-300 focus:outline-none focus:ring-2 focus:ring-harvest-500/20"
         >
           Full intelligence
           <ArrowRight className="size-3" />

@@ -67,18 +67,18 @@ export function CommodityHero({
           {/* Right: Content */}
           <div className={imageUrl ? 'lg:col-span-2' : 'lg:col-span-3'}>
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-white/60 mb-4">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/commodities" className="hover:text-white transition-colors">Commodities</Link>
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/60 mb-4">
+              <Link href="/" className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1">Home</Link>
+              <span aria-hidden="true">/</span>
+              <Link href="/commodities" className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1">Commodities</Link>
               {category && (
                 <>
-                  <span>/</span>
+                  <span aria-hidden="true">/</span>
                   <span>{category}</span>
                 </>
               )}
-              <span>/</span>
-              <span className="text-white">{name}</span>
+              <span aria-hidden="true">/</span>
+              <span className="text-white" aria-current="page">{name}</span>
             </nav>
 
             {/* Title */}
@@ -136,24 +136,27 @@ export function CommodityHero({
             </div>
 
             {/* Actions */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <Link
                 href={`/prices/${slug}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-[#103C2D] font-medium rounded-lg hover:bg-white/90 transition-colors"
+                aria-label={`View price history for ${name}`}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white text-[#103C2D] font-medium rounded-lg hover:bg-white/90 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <LineChart className="w-4 h-4" />
+                <LineChart className="w-4 h-4" aria-hidden="true" />
                 Price History
               </Link>
               <Link
                 href={`/charts?commodity=${slug}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+                aria-label={`View charts for ${name}`}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <BarChart3 className="w-4 h-4" />
+                <BarChart3 className="w-4 h-4" aria-hidden="true" />
                 Chart It
               </Link>
               <Link
                 href={`/compare?commodity=${slug}`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+                aria-label={`Compare markets for ${name}`}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
               >
                 Compare Markets
               </Link>
@@ -162,9 +165,10 @@ export function CommodityHero({
                   // Watchlist action - requires auth
                   window.location.href = '/login?returnUrl=/client/watchlists';
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+                aria-label={`Add ${name} to watchlist`}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <Star className="w-4 h-4" />
+                <Star className="w-4 h-4" aria-hidden="true" />
                 Add to Watchlist
               </button>
               <button
@@ -172,9 +176,10 @@ export function CommodityHero({
                   // Alert action - requires auth
                   window.location.href = '/login?returnUrl=/client/alerts';
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+                aria-label={`Create price alert for ${name}`}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <Bell className="w-4 h-4" />
+                <Bell className="w-4 h-4" aria-hidden="true" />
                 Create Alert
               </button>
             </div>

@@ -65,7 +65,7 @@ export function MarketSnapshot({
   };
 
   return (
-    <section className="bg-white border-b border-[#E3EAE5]">
+    <section aria-label="Market snapshot" className="bg-white border-b border-[#E3EAE5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Latest Price */}

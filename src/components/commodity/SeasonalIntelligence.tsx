@@ -124,11 +124,13 @@ function SeasonalCalendarCard({
       <div className="mb-6 overflow-x-auto">
         <div className="min-w-[600px]">
           {/* Month Headers */}
-          <div className="mb-2 grid grid-cols-12 gap-1">
+          <div className="mb-2 grid grid-cols-12 gap-1" role="row">
             {monthNames.map((month) => (
               <div
                 key={month}
                 className="text-center text-[0.625rem] font-medium text-terminal-text-muted"
+                role="columnheader"
+                aria-label={`${month} column`}
               >
                 {month}
               </div>
@@ -154,6 +156,12 @@ function SeasonalCalendarCard({
                           ? `${phase.phase.replace(/_/g, ' ')} — Month ${month}`
                           : undefined
                       }
+                      aria-label={
+                        isInPhase
+                          ? `${monthNames[month - 1]}: ${phase.phase.replace(/_/g, ' ')}`
+                          : `${monthNames[month - 1]}: No activity`
+                      }
+                      role="gridcell"
                     />
                   );
                 })}

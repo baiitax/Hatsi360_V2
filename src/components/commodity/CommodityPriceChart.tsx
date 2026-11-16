@@ -128,7 +128,7 @@ export function CommodityPriceChart({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-[#E3EAE5] p-6">
+    <div aria-label="Price history chart" className="bg-white rounded-lg border border-[#E3EAE5] p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
@@ -137,12 +137,14 @@ export function CommodityPriceChart({
         </div>
 
         {/* Date Range Selector */}
-        <div className="flex gap-1 flex-wrap">
+        <div role="group" aria-label="Select date range" className="flex gap-1 flex-wrap">
           {(['7d', '30d', '90d', '6m', '1y', 'all'] as DateRange[]).map((range) => (
             <button
               key={range}
               onClick={() => setDateRange(range)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              aria-pressed={dateRange === range}
+              aria-label={`Show ${range === 'all' ? 'all time' : `last ${range}`} data`}
+              className={`px-3 py-2.5 min-h-[44px] text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 ${
                 dateRange === range
                   ? 'bg-[#103C2D] text-white'
                   : 'bg-[#F7F9F7] text-[#64736B] hover:bg-[#EAF4EE]'
@@ -273,7 +275,8 @@ export function CommodityPriceChart({
             <p className="text-[#64736B]">No observations in the selected date range</p>
             <button
               onClick={() => setDateRange('all')}
-              className="mt-3 text-sm text-[#103C2D] hover:underline font-medium"
+              aria-label="View all available price data"
+              className="mt-3 px-4 py-2.5 min-h-[44px] text-sm text-[#103C2D] hover:underline font-medium focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 rounded"
             >
               View all available data
             </button>

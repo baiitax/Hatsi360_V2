@@ -134,7 +134,7 @@ export function MarketComparisonTable({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-[#E3EAE5] p-6">
+    <div aria-label="Market comparison table" className="bg-white rounded-lg border border-[#E3EAE5] p-6">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-[#17241F] mb-1">Market Comparison Table</h3>
@@ -145,23 +145,25 @@ export function MarketComparisonTable({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" aria-hidden="true" />
           <input
             type="text"
             placeholder="Search markets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D]"
+            aria-label="Search markets by name or state"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D]"
           />
         </div>
 
         {/* Grade Filter */}
         <div className="relative">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" />
+          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" aria-hidden="true" />
           <select
             value={gradeFilter}
             onChange={(e) => setGradeFilter(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D] appearance-none bg-white"
+            aria-label="Filter by grade"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D] appearance-none bg-white"
           >
             {uniqueGrades.map((grade) => (
               <option key={grade} value={grade}>
@@ -173,11 +175,12 @@ export function MarketComparisonTable({
 
         {/* Price Type Filter */}
         <div className="relative">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" />
+          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64736B]" aria-hidden="true" />
           <select
             value={priceTypeFilter}
             onChange={(e) => setPriceTypeFilter(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D] appearance-none bg-white"
+            aria-label="Filter by price type"
+            className="w-full pl-9 pr-3 py-2 min-h-[44px] text-sm border border-[#E3EAE5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 focus:border-[#103C2D] appearance-none bg-white"
           >
             {uniquePriceTypes.map((type) => (
               <option key={type} value={type}>
@@ -188,20 +191,33 @@ export function MarketComparisonTable({
         </div>
 
         {/* Results Count */}
-        <div className="flex items-center px-3 py-2 bg-[#F7F9F7] rounded-lg text-sm text-[#64736B]">
+        <div className="flex items-center px-3 py-2 min-h-[44px] bg-[#F7F9F7] rounded-lg text-sm text-[#64736B]" role="status" aria-live="polite">
           {filteredAndSorted.length} of {marketPrices.length} markets
         </div>
       </div>
 
       {/* Table */}
       {filteredAndSorted.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto -mx-6 px-6">
+          <table className="w-full" aria-label={`Market comparison for ${commodityName}`}>
+            <caption className="sr-only">
+              Comparison of {commodityName} prices across {filteredAndSorted.length} markets. Click column headers to sort.
+            </caption>
             <thead>
               <tr className="border-b border-[#E3EAE5]">
                 <th
-                  className="text-left py-3 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors"
+                  scope="col"
+                  aria-sort={sortField === 'marketName' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  className="text-left py-4 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors min-h-[44px]"
                   onClick={() => handleSort('marketName')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSort('marketName');
+                    }
+                  }}
+                  tabIndex={0}
+                  role="columnheader"
                 >
                   <div className="flex items-center">
                     Market
@@ -209,8 +225,18 @@ export function MarketComparisonTable({
                   </div>
                 </th>
                 <th
-                  className="text-right py-3 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors"
+                  scope="col"
+                  aria-sort={sortField === 'amount' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  className="text-right py-4 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors min-h-[44px]"
                   onClick={() => handleSort('amount')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSort('amount');
+                    }
+                  }}
+                  tabIndex={0}
+                  role="columnheader"
                 >
                   <div className="flex items-center justify-end">
                     Price
@@ -218,8 +244,18 @@ export function MarketComparisonTable({
                   </div>
                 </th>
                 <th
-                  className="text-left py-3 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors"
+                  scope="col"
+                  aria-sort={sortField === 'gradeName' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  className="text-left py-4 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors min-h-[44px]"
                   onClick={() => handleSort('gradeName')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSort('gradeName');
+                    }
+                  }}
+                  tabIndex={0}
+                  role="columnheader"
                 >
                   <div className="flex items-center">
                     Grade
@@ -227,8 +263,18 @@ export function MarketComparisonTable({
                   </div>
                 </th>
                 <th
-                  className="text-left py-3 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors"
+                  scope="col"
+                  aria-sort={sortField === 'priceType' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  className="text-left py-4 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors min-h-[44px]"
                   onClick={() => handleSort('priceType')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSort('priceType');
+                    }
+                  }}
+                  tabIndex={0}
+                  role="columnheader"
                 >
                   <div className="flex items-center">
                     Price Type
@@ -236,8 +282,18 @@ export function MarketComparisonTable({
                   </div>
                 </th>
                 <th
-                  className="text-right py-3 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors"
+                  scope="col"
+                  aria-sort={sortField === 'collectedAt' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  className="text-right py-4 px-4 text-xs font-semibold text-[#64736B] uppercase tracking-wider cursor-pointer hover:text-[#103C2D] transition-colors min-h-[44px]"
                   onClick={() => handleSort('collectedAt')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSort('collectedAt');
+                    }
+                  }}
+                  tabIndex={0}
+                  role="columnheader"
                 >
                   <div className="flex items-center justify-end">
                     Observed
@@ -297,7 +353,8 @@ export function MarketComparisonTable({
               setGradeFilter('all');
               setPriceTypeFilter('all');
             }}
-            className="mt-3 text-sm text-[#103C2D] hover:underline font-medium"
+            aria-label="Clear all filters and show all markets"
+            className="mt-3 px-4 py-2.5 min-h-[44px] text-sm text-[#103C2D] hover:underline font-medium focus:outline-none focus:ring-2 focus:ring-[#103C2D]/20 rounded"
           >
             Clear all filters
           </button>

@@ -37,9 +37,9 @@ export function MarketComparisonChart({
 }: MarketComparisonChartProps) {
   if (marketPrices.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-[#E3EAE5] p-8">
+      <div aria-label="Market price comparison chart" className="bg-white rounded-lg border border-[#E3EAE5] p-8">
         <div className="text-center">
-          <BarChart3 className="w-12 h-12 text-[#E3EAE5] mx-auto mb-3" />
+          <BarChart3 className="w-12 h-12 text-[#E3EAE5] mx-auto mb-3" aria-hidden="true" />
           <h3 className="text-lg font-medium text-[#17241F] mb-2">No market data available</h3>
           <p className="text-sm text-[#64736B]">
             {commodityName} has no published prices across different markets for comparison.
@@ -81,7 +81,7 @@ export function MarketComparisonChart({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-[#E3EAE5] p-6">
+    <div aria-label="Market price comparison chart" className="bg-white rounded-lg border border-[#E3EAE5] p-6">
       {/* Header */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-[#17241F] mb-1">Market Price Comparison</h3>

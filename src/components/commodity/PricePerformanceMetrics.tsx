@@ -64,7 +64,7 @@ export function PricePerformanceMetrics({ observations, seriesLabel }: PricePerf
   };
 
   return (
-    <div className="space-y-6">
+    <div aria-label="Price performance metrics" className="space-y-6">
       {/* Latest vs Previous */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Latest */}
