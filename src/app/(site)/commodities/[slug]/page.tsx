@@ -15,6 +15,9 @@ import { EmptyStatePanel, PanelSkeleton } from '@/components/feedback/TerminalFe
 import { IconArrowRight, IconCharts, IconTable } from '@/components/ui/icons';
 import { IntelligenceOverviewPanel, FundamentalSignalsPanel } from '@/components/intelligence/IntelligencePanels';
 import { IntelligenceBadge } from '@/components/intelligence/IntelligenceIndicators';
+import { CommodityHero } from '@/components/commodity/CommodityHero';
+import { MarketSnapshot } from '@/components/commodity/MarketSnapshot';
+import { PricePerformanceMetrics } from '@/components/commodity/PricePerformanceMetrics';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -124,28 +127,79 @@ export default async function CommodityProfilePage({
 
   const latest = [...observations].sort((a, b) => b.collectedAt.localeCompare(a.collectedAt))[0];
 
+  // Get unique units and grades for the hero
+  const allUnits = uniqueStrings(observations.map((o) => o.unitCode ?? o.unitName));
+  const allGrades = uniqueStrings(observations.map((o) => o.gradeName));
+
+  // Prepare latest price data for MarketSnapshot
+  const latestPriceData = latest
+    ? {
+        amount: latest.normalizedAmount ?? latest.reportedAmount ?? 0,
+        currency: latest.currencyCode,
+        unit: latest.unitCode ?? latest.unitName ?? 'unit',
+        grade: latest.gradeName,
+        priceType: latest.priceType.replace(/_/g, ' '),
+        market: latest.marketName,
+        date: latest.collectedAt,
+      }
+    : null;
+
+  // Find previous comparable observation
+  const comparableObservations = observations
+    .filter((o) => {
+      if (!latest) return false;
+      return (
+        o.priceType === latest.priceType &&
+        o.gradeId === latest.gradeId &&
+        o.reportedUnitId === latest.reportedUnitId &&
+        o.currencyCode === latest.currencyCode &&
+        o.collectedAt < latest.collectedAt
+      );
+    })
+    .sort((a, b) => b.collectedAt.localeCompare(a.collectedAt));
+
+  const previousPriceData = comparableObservations[0]
+    ? {
+        amount: comparableObservations[0].normalizedAmount ?? comparableObservations[0].reportedAmount ?? 0,
+        date: comparableObservations[0].collectedAt,
+      }
+    : null;
+
+  // Get series label for the latest observation
+  const latestSeriesLabel = latest
+    ? [
+        latest.priceType.replace(/_/g, ' '),
+        latest.gradeName ?? 'no grade',
+        latest.unitCode ?? latest.unitName ?? 'no unit',
+        latest.currencyCode,
+      ].join(' · ')
+    : undefined;
+
   return (
     <PageContainer>
-      <PageHeader
-        title={commodity.name}
-        description={
-          commodity.description ??
-          `A tracked commodity in the Hatsi360 Markets catalogue. ${commodity.marketCount ?? 0} market${
-            (commodity.marketCount ?? 0) === 1 ? '' : 's'
-          } have published a price for it.`
-        }
-        actions={
-          <>
-            <Link href={`/prices/${commodity.slug}`} className="terminal-action">
-              <IconTable className="size-3.5" />
-              Price history
-            </Link>
-            <Link href={`/charts?commodity=${commodity.slug}`} className="terminal-action">
-              <IconCharts className="size-3.5" />
-              Chart it
-            </Link>
-          </>
-        }
+      {/* New Commodity Hero */}
+      <CommodityHero
+        name={commodity.name}
+        slug={commodity.slug}
+        description={commodity.description}
+        category={commodity.categoryName}
+        imageUrl={null}
+        synonyms={commodity.synonyms}
+        observationCount={observations.length}
+        marketCount={byMarket.length}
+        unitCount={allUnits.length}
+        gradeCount={allGrades.length}
+        latestObservationDate={latest?.collectedAt}
+      />
+
+      {/* New Market Snapshot */}
+      <MarketSnapshot
+        latestPrice={latestPriceData}
+        previousPrice={previousPriceData}
+        marketCount={byMarket.length}
+        observationCount={observations.length}
+        latestObservationDate={latest?.collectedAt}
+        seriesLabel={latestSeriesLabel}
       />
 
       {/* ------------------------------------------------------- the record -- */}
@@ -226,6 +280,24 @@ export default async function CommodityProfilePage({
               </div>
             </section>
           ) : null}
+
+          {/* Price Performance Metrics - NEW */}
+          <section aria-label="Price performance">
+            <SectionHeader title="Price Performance" />
+            <PricePerformanceMetrics
+              observations={observations.map((o) => ({
+                id: o.id,
+                amount: o.normalizedAmount ?? o.reportedAmount ?? 0,
+                collectedAt: o.collectedAt,
+                marketName: o.marketName,
+                gradeName: o.gradeName,
+                unitCode: o.unitCode ?? o.unitName,
+                currencyCode: o.currencyCode,
+                priceType: o.priceType,
+              }))}
+              seriesLabel={latestSeriesLabel}
+            />
+          </section>
 
           {/* ------------------------------------------------ series options -- */}
           {seriesOptions.length > 0 ? (

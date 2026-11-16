@@ -461,21 +461,28 @@ export async function getCommoditySeriesOptions(
   }
 
   return [...groups.values()]
-    .map(({ key, items }) => ({
-      key: seriesKeyId(key),
-      label: [
-        key.priceType.replace(/_/g, ' '),
-        key.gradeId ? `grade ${key.gradeId}` : 'no grade recorded',
-        key.unitId ? `unit ${key.unitId}` : 'no unit recorded',
-        key.currencyCode,
-      ].join(' · '),
-      priceType: key.priceType,
-      gradeId: key.gradeId,
-      unitId: key.unitId,
-      currencyCode: key.currencyCode,
-      observationCount: items.length,
-      marketCount: new Set(items.map((i) => i.marketId)).size,
-    }))
+    .map(({ key, items }) => {
+      // Use human-readable names from the first observation in this series
+      const sample = items[0];
+      const gradeLabel = sample?.gradeName ?? (key.gradeId ? `grade ${key.gradeId}` : 'no grade recorded');
+      const unitLabel = sample?.unitCode ?? sample?.unitName ?? (key.unitId ? `unit ${key.unitId}` : 'no unit recorded');
+
+      return {
+        key: seriesKeyId(key),
+        label: [
+          key.priceType.replace(/_/g, ' '),
+          gradeLabel,
+          unitLabel,
+          key.currencyCode,
+        ].join(' · '),
+        priceType: key.priceType,
+        gradeId: key.gradeId,
+        unitId: key.unitId,
+        currencyCode: key.currencyCode,
+        observationCount: items.length,
+        marketCount: new Set(items.map((i) => i.marketId)).size,
+      };
+    })
     .sort((a, b) => b.observationCount - a.observationCount);
 }
 
