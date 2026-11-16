@@ -32,6 +32,11 @@ import {
   getCommoditySeasonality,
   getObservedGrades,
 } from '@/lib/intelligence/quality-queries';
+import {
+  getResearchReportSummaries,
+  hasPremiumReportsAccess,
+} from '@/lib/intelligence/research-queries';
+import { ResearchSection } from '@/components/commodity/ResearchSection';
 import { formatMoney } from '@/lib/money';
 import type { Commodity, PriceObservation } from '@/types/domain';
 
@@ -120,7 +125,7 @@ export default async function CommodityProfilePage({
 
   const windowed = applyRange(observations, range.days);
 
-  const [seriesOptions, movements, intelligence, fundamentals, intelligenceSummary, specifications, seasonality, observedGrades] = isSupabaseConfigured()
+  const [seriesOptions, movements, intelligence, fundamentals, intelligenceSummary, specifications, seasonality, observedGrades, researchReports, hasPremiumAccess] = isSupabaseConfigured()
     ? await Promise.all([
         getCommoditySeriesOptions(commodity.id),
         getMarketMovements(200),
@@ -130,8 +135,10 @@ export default async function CommodityProfilePage({
         getCommoditySpecifications(commodity.id),
         getCommoditySeasonality(commodity.id),
         getObservedGrades(commodity.id),
+        getResearchReportSummaries(commodity.id, 6),
+        hasPremiumReportsAccess(),
       ])
-    : [[], [], null, [], null, [], [], []];
+    : [[], [], null, [], null, [], [], [], [], false];
 
   const movement = movements.find((m) => m.commodityId === commodity.id) ?? null;
 
@@ -408,6 +415,17 @@ export default async function CommodityProfilePage({
             <SeasonalIntelligence
               phases={seasonality}
               commodityName={commodity.name}
+            />
+          </section>
+
+          {/* Research & Reports */}
+          <section aria-label="Research and reports">
+            <SectionHeader title="Research & Reports" />
+            <ResearchSection
+              reports={researchReports}
+              hasPremiumAccess={hasPremiumAccess}
+              commodityName={commodity.name}
+              commoditySlug={commodity.slug}
             />
           </section>
 
