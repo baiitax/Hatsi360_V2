@@ -140,7 +140,7 @@ export function Navbar({
             : 'border-b border-[#E3EAE5] bg-white'
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between lg:h-[72px]">
             {/* Logo */}
             <Link
