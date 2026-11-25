@@ -93,18 +93,31 @@
   /* Status — verified, pending, rejected and informational states. */
   --color-success-500: #228b55;
   --color-success-700: #1c6e45;
+  /* Light tints: status text on the dark terminal. The -700 shades above are
+     for light surfaces only; on the terminal they land at ~2.3:1. */
+  --color-success-300: #7ed3a4;
+  --color-success-50: #eaf5ef;
+  --color-success-600: #1d7a4c;
   --color-warning-50: #fdf6e6;
+  --color-warning-100: #fbeeca;
   --color-warning-200: #efd9a2;
+  --color-warning-400: #e3b64f;
   --color-warning-500: #d69e2e;
+  --color-warning-600: #a87c26;
   --color-warning-700: #8a6520;
   --color-error-50: #fdf0ef;
   --color-error-200: #f0c6c3;
   --color-error-500: #c84b45;
   --color-error-700: #a63e39;
+  --color-error-300: #e8a09b;
+  --color-error-400: #dc7d76;
+  --color-error-600: #b8443f;
   --color-info-50: #eef4fb;
   --color-info-200: #bcd6f0;
   --color-info-500: #3478b8;
   --color-info-700: #2c628f;
+  --color-info-300: #93c2e6;
+  --color-info-400: #5f9bd0;
 
   --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -133,14 +146,14 @@
   --color-terminal-border: #2c3a31;
   --color-terminal-text: #f3f6f2;
   --color-terminal-text-secondary: #a8b5aa;
-<<<<<<< HEAD
   --color-terminal-text-muted: #85938a;
+  /* Alias: many components wrote `text-terminal-muted`, which the theme never
+     defined, so those labels silently inherited their colour. */
+  --color-terminal-muted: #85938a;
+  --color-terminal-accent: var(--color-harvest-500);
   --color-terminal-outline: #637166;
   --color-focus-terminal: #e9c97e;
   --color-focus-light: #174d35;
-=======
-  --color-terminal-text-muted: #748278;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   /* --------------------------------------------- light editorial palette -- */
 
@@ -150,10 +163,7 @@
   --color-editorial-text: #202923;
   --color-editorial-text-secondary: #59665e;
   --color-editorial-border: #e3e9e2;
-<<<<<<< HEAD
   --color-editorial-control-border: #8b9790;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   /* -------------------------------------------------- movement semantics --
 
@@ -164,7 +174,6 @@
      farmgate price is good for a seller and bad for a buyer, and the
      interface must not imply otherwise. */
 
-<<<<<<< HEAD
   /* Light-surface foregrounds; .terminal overrides these for the dark UI. */
   --color-move-up-light: #26734b;
   --color-move-up-soft-light: #e6f1e4;
@@ -181,37 +190,6 @@
   --color-move-down-terminal: #eb7770;
   --color-move-down-soft-terminal: #331a18;
   --color-move-flat-terminal: #a8b5aa;
-=======
-  --color-move-up: #2f8f57;
-  --color-move-up-soft: #14301f;
-  --color-move-down: #d0584f;
-  --color-move-down-soft: #331a18;
-  --color-move-flat: #748278;
-
-  /* ------------------------------------------ semantic colour aliases --
-
-     High-level semantic tokens that map to the appropriate palette based
-     on context. These provide a consistent API for components regardless
-     of whether they're on a light or dark surface. */
-
-  --color-surface: #ffffff;
-  --color-background: #f7f8f5;
-  --color-text-primary: #202923;
-  --color-text-secondary: #59665e;
-  --color-text-muted: #68756e;
-  --color-border: #e3e9e2;
-  --color-border-strong: #cbd5cd;
-
-  /* Terminal semantic equivalents */
-
-  --color-terminal-surface-primary: #17211b;
-  --color-terminal-background: #101713;
-  --color-terminal-text-primary: #f3f6f2;
-  --color-terminal-text-secondary: #a8b5aa;
-  --color-terminal-text-muted: #748278;
-  --color-terminal-border: #2c3a31;
-  --color-terminal-border-strong: #3d4f42;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   /* ------------------------------------------------------ typography scale
 
@@ -223,7 +201,6 @@
   --text-micro: 0.625rem;
   --text-micro--line-height: 0.875rem;
   --text-micro--letter-spacing: 0.06em;
-<<<<<<< HEAD
   --text-metadata: 0.75rem;
   --text-metadata--line-height: 1rem;
   --text-label: 0.75rem;
@@ -232,16 +209,6 @@
   --text-body-sm--line-height: 1.375rem;
   --text-figure: 1rem;
   --text-figure--line-height: 1.5rem;
-=======
-  --text-metadata: 0.6875rem;
-  --text-metadata--line-height: 1rem;
-  --text-label: 0.75rem;
-  --text-label--line-height: 1.125rem;
-  --text-body-sm: 0.8125rem;
-  --text-body-sm--line-height: 1.25rem;
-  --text-figure: 0.9375rem;
-  --text-figure--line-height: 1.375rem;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   --text-figure-lg: 1.25rem;
   --text-figure-lg--line-height: 1.5rem;
   --text-figure-xl: 1.75rem;
@@ -256,20 +223,12 @@
   --spacing-terminal-gutter: 1rem;
   --spacing-terminal-panel: 1rem;
   --spacing-terminal-row: 0.5rem;
-<<<<<<< HEAD
   --spacing-terminal-section: 1.5rem;
 
   /* --------------------------------------------------------------- radius */
 
   --radius-panel: 0.5rem;
   --radius-control: 0.25rem;
-=======
-
-  /* --------------------------------------------------------------- radius */
-
-  --radius-panel: 0.625rem;
-  --radius-control: 0.375rem;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   --radius-pill: 999px;
 
   /* --------------------------------------------------------------- shadows
@@ -342,16 +301,6 @@
     font-family: var(--font-display);
     letter-spacing: -0.015em;
     color: inherit;
-<<<<<<< HEAD
-=======
-  }
-
-  /* A single, visible focus treatment across the whole application. */
-  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-    outline: 2px solid var(--color-brand-700);
-    outline-offset: 2px;
-    border-radius: 0.25rem;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   }
 
   ::selection {
@@ -455,9 +404,20 @@
   .card {
     --focus-ring-color: var(--color-focus-light);
     background: white;
+    /* A light card inside the dark terminal shell must not inherit its
+       near-white foreground. Every card declares its own ink. */
+    color: var(--color-ink-950);
     border: 1px solid var(--color-ink-200);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-soft);
+  }
+
+  /* Same reason, for the editorial surface and its inverse. */
+  .editorial .card {
+    color: var(--color-editorial-text);
+  }
+  .terminal .card {
+    color: var(--color-ink-950);
   }
 
   .card-hover {
@@ -665,72 +625,33 @@
     text-align: center;
   }
 
+  /* The lockup is a wide band, not a round mark: the curtain centres it at the
+     width a reader can take in before the page arrives. */
   .hatsi-boot__mark {
     position: relative;
-<<<<<<< HEAD
-    display: grid;
-    place-items: center;
-    width: 5.5rem;
-    height: 5.5rem;
-  }
-
-  .hatsi-boot__logo {
-    width: 3.5rem;
-    height: auto;
-=======
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 14rem;
-    height: 6rem;
+    width: min(16rem, 62vw);
   }
 
   .hatsi-boot__logo {
-    width: auto;
-    height: 5rem;
-    max-width: 14rem;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
-    opacity: 0.96;
-  }
-
-  /*
-   * The ring. A single gold arc travels around a faint track — a slow 360
-   * sweep, the way a dial reads a level. It never spins quickly and it never
-   * bounces.
-   */
-  .hatsi-boot__ring {
-    position: absolute;
-    inset: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
+    opacity: 0.98;
   }
 
-  .hatsi-boot__arc {
-    transform-origin: 60px 60px;
-    animation: hatsi-boot-sweep 1.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
-  }
-
-  @keyframes hatsi-boot-sweep {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .hatsi-boot__title {
-    margin-top: 0.25rem;
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #ffffff;
+  .hatsi-boot__message {
+    margin-top: 0.5rem;
   }
 
   .hatsi-boot__message {
     font-size: 0.8125rem;
     color: var(--color-brand-200);
+  }
+
+  .hatsi-boot__bar {
+    margin-top: 0.5rem;
   }
 
   .hatsi-boot__bar {
@@ -812,6 +733,7 @@
   /* --------------------------------------------------- the progress indicator */
 
   .hatsi-progress {
+    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -982,25 +904,19 @@
    */
   .terminal {
     color-scheme: dark;
-<<<<<<< HEAD
     --focus-ring-color: var(--color-focus-terminal);
     --color-move-up: var(--color-move-up-terminal);
     --color-move-up-soft: var(--color-move-up-soft-terminal);
     --color-move-down: var(--color-move-down-terminal);
     --color-move-down-soft: var(--color-move-down-soft-terminal);
     --color-move-flat: var(--color-move-flat-terminal);
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     background-color: var(--color-terminal-bg);
     color: var(--color-terminal-text);
   }
 
   /* A panel is the unit of the terminal. One border, one radius, one fill. */
   .terminal-panel {
-<<<<<<< HEAD
     --focus-ring-color: var(--color-focus-terminal);
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     background-color: var(--color-terminal-surface);
     border: 1px solid var(--color-terminal-border);
     border-radius: var(--radius-panel);
@@ -1047,15 +963,9 @@
 
   /* The micro-label that sits above a figure: a column head, a unit, a source. */
   .figure-label {
-<<<<<<< HEAD
     font-size: var(--text-label);
     line-height: var(--text-label--line-height);
     letter-spacing: 0.04em;
-=======
-    font-size: var(--text-micro);
-    line-height: var(--text-micro--line-height);
-    letter-spacing: var(--text-micro--letter-spacing);
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     text-transform: uppercase;
     font-weight: 600;
     color: var(--color-terminal-text-muted);
@@ -1108,11 +1018,7 @@
     height: 1.875rem;
     padding-inline: 0.625rem;
     border-radius: var(--radius-control);
-<<<<<<< HEAD
     border: 1px solid var(--color-terminal-outline);
-=======
-    border: 1px solid var(--color-terminal-border);
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     background-color: var(--color-terminal-surface);
     color: var(--color-terminal-text-secondary);
     font-size: var(--text-label);
@@ -1189,16 +1095,10 @@
     z-index: var(--z-sticky);
     background-color: var(--color-terminal-elevated);
     color: var(--color-terminal-text-muted);
-<<<<<<< HEAD
     font-size: var(--text-metadata);
     line-height: var(--text-metadata--line-height);
     font-weight: 600;
     letter-spacing: 0.04em;
-=======
-    font-size: var(--text-micro);
-    font-weight: 600;
-    letter-spacing: var(--text-micro--letter-spacing);
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     text-transform: uppercase;
     text-align: left;
     padding: 0.5rem 0.75rem;
@@ -1238,25 +1138,67 @@
    ========================================================================== */
 
 @layer components {
+  /*
+   * A region of prose on the dark canvas.
+   *
+   * `ink` is paper ink: #465149 on white reads at 8.6:1 and the same token on
+   * the terminal canvas reads at 2.19:1. A dark region that uses the ink
+   * utilities opts in here and gets the terminal's own text scale. It is opt-in
+   * rather than global — a global remap also repainted the footer, which is
+   * paper — and any paper surface inside the region restores the paper values.
+   */
+  .on-terminal {
+    --color-ink-950: var(--color-terminal-text);
+    --color-ink-900: var(--color-terminal-text);
+    --color-ink-800: var(--color-terminal-text);
+    --color-ink-700: var(--color-terminal-text-secondary);
+    --color-ink-600: var(--color-terminal-text-secondary);
+    --color-ink-500: var(--color-terminal-text-muted);
+    --color-ink-450: var(--color-terminal-text-muted);
+    --color-ink-400: var(--color-terminal-text-muted);
+    --color-ink-300: var(--color-terminal-border);
+  }
+
+  /* A paper panel that is not a .card — an image caption, a notice box — inside
+     a dark region still carries paper ink. */
+  .on-paper {
+    --color-ink-950: #121815;
+    --color-ink-900: #202923;
+    --color-ink-800: #34423a;
+    --color-ink-700: #3a443d;
+    --color-ink-600: #465149;
+    --color-ink-500: #5a6760;
+    --color-ink-450: #718078;
+    --color-ink-400: #68756e;
+    --color-ink-300: #cbd5cd;
+  }
+
+  .on-terminal .card,
+  .on-terminal .editorial {
+    --color-ink-950: #121815;
+    --color-ink-900: #202923;
+    --color-ink-800: #34423a;
+    --color-ink-700: #3a443d;
+    --color-ink-600: #465149;
+    --color-ink-500: #5a6760;
+    --color-ink-450: #718078;
+    --color-ink-400: #68756e;
+    --color-ink-300: #cbd5cd;
+  }
+
   .editorial {
-<<<<<<< HEAD
     --focus-ring-color: var(--color-focus-light);
     --color-move-up: var(--color-move-up-light);
     --color-move-up-soft: var(--color-move-up-soft-light);
     --color-move-down: var(--color-move-down-light);
     --color-move-down-soft: var(--color-move-down-soft-light);
     --color-move-flat: var(--color-move-flat-light);
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     background-color: var(--color-editorial-bg);
     color: var(--color-editorial-text);
   }
 
   .editorial-panel {
-<<<<<<< HEAD
     --focus-ring-color: var(--color-focus-light);
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     background-color: var(--color-editorial-surface);
     border: 1px solid var(--color-editorial-border);
     border-radius: var(--radius-card);
@@ -1310,116 +1252,6 @@
 }
 
 /* ==========================================================================
-<<<<<<< HEAD
-=======
-   Hatsi360 Markets — card variants
-
-   Standardised card patterns for consistent use across all surfaces.
-   Each variant is appropriate for a specific interaction model.
-   ========================================================================== */
-
-@layer components {
-  /* Base card — the foundation for all card variants. */
-  .card {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-  }
-
-  /* Interactive card — hoverable, suggests clickability. */
-  .card-hover {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-    transition:
-      border-color 140ms cubic-bezier(0.2, 0, 0.1, 1),
-      box-shadow 140ms cubic-bezier(0.2, 0, 0.1, 1),
-      transform 140ms cubic-bezier(0.2, 0, 0.1, 1);
-  }
-
-  .card-hover:hover {
-    border-color: var(--color-harvest-400);
-    box-shadow: var(--shadow-soft);
-    transform: translateY(-1px);
-  }
-
-  /* Metric card — for KPIs and statistics. */
-  .card-metric {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-    padding: 1.25rem;
-  }
-
-  /* Status card — for displaying verification or freshness state. */
-  .card-status {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-    padding: 1rem;
-  }
-
-  /* Elevated card — for modals and overlays. */
-  .card-elevated {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-lift);
-  }
-
-  /* Flush card — no padding, for tables and lists. */
-  .card-flush {
-    background-color: var(--color-editorial-surface);
-    border: 1px solid var(--color-editorial-border);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-  }
-}
-
-/* ==========================================================================
-   Hatsi360 Markets — focus and transition utilities
-
-   Consistent focus rings and transition patterns across all interactive
-   elements.
-   ========================================================================== */
-
-@layer utilities {
-  /* Standard focus ring — visible, accessible, consistent. */
-  .focus-ring {
-    outline: 2px solid var(--color-brand-700);
-    outline-offset: 2px;
-    border-radius: 0.25rem;
-  }
-
-  /* Focus ring for dark surfaces. */
-  .focus-ring-dark {
-    outline: 2px solid var(--color-harvest-400);
-    outline-offset: 2px;
-    border-radius: 0.25rem;
-  }
-
-  /* Standard transitions. */
-  .transition-fast {
-    transition-property: color, background-color, border-color, opacity;
-    transition-duration: 140ms;
-    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
-  }
-
-  .transition-panel {
-    transition-property: transform, opacity, box-shadow;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
-  }
-
-  .transition-all-fast {
-    transition-property: all;
-    transition-duration: 140ms;
-    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
-  }
-}
-
-/* ==========================================================================
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
    Hatsi360 Markets — reduced motion
 
    The design system's motion is deliberately minimal, and every one of these
@@ -1428,7 +1260,6 @@
    skeleton's shimmer.
    ========================================================================== */
 
-<<<<<<< HEAD
 
 /* Surface-aware keyboard focus. Unlayered intentionally so utilities such as
    outline-none cannot suppress the visible accessibility indicator. */
@@ -1436,16 +1267,4 @@
   outline: 2px solid var(--focus-ring-color, var(--color-focus-light));
   outline-offset: 2px;
   border-radius: 0.25rem;
-=======
-/* ─── Market ticker scroll animation ─── */
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  @keyframes ticker {
-    0%, 100% { transform: translateX(0); }
-  }
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }

@@ -60,7 +60,7 @@ export async function SiteHeader() {
 
       {/* Main bar */}
       <div className="container-page flex h-16 items-center gap-4 lg:h-20">
-        <BrandHomeLink size={38} />
+        <BrandHomeLink />
 
         <MainNavigation className="ml-2 hidden" />
 

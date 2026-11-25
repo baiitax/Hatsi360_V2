@@ -1,0 +1,36 @@
+
+--- hunk #1 (after kept line 0) ---
+
+--- hunk #2 (after kept line 13) ---
+import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
+
+--- hunk #3 (after kept line 35) ---
+ *
+ * The 'watchlists' entitlement is enforced at both the database level (RLS)
+ * and the application level. Users without the entitlement see a clear
+ * upgrade prompt rather than an empty state that looks like a bug.
+ */
+export default async function TradeWatchlistPage() {
+
+--- hunk #4 (after kept line 63) ---
+  // Check watchlists entitlement
+  const entitlements = await getEntitlements();
+  const hasWatchlistEntitlement = hasEntitlement(entitlements, 'watchlists');
+
+  if (!hasWatchlistEntitlement) {
+    return (
+      <>
+        <PageHeader
+          title="Watchlist"
+          purpose="The commodities and markets you follow, with their latest verified price."
+          breadcrumbs={[{ label: 'Trade Intelligence', href: '/trade' }, { label: 'Watchlist' }]}
+        />
+        <EmptyState
+          title="Watchlists require a subscription"
+          description="Save commodities and markets to track their latest verified prices. Watchlists are available on Professional and Enterprise plans."
+          action={{ label: 'View plans', href: '/pricing' }}
+        />
+      </>
+    );
+  }
+

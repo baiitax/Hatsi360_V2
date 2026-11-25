@@ -1,0 +1,18 @@
+
+--- hunk #1 (after kept line 34) ---
+  compact: '/brand/hatsi360-logo-horizontal.png',
+  /** The mark and the name, reversed for dark surfaces. */
+  compactLight: '/brand/hatsi360-logo-horizontal-light.png',
+  /** The mark and the name in a single ink, for light surfaces. */
+  compactMono: '/brand/hatsi360-logo-horizontal-mono.png',
+
+--- hunk #2 (after kept line 47) ---
+  /** The complete brand lockup — emblem + HATSI360 + subtitle + underline + "Powered by Pluck Agro". */
+  fullLockup: '/brand/hatsi360-lockup-full.png',
+
+--- hunk #3 (after kept line 54) ---
+ * The mark is very slightly taller than it is wide, the compact lockup
+ * is a wide band, and the full lockup is 2075×758 (≈2.74:1).
+
+--- hunk #4 (after kept line 61) ---
+const FULL_LOCKUP_RATIO = 758 / 2075;

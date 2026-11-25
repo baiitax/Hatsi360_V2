@@ -1,0 +1,52 @@
+
+--- hunk #1 (after kept line 3) ---
+import { relativeTime, isStale, DEFAULT_FRESHNESS_HOURS } from '@/lib/pricing';
+
+--- hunk #2 (after kept line 83) ---
+  freshnessHours = DEFAULT_FRESHNESS_HOURS,
+  precision = 'minute',
+  className = '',
+}: {
+  collectedAt: string;
+  freshnessHours?: number;
+  precision?: 'minute' | 'date';
+  className?: string;
+}) {
+  const stale = isStale(collectedAt, freshnessHours);
+  const label =
+    precision === 'date'
+      ? formatDateTime(collectedAt).split(',')[0]
+      : relativeTime(collectedAt);
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 text-xs ${stale ? 'text-warning-700' : 'text-ink-500'} ${className}`}
+      title={
+        stale
+          ? `Collected ${formatDateTime(collectedAt)} — outside the ${freshnessHours}-hour freshness window for this commodity.`
+          : `Collected ${formatDateTime(collectedAt)}`
+      }
+    >
+      <span
+        aria-hidden="true"
+        className={`size-1.5 rounded-full ${stale ? 'bg-warning-500' : 'bg-success-500'}`}
+      />
+      <span>
+        Collected {label}
+        {stale ? ' — outside the freshness window' : ''}
+
+--- hunk #3 (after kept line 134) ---
+ * unreviewed records are labelled as pending, and historical records without a
+ * verification trail stay labelled as unverified.
+
+--- hunk #4 (after kept line 201) ---
+      ? 'Historical record'
+
+--- hunk #5 (after kept line 304) ---
+  freshnessHours,
+
+--- hunk #6 (after kept line 308) ---
+  freshnessHours?: number;
+
+--- hunk #7 (after kept line 341) ---
+          freshnessHours={freshnessHours ?? DEFAULT_FRESHNESS_HOURS}

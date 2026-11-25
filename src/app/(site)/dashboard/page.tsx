@@ -6,6 +6,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
 import { getDataSource } from '@/lib/data';
 import { formatDate, formatMoney } from '@/lib/money';
+import { PageHero } from '@/components/ui/PageHero';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -20,29 +21,12 @@ export default async function DashboardPage() {
   if (!session || !profile) {
     return (
       <>
-<<<<<<< HEAD
         <PageHero
           eyebrow="Workspace"
           title="Sign in to your Hatsi360 workspace"
           lede="Save the commodities and markets you follow, set price alerts, and manage your API keys."
           breadcrumbs={[{ label: 'Dashboard' }]}
         />
-=======
-        {/* Terminal-native header — no editorial hero in the dark shell */}
-        <div className="terminal-rail border-b border-terminal-border px-3 py-4 lg:px-4">
-          <div className="container-page">
-            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-terminal-muted">
-              Workspace
-            </p>
-            <h1 className="mt-1 font-display text-xl font-bold tracking-tight text-terminal-text">
-              Sign in to your workspace
-            </h1>
-            <p className="mt-1 max-w-2xl text-[0.8125rem] text-terminal-muted">
-              Save the commodities and markets you follow, set price alerts, and manage your API keys.
-            </p>
-          </div>
-        </div>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         <div className="section">
           <div className="container-page max-w-md">
             <div className="card p-6 sm:p-8">

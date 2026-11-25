@@ -93,10 +93,10 @@ artwork's own alpha.
 
 | Surface | Asset |
 | --- | --- |
-| Public header | `hatsi360-lockup-compact.png` at 38 pixels tall. |
+| Public terminal header | `hatsi360-lockup-compact-light.png` at 38 pixels tall — reversed, because the header is a deep-green rail. It steps down to 32 pixels below `sm`, where the full height overflowed a 320 px viewport. |
 | Public footer | `hatsi360-logo-horizontal.png` at 300 pixels wide — the endorsement inside the artwork and the endorsement in the text agree. |
-| Access portal header | `hatsi360-lockup-compact.png`. |
-| Sign-in brand panel | `hatsi360-lockup-compact-light.png` (reversed, on deep green). |
+| Access portal header | `hatsi360-lockup-compact.png` at 38 pixels tall. |
+| Sign-in brand panel | `hatsi360-lockup-compact-light.png` at 44 pixels tall (reversed, on deep green), with clear space before the endorsement line. |
 | Control Centre rail | `hatsi360-mark-light.png` (reversed, on deep green). |
 | Field App header | `hatsi360-mark.png`. |
 | Social card | `hatsi360-social-1200x630.png`. |
@@ -120,6 +120,11 @@ artwork's own gradient shading cannot be reproduced faithfully by a vector
 trace without changing the mark.
 
 ### 2.5 Rules
+
+The header lockup height is declared once, as `HEADER_LOCKUP_HEIGHT` in
+`components/brand/Logo.tsx`, and every shell reads it. It used to be 32, 36, 38 and 44 pixels in
+four different frames, so the identity changed size depending on which door a reader came in
+through. Artwork is served at quality 90: the gold gradient in the lockup bands at the default 75.
 
 **Never** replace the Hatsi360 mark with the Pluck Agro logo. **Never**
 recolour the artwork by hand. **Never** show the full lockup where the

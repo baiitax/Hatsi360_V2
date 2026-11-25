@@ -8,7 +8,7 @@
  */
 
 import type { Metadata } from 'next';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { getTradeBlocs } from '@/lib/trade/geographic';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 
@@ -34,7 +34,7 @@ const BLOC_TYPE_TONES: Record<string, 'success' | 'info' | 'brand' | 'neutral'> 
 };
 
 export default async function TradeBlocsManagementPage() {
-  await requireStaff('/admin/intelligence/trade-blocs');
+  await requirePathAccess('/admin/intelligence/trade-blocs');
 
   const blocs = await getTradeBlocs();
 

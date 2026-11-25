@@ -1,0 +1,23 @@
+
+--- hunk #1 (after kept line 7) ---
+ * Hatsi360 is the product; Pluck Agro is the operator and endorsement.
+
+--- hunk #2 (after kept line 607) ---
+  'terminal-text-muted': '#748278',
+
+--- hunk #3 (after kept line 618) ---
+  /* ------------------------------------------- market movement semantics -- */
+  'move-up': '#2F8F57',
+  'move-up-soft': '#14301F',
+  'move-down': '#D0584F',
+  'move-down-soft': '#331A18',
+  'move-flat': '#748278',
+
+--- hunk #4 (after kept line 651) ---
+  metadata: { size: '0.6875rem', lineHeight: '1rem', tracking: '0' },
+  label: { size: '0.75rem', lineHeight: '1.125rem', tracking: '0' },
+  'body-sm': { size: '0.8125rem', lineHeight: '1.25rem', tracking: '0' },
+  figure: { size: '0.9375rem', lineHeight: '1.375rem', tracking: '-0.01em' },
+
+--- hunk #5 (after kept line 692) ---
+  { role: 'Micro-label', usage: 'Compact table metadata and column heads', scale: 'micro', family: 'sans', weight: '600', tabular: false },

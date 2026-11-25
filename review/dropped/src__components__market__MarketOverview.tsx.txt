@@ -1,0 +1,23 @@
+
+--- hunk #1 (after kept line 43) ---
+
+--- hunk #2 (after kept line 59) ---
+
+--- hunk #3 (after kept line 101) ---
+
+--- hunk #4 (after kept line 313) ---
+export type FreshnessState = 'fresh' | 'today' | 'delayed' | 'stale' | 'unavailable';
+
+--- hunk #5 (after kept line 324) ---
+    explanation: 'The most recent observation is inside the configured freshness window.',
+
+--- hunk #6 (after kept line 333) ---
+      'The most recent observation is older than the configured window but not yet stale.',
+
+--- hunk #7 (after kept line 338) ---
+      'The most recent observation is older than the freshness window configured for the commodity. Treat it as an indication, not a current price.',
+
+--- hunk #8 (after kept line 344) ---
+
+--- hunk #9 (after kept line 374) ---
+        : state === 'stale'

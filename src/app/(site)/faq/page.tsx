@@ -7,11 +7,7 @@ import { getPageImage } from '@/lib/images/registry';
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions | Hatsi360 Markets',
   description:
-<<<<<<< HEAD
     'Answers about how Hatsi360 collects, verifies and publishes agricultural commodity prices in Nigeria.',
-=======
-    'Answers about how Hatsi360 Markets collects, verifies and publishes agricultural commodity prices across African markets.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/faq' },
   openGraph: {
     type: 'website',
@@ -20,13 +16,13 @@ export const metadata: Metadata = {
     title: 'Frequently Asked Questions | Hatsi360 Markets',
     description: 'Answers about how Hatsi360 Markets collects and publishes agricultural commodity prices.',
     url: '/faq',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+    images: [{ url: '/brand/hatsi360-social-1200x630.png', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Frequently Asked Questions | Hatsi360 Markets',
     description: 'Answers about Hatsi360 Markets agricultural intelligence.',
-    images: ['/brand/hatsi360-social-preview.png'],
+    images: ['/brand/hatsi360-social-1200x630.png'],
   },
 };
 
@@ -115,7 +111,7 @@ export default function FaqPage() {
         image={getPageImage('faq.hero')}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page grid gap-12 lg:grid-cols-[16rem_1fr]">
           <nav aria-label="FAQ sections" className="lg:sticky lg:top-28 lg:self-start">
             <h2 className="text-xs font-bold uppercase tracking-widest text-ink-500">Sections</h2>
@@ -131,7 +127,7 @@ export default function FaqPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 rounded-xl border border-ink-200 bg-white p-4">
+            <div className="on-paper mt-6 rounded-xl border border-ink-200 bg-white p-4">
               <p className="text-sm text-ink-600">
                 Still stuck?{' '}
                 <Link href="/contact" className="font-semibold text-brand-700 hover:text-brand-800">

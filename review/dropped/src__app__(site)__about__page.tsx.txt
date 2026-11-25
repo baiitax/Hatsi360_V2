@@ -1,0 +1,5 @@
+
+--- hunk #1 (after kept line 10) ---
+  title: 'About Hatsi360 Markets | African Agricultural Intelligence',
+  description:
+    'Learn about Hatsi360 Markets, our mission to improve agricultural market intelligence and our commitment to helping businesses make better-informed decisions across African agricultural markets.',

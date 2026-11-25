@@ -1,0 +1,39 @@
+
+--- hunk #1 (after kept line 4) ---
+
+--- hunk #2 (after kept line 77) ---
+  description: HOMEPAGE_DESCRIPTION,
+  applicationName: BRAND_TITLE,
+
+--- hunk #3 (after kept line 92) ---
+    'agricultural trade intelligence',
+    'commodity price analytics',
+    'Hatsi360 Markets',
+    'Hatsi360',
+  ],
+  authors: [{ name: BRAND_TITLE }],
+  creator: BRAND_TITLE,
+  publisher: BRAND_TITLE,
+  category: BRAND_DESCRIPTOR,
+
+--- hunk #4 (after kept line 106) ---
+    title: `${BRAND_TITLE} — ${BRAND_TAGLINE}`,
+    description: OG_HOMEPAGE_DESCRIPTION,
+    images: [
+      {
+        url: SOCIAL_CARD,
+        width: 1200,
+        height: 630,
+        alt: `${BRAND_TITLE} — ${BRAND_DESCRIPTOR}. ${BRAND_TAGLINE}`,
+        type: 'image/png',
+
+--- hunk #5 (after kept line 119) ---
+    site: '@Hatsi360',
+    title: `${BRAND_TITLE} — ${BRAND_TAGLINE}`,
+    description: OG_HOMEPAGE_DESCRIPTION,
+    images: [
+      {
+        url: SOCIAL_CARD,
+        alt: `${BRAND_TITLE} — ${BRAND_DESCRIPTOR}. ${BRAND_TAGLINE}`,
+      },
+    ],

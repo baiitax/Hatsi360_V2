@@ -1,4 +1,4 @@
-import { BRAND } from '@/lib/brand';
+
 import { HatsiBootRecovery } from './HatsiBootRecovery';
 
 /**
@@ -112,7 +112,6 @@ export function HatsiGlobalPreloader() {
     <>
       {/* The boot script runs before the first paint. */}
       <script
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }}
       />
       {/*
@@ -130,45 +129,19 @@ export function HatsiGlobalPreloader() {
       >
         <div className="hatsi-boot__inner">
           <div className="hatsi-boot__mark">
-            {/* The official mark, reversed for the deep green surface. */}
+            {/* The supplied lockup, reversed for the deep green curtain. It is
+                one file, so it downloads once and paints with the curtain. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/hatsi360-mark-light.png"
+              src="/brand/hatsi360-logo-horizontal-light.png"
               alt=""
-              width={56}
-              height={54}
+              width={410}
+              height={86}
               className="hatsi-boot__logo"
               decoding="async"
             />
-            <svg
-              className="hatsi-boot__ring"
-              viewBox="0 0 120 120"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <circle
-                cx="60"
-                cy="60"
-                r="54"
-                fill="none"
-                stroke="rgba(213,164,65,0.18)"
-                strokeWidth="2"
-              />
-              <circle
-                cx="60"
-                cy="60"
-                r="54"
-                fill="none"
-                stroke="#D5A441"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeDasharray="96 244"
-                className="hatsi-boot__arc"
-              />
-            </svg>
           </div>
 
-          <p className="hatsi-boot__title">{BRAND.name}</p>
           <p className="hatsi-boot__message" data-boot-message>
             Connecting to agricultural intelligence&hellip;
           </p>

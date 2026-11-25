@@ -1,0 +1,20 @@
+
+--- hunk #1 (after kept line 16) ---
+ *     it looks like the platform is broken. So the accounts are checked against
+ *     the live database — they exist, they are active, they carry the role the
+ *     panel claims, and they sign in.
+
+--- hunk #2 (after kept line 27) ---
+ * are RLS policies, not hidden buttons, so they are asserted against the
+ * database with a real session rather than read out of the source.
+
+--- hunk #3 (after kept line 192) ---
+    expect(source).toContain('const landing = landingPathForRole(role)');
+    expect(source).toContain('const target = safeRedirectPath(parsed.data.next, landing)');
+    expect(source).toContain('redirect(target)');
+
+--- hunk #4 (after kept line 248) ---
+describe('the demo accounts, against the live database', () => {
+
+--- hunk #5 (after kept line 285) ---
+describe('the demo accounts are constrained by policy, not by hidden buttons', () => {

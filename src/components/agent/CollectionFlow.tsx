@@ -64,6 +64,22 @@ const PRICE_TYPES = [
 const DRAFT_KEY = 'hatsi360.collection-draft';
 const QUEUE_KEY = 'hatsi360.pending-submissions';
 
+/**
+ * The keys this app used before the rebrand. An agent in a market with a saved
+ * draft or an unsent price under the old key must not lose it because the
+ * storage namespace changed, so the old key is still read as a fallback.
+ */
+const LEGACY_DRAFT_KEY = 'pluck-live.collection-draft';
+const LEGACY_QUEUE_KEY = 'pluck-live.pending-submissions';
+
+function readStored(key: string, legacyKey: string): string | null {
+  try {
+    return window.localStorage.getItem(key) ?? window.localStorage.getItem(legacyKey);
+  } catch {
+    return null;
+  }
+}
+
 interface CollectionState {
   marketId: number | null;
   commodityId: number | null;
@@ -108,7 +124,7 @@ function nowLocalInput(): string {
 function readQueue(): CollectionState[] {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = window.localStorage.getItem(QUEUE_KEY);
+    const raw = readStored(QUEUE_KEY, LEGACY_QUEUE_KEY);
     return raw ? (JSON.parse(raw) as CollectionState[]) : [];
   } catch {
     return [];
@@ -124,6 +140,8 @@ function writeQueue(queue: CollectionState[]): void {
       return;
     }
     window.localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+    // Clear the legacy key once the new one carries the queue.
+    window.localStorage.removeItem(LEGACY_QUEUE_KEY);
   } catch {
     // A device with no storage available still works, it just cannot queue.
   }
@@ -155,7 +173,7 @@ export function CollectionFlow({
   useEffect(() => {
     setQueueLength(readQueue().length);
     try {
-      const raw = window.localStorage.getItem(DRAFT_KEY);
+      const raw = readStored(DRAFT_KEY, LEGACY_DRAFT_KEY);
       if (raw) {
         const draft = JSON.parse(raw) as CollectionState;
         const restored: CollectionState = {
@@ -191,6 +209,7 @@ export function CollectionFlow({
     if (!state.idempotencyKey) return;
     try {
       window.localStorage.setItem(DRAFT_KEY, JSON.stringify(state));
+      window.localStorage.removeItem(LEGACY_DRAFT_KEY);
     } catch {
       // Ignore: the device may have no storage.
     }

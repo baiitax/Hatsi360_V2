@@ -41,10 +41,7 @@ export function MarketOverviewCard({
   source,
   freshness,
   unavailableReason,
-<<<<<<< HEAD
   definition,
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   className = '',
 }: {
   label: string;
@@ -60,7 +57,6 @@ export function MarketOverviewCard({
   freshness?: string;
   /** Why the value is unavailable, when it is. */
   unavailableReason?: string;
-<<<<<<< HEAD
   /**
    * What the figure actually counts, in a sentence.
    *
@@ -71,8 +67,6 @@ export function MarketOverviewCard({
    * `<details>`, so it works without JavaScript and with a keyboard.
    */
   definition?: string;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   className?: string;
 }) {
   const body = (
@@ -105,7 +99,6 @@ export function MarketOverviewCard({
         <p className="mt-1 text-[0.6875rem] leading-4 text-terminal-text-secondary">{detail}</p>
       ) : null}
 
-<<<<<<< HEAD
       {definition ? (
         <details className="group mt-2 border-t border-terminal-border pt-2">
           <summary className="figure-label cursor-pointer text-terminal-text-muted transition-colors hover:text-terminal-text-secondary">
@@ -115,8 +108,6 @@ export function MarketOverviewCard({
         </details>
       ) : null}
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {source || freshness ? (
         <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 border-t border-terminal-border pt-2 text-[0.625rem] leading-4 text-terminal-text-muted">
           {source ? (
@@ -181,14 +172,33 @@ export function MarketMovers({
   limit?: number;
   emptyReason: string;
 }) {
-  const ordered = [...rows]
-    .filter((row) => typeof row.changePercent === 'number')
-    .sort((a, b) =>
-      direction === 'gainers'
-        ? (b.changePercent ?? 0) - (a.changePercent ?? 0)
-        : (a.changePercent ?? 0) - (b.changePercent ?? 0),
+  // A panel only ever lists movements in its own direction. Filtering on
+  // "has a number" alone put risers under a "Price decliners" heading with a
+  // down arrow next to a plus sign — the panel's sign and its own arrow
+  // contradicted each other.
+  const comparable = rows.filter(
+    (row) => typeof row.changePercent === 'number' && row.changePercent !== 0,
+  );
+  const ordered = comparable
+    .filter((row) =>
+      direction === 'gainers' ? (row.changePercent ?? 0) > 0 : (row.changePercent ?? 0) < 0,
+    )
+    .sort(
+      (a, b) =>
+        direction === 'gainers'
+          ? (b.changePercent ?? 0) - (a.changePercent ?? 0)
+          : (a.changePercent ?? 0) - (b.changePercent ?? 0),
     )
     .slice(0, limit);
+
+  // Three distinct silences, and each says which one it is: nothing to compare,
+  // nothing moved at all, or nothing moved this way.
+  const empty =
+    comparable.length === 0
+      ? emptyReason
+      : direction === 'gainers'
+        ? 'No commodity rose between comparable observations in this window.'
+        : 'No commodity fell between comparable observations in this window.';
 
   return (
     <section className="terminal-panel flex flex-col" aria-labelledby={`movers-${direction}`}>
@@ -203,7 +213,7 @@ export function MarketMovers({
 
       {ordered.length === 0 ? (
         <p className="px-3.5 py-6 text-center text-[0.75rem] leading-4 text-terminal-text-muted">
-          {emptyReason}
+          {empty}
         </p>
       ) : (
         <ol className="divide-y divide-terminal-border">
@@ -215,13 +225,9 @@ export function MarketMovers({
               >
                 <span
                   aria-hidden="true"
-                  className={
-                    direction === 'gainers'
-                      ? 'text-move-up'
-                      : 'text-move-down'
-                  }
+                  className={(row.changePercent ?? 0) > 0 ? 'text-move-up' : 'text-move-down'}
                 >
-                  {direction === 'gainers' ? (
+                  {(row.changePercent ?? 0) > 0 ? (
                     <IconArrowUp className="size-3.5" />
                   ) : (
                     <IconArrowDown className="size-3.5" />
@@ -245,7 +251,9 @@ export function MarketMovers({
         </ol>
       )}
 
-      <footer className="border-t border-terminal-border px-3.5 py-2 text-[0.625rem] leading-4 text-terminal-text-muted">
+      {/* mt-auto: the two panels share a row, so the short one keeps its note at
+          the bottom instead of floating it under a half-empty list. */}
+      <footer className="mt-auto border-t border-terminal-border px-3.5 py-2 text-[0.625rem] leading-4 text-terminal-text-muted">
         Movement between two comparable observations. A direction, not a
         recommendation.
       </footer>
@@ -320,7 +328,6 @@ export function MarketCoverageSummary({
 
 /* ------------------------------------------------------------ freshness --- */
 
-<<<<<<< HEAD
 export type FreshnessState =
   | 'fresh'
   | 'today'
@@ -328,18 +335,11 @@ export type FreshnessState =
   | 'stale'
   | 'unavailable'
   | 'timestamp_review';
-=======
-export type FreshnessState = 'fresh' | 'today' | 'delayed' | 'stale' | 'unavailable';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 const FRESHNESS_COPY: Record<FreshnessState, { label: string; explanation: string }> = {
   fresh: {
     label: 'Recently observed',
-<<<<<<< HEAD
     explanation: 'The most recent observation is inside the freshness window for its declared collection cadence.'
-=======
-    explanation: 'The most recent observation is inside the configured freshness window.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   today: {
     label: 'Updated today',
@@ -348,33 +348,22 @@ const FRESHNESS_COPY: Record<FreshnessState, { label: string; explanation: strin
   delayed: {
     label: 'Delayed',
     explanation:
-<<<<<<< HEAD
       'The most recent observation is past its fresh window but remains inside its verification horizon.'
-=======
-      'The most recent observation is older than the configured window but not yet stale.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   stale: {
     label: 'Stale',
     explanation:
-<<<<<<< HEAD
       'The most recent observation is beyond its verification horizon. Treat it as historical, not as current market information.',
-=======
-      'The most recent observation is older than the freshness window configured for the commodity. Treat it as an indication, not a current price.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   unavailable: {
     label: 'No observation',
     explanation: 'The platform holds no observation for this series.',
   },
-<<<<<<< HEAD
   timestamp_review: {
     label: 'Timestamp needs review',
     explanation:
       'The recorded observation time is invalid or later than the platform clock, so its age cannot be established.',
   },
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -400,11 +389,7 @@ export function DataFreshnessIndicator({
       ? 'border-success-700/40 bg-success-700/15 text-success-700'
       : state === 'delayed'
         ? 'border-warning-700/40 bg-warning-700/15 text-warning-700'
-<<<<<<< HEAD
         : state === 'stale' || state === 'timestamp_review'
-=======
-        : state === 'stale'
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           ? 'border-warning-700/45 bg-warning-700/20 text-warning-700'
           : 'border-terminal-border bg-terminal-elevated text-terminal-text-muted';
 

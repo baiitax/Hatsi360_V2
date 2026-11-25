@@ -16,7 +16,7 @@ export function BareFrame({ children }: { children: React.ReactNode }) {
       <div className="border-b border-ink-200 bg-white">
         <div className="container-page flex items-center gap-3 py-4">
           <Link href="/" className="flex items-center" aria-label={`${BRAND.name} home`}>
-            <BrandLogo size={36} priority />
+            <BrandLogo priority />
           </Link>
           <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-brand-700">
             {BRAND.endorsement}

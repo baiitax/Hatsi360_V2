@@ -110,9 +110,17 @@ def limit(image: Image.Image, edge: int) -> Image.Image:
     )
 
 
-def crop_to_artwork(image: Image.Image) -> Image.Image:
-    """Trim the transparent margin the artwork is supplied with."""
-    bounds = image.getchannel("A").getbbox()
+def crop_to_artwork(image: Image.Image, threshold: int = 16) -> Image.Image:
+    """Trim the transparent margin the artwork is supplied with.
+
+    The supplied file carries a scatter of near-transparent pixels across the
+    whole canvas, so a plain alpha bounding box returns the canvas itself and
+    the "trimmed" artwork still has ~46% empty margin — which is why the lockup
+    rendered small and off-centre wherever it was placed by its box. The alpha
+    is thresholded before the box is taken.
+    """
+    alpha = image.getchannel("A").point(lambda value: 255 if value > threshold else 0)
+    bounds = alpha.getbbox()
     if not bounds:
         raise SystemExit("The supplied artwork has no visible pixels")
     return image.crop(bounds)

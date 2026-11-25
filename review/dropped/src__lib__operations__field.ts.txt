@@ -1,0 +1,31 @@
+
+--- hunk #1 (after kept line 4) ---
+
+--- hunk #2 (after kept line 203) ---
+
+--- hunk #3 (after kept line 226) ---
+
+--- hunk #4 (after kept line 334) ---
+
+--- hunk #5 (after kept line 346) ---
+    supabase.from('measurement_units').select('id, name').limit(200),
+
+--- hunk #6 (after kept line 361) ---
+
+--- hunk #7 (after kept line 1151) ---
+
+--- hunk #8 (after kept line 1171) ---
+  const [profileResult, agentProfileResult, observationsResult, notificationsResult] =
+
+--- hunk #9 (after kept line 1206) ---
+
+--- hunk #10 (after kept line 1224) ---
+
+--- hunk #11 (after kept line 1458) ---
+
+--- hunk #12 (after kept line 1545) ---
+
+--- hunk #13 (after kept line 1711) ---
+  const expectedIds = new Set<number>([...scopedIds, ...scheduledIds]);
+
+--- hunk #14 (after kept line 1748) ---

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MarketComparisonTable } from '@/components/data/PriceTable';
@@ -79,69 +78,12 @@ export default async function ComparePage({ searchParams }: Params) {
         eyebrow="Market comparison"
         title="Compare prices across markets"
         lede="Pick one commodity and one price type. We only place figures side by side when they share a compatible measurement unit — prices quoted per bag and prices quoted per kilogram are never compared as if they were the same thing."
-=======
-import type { Metadata } from 'next';
-import { getDataSource } from '@/lib/data';
-import { CompareExplorer, type CompareServerData } from '@/components/data/CompareExplorer';
-import { PageHero } from '@/components/ui/PageHero';
-import { getPageImage } from '@/lib/images/registry';
-import { BreadcrumbJsonLd } from '@/components/marketing/StructuredData';
-import { BRAND } from '@/lib/brand';
-
-export const metadata: Metadata = {
-  title: 'Compare Agricultural Commodity Prices | Hatsi360 Markets',
-  description:
-    'Interactive comparison of agricultural commodity prices across African markets. Visual charts, detailed data tables and market-by-market intelligence.',
-  alternates: { canonical: '/compare' },
-  openGraph: {
-    type: 'website',
-    siteName: 'Hatsi360 Markets',
-    locale: BRAND.locale,
-    title: 'Compare Agricultural Commodity Prices | Hatsi360 Markets',
-    description:
-      'Interactive comparison of agricultural commodity prices across African markets.',
-    url: '/compare',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Compare Agricultural Commodity Prices | Hatsi360 Markets',
-    description:
-      'Interactive comparison of agricultural commodity prices across African markets.',
-    images: ['/brand/hatsi360-social-preview.png'],
-  },
-};
-
-export const dynamic = 'force-dynamic';
-
-export default async function ComparePage() {
-  const source = await getDataSource();
-
-  const [commodities, observations] = await Promise.all([
-    source.listCommodities(),
-    source.listObservationsForAnalysis({}),
-  ]);
-
-  const data: CompareServerData = {
-    commodities,
-    observations,
-  };
-
-  return (
-    <>
-      <BreadcrumbJsonLd items={[{ name: 'Compare' }]} />
-      <PageHero
-        eyebrow="Market Comparison"
-        title="Compare prices across markets"
-        lede="Select a commodity and see how prices vary across Nigerian markets. We only compare figures with compatible measurement units."
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         breadcrumbs={[{ label: 'Compare' }]}
         image={getPageImage('market-directory.hero')}
       />
 
       <div className="section">
         <div className="container-page">
-<<<<<<< HEAD
         <BreadcrumbJsonLd items={[{ name: 'Compare' }]} />
 
         <form method="GET" action="/compare" className="card mt-8 grid gap-4 p-5 sm:grid-cols-3">
@@ -324,9 +266,6 @@ export default async function ComparePage() {
             </p>
           </>
         )}
-=======
-          <CompareExplorer data={data} />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         </div>
       </div>
     </>

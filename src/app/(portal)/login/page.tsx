@@ -82,9 +82,12 @@ export default async function LoginPage({
           className="pointer-events-none absolute -bottom-32 -left-16 size-[28rem] rounded-full bg-brand-700/40 blur-3xl"
         />
 
-        <div className="relative flex items-center gap-3">
-          <BrandLogo size={44} tone="dark" />
-          <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-brand-200">
+        <div className="relative flex items-center gap-5">
+          {/* The endpoint's own artwork already carries the endorsement; the
+              line beside it is the panel's, and it needs clear space rather
+              than touching the mark. */}
+          <BrandLogo size={44} tone="dark" className="[&_img]:h-[2.75rem]" />
+          <span className="border-l border-brand-500/40 pl-5 text-[0.6rem] font-semibold uppercase leading-relaxed tracking-[0.2em] text-brand-200">
             {BRAND.endorsement}
           </span>
         </div>
@@ -168,7 +171,6 @@ export default async function LoginPage({
           {/*
             The demo accounts.
 
-<<<<<<< HEAD
             These are visible unconditionally. That is a deliberate decision the
             requester made after being shown the exposure: anyone who can open
             this page can sign in as an administrator. It is recorded, with the
@@ -180,17 +182,6 @@ export default async function LoginPage({
             wrong password produces, which is honest rather than confusing.
           */}
           <DemoAccountsPanel next={next || undefined} />
-=======
-            Gated behind NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true so they never
-            appear on a production deployment unless explicitly enabled. The
-            exposure was P0: anyone who can open the login page could sign in
-            as an administrator and mutate the live database. The panel only
-            renders when the operator has deliberately opted in.
-          */}
-          {process.env.NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS === 'true' ? (
-            <DemoAccountsPanel next={next || undefined} />
-          ) : null}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
           {/*
             Access, stated plainly.

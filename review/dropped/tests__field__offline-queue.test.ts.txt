@@ -1,0 +1,13 @@
+
+--- hunk #1 (after kept line 333) ---
+  it('rehydrates from storage on mount rather than starting empty', () => {
+    expect(hook).toContain('refresh()');
+    expect(hook).toContain('useState<QueuedPrice[]>([])');
+    // The rehydration is what makes the queue real after a reload.
+    expect(hook.indexOf('setOnline(isOnline())')).toBeLessThan(hook.indexOf('window.addEventListener(QUEUE_CHANGED_EVENT'));
+
+--- hunk #2 (after kept line 347) ---
+    expect(hook).toContain('while (!cancelled)');
+
+--- hunk #3 (after kept line 352) ---
+    expect(hook).toContain('if (!isOnline()) break;');

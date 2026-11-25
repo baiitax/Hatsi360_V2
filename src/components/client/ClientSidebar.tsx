@@ -11,7 +11,6 @@ import {
   IconBriefcase,
   IconSettings,
   IconShieldCheck,
-  IconCode,
   IconUser
 } from '@/components/ui/icons';
 import type { SVGProps, ReactElement } from 'react';
@@ -58,7 +57,9 @@ const navigation: NavSection[] = [
     items: [
       { title: 'Profile', href: '/client/account', icon: IconSettings },
       { title: 'Subscription', href: '/client/subscription', icon: IconShieldCheck },
-      { title: 'API Keys', href: '/client/api', icon: IconCode },
+      // "API Keys" is deliberately absent: /client/api does not exist yet, and a
+      // navigation item that leads nowhere is worse than no item. Key
+      // management is tracked as an open item in docs/KNOWN_LIMITATIONS.md.
     ],
   },
 ];

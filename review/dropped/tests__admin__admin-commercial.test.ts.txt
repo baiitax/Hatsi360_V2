@@ -1,0 +1,19 @@
+
+--- hunk #1 (after kept line 3) ---
+
+--- hunk #2 (after kept line 76) ---
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/customers')");
+
+--- hunk #3 (after kept line 98) ---
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/subscriptions')");
+
+--- hunk #4 (after kept line 123) ---
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/api-management')");
+
+--- hunk #5 (after kept line 162) ---
+  it('guards the route on the server and 404s an unknown agent', () => {
+    expect(page).toContain("await requireStaff('/admin/agents')");
+    expect(page).toContain('notFound()');

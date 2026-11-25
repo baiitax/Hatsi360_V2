@@ -1,0 +1,9 @@
+
+--- hunk #1 (after kept line 203) ---
+      className={`h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface px-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+
+--- hunk #2 (after kept line 217) ---
+      className={`h-[1.875rem] max-w-full rounded-control border border-terminal-border bg-terminal-surface px-2 text-[0.75rem] font-medium text-terminal-text-secondary focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+
+--- hunk #3 (after kept line 282) ---
+        className="h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface pl-8 pr-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none"

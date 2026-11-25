@@ -29,6 +29,9 @@ const nextConfig: NextConfig = {
    */
   images: {
     formats: ['image/avif', 'image/webp'],
+    // The brand artwork carries a gold gradient that bands at the default
+    // quality; the logo asks for 90 and the optimizer has to allow it.
+    qualities: [75, 90],
     deviceSizes: [480, 640, 828, 1080, 1280, 1600, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,

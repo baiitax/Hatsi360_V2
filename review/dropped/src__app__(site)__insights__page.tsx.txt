@@ -1,0 +1,39 @@
+
+--- hunk #1 (after kept line 0) ---
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { BRAND } from '@/lib/brand';
+
+--- hunk #2 (after kept line 19) ---
+  title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
+  description:
+    'Market briefs and published research from the Hatsi360 research desk on African agricultural markets — what the price data shows, and what it does not.',
+  alternates: { canonical: '/insights' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Hatsi360 Markets',
+    locale: BRAND.locale,
+    title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
+    description:
+      'Market briefs and published research from the Hatsi360 research desk on African agricultural markets.',
+    url: '/insights',
+    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
+    description:
+      'Market briefs and published research on African agricultural markets.',
+    images: ['/brand/hatsi360-social-preview.png'],
+  },
+
+--- hunk #3 (after kept line 38) ---
+export default function ResearchPage() {
+
+--- hunk #4 (after kept line 173) ---
+                Some market data services display a &ldquo;Price Forecast&rdquo; figure without
+                explaining how it is produced. Hatsi360 publishes observations and analysis; it
+                does not publish predictions dressed up as data. See the{' '}
+
+--- hunk #5 (after kept line 201) ---
+export function ResearchLoading() {

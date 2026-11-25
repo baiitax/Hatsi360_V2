@@ -26,7 +26,7 @@ export function PortalFrame({
       <div className="border-b border-ink-200 bg-white">
         <div className="container-page flex items-center justify-between gap-4 py-4">
           <Link href="/" className="flex items-center gap-3">
-            <BrandLogo size={36} />
+            <BrandLogo />
             <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-brand-700">
               {BRAND.endorsement}
             </span>

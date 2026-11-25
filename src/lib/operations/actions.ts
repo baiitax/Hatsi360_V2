@@ -12,10 +12,6 @@ import { loadOperationalSnapshot } from '@/lib/analytics/snapshot';
 import { reportById, reportToCsv } from '@/lib/reports';
 import { operationalToday } from '@/lib/analytics/format';
 import { evaluateAndRecord, summariseForAgent } from '@/lib/quality/evaluate';
-<<<<<<< HEAD
-=======
-import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 export interface OperationState {
   ok: boolean;

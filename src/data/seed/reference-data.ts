@@ -3,11 +3,7 @@
  *
  * Provenance:
  *  - Countries, states, markets, categories and commodities are transcribed from
-<<<<<<< HEAD
  *    the public catalogue pages of https://liveprice.pluckagro.com (captured
-=======
- *    the public catalogue pages (captured
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  *    2026-10-22). The structured capture is kept in `audit/source/` and is
  *    asserted by `tests/data-integrity.test.ts`; the raw HTML pages it was
  *    transcribed from were not retained.

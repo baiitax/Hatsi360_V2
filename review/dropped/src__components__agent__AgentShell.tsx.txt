@@ -1,0 +1,16 @@
+
+--- hunk #1 (after kept line 88) ---
+            <BrandMark size={40} tone="light" />
+            <div className="flex flex-col">
+              <span className="text-sm font-bold leading-tight text-brand-900">
+                {BRAND.name}
+
+--- hunk #2 (after kept line 106) ---
+            ) : (
+              <span className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700">
+                <span className="size-1.5 rounded-full bg-brand-500" />
+                Online
+              </span>
+            )}
+
+--- hunk #3 (after kept line 162) ---

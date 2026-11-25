@@ -1,0 +1,3 @@
+
+--- hunk #1 (after kept line 10) ---
+    'Talk to the Hatsi360 Markets team about market partnerships, API access, custom reports or a published price you think looks wrong.',

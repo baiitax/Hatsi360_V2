@@ -1,23 +1,13 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
 import { buildShareMetadata } from '@/lib/metadata';
-=======
-import { buildShareMetadata } from '@/lib/metadata';
-import Link from 'next/link';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { redirect } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import { getDataSource } from '@/lib/data';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
-<<<<<<< HEAD
 import { EmptyState, PageHeader, Panel, Pill } from '@/components/trade/Primitives';
-=======
-import { EmptyState, PageHeader, Panel, Pill, Price } from '@/components/trade/Primitives';
-import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 export const metadata = buildShareMetadata({
   title: 'Price alerts',
@@ -55,14 +45,11 @@ export const dynamic = 'force-dynamic';
  * The trigger conditions are stated honestly on the page.
  */
 export default async function TradeAlertsPage() {
-<<<<<<< HEAD
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/trade/alerts" product="Trade Intelligence" />;
   }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const user = await getUser();
   if (!user) {
     redirect('/login?next=/trade/alerts');
@@ -84,13 +71,6 @@ export default async function TradeAlertsPage() {
     );
   }
 
-<<<<<<< HEAD
-=======
-  // Check alerts entitlement
-  const entitlements = await getEntitlements();
-  const hasAlertsEntitlement = hasEntitlement(entitlements, 'alerts');
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const supabase = await createClient();
 
   const [alertsResult, commodities, markets] = await Promise.all([
@@ -117,28 +97,6 @@ export default async function TradeAlertsPage() {
         breadcrumbs={[{ label: 'Trade Intelligence', href: '/trade' }, { label: 'Alerts' }]}
       />
 
-<<<<<<< HEAD
-=======
-      {!hasAlertsEntitlement && (
-        <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 p-4">
-          <div className="flex items-start gap-3">
-            <div className="flex-1">
-              <h3 className="text-sm font-semibold text-amber-900">
-                Alerts are paused
-              </h3>
-              <p className="mt-1 text-sm text-amber-800">
-                Your subscription doesn&apos;t include price alerts. Your existing alerts are preserved but won&apos;t trigger notifications.{' '}
-                <Link href="/pricing" className="font-medium text-amber-900 underline hover:text-amber-950">
-                  Upgrade your plan
-                </Link>{' '}
-                to create new alerts and reactivate existing ones.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Panel
@@ -267,8 +225,3 @@ function describeThreshold(alert: Record<string, unknown>): string {
   return `Notify when the price ${verb} ${parts.join(' or ')}`;
 }
 
-<<<<<<< HEAD
-=======
-/** Kept so the import is used when the panel is extended. */
-export const __priceComponent = Price;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2

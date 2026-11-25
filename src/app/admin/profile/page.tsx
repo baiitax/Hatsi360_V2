@@ -1,9 +1,5 @@
 import type { Metadata } from 'next';
-<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
-=======
-import { requireStaff } from '@/lib/auth/guards';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { PageHeader, Panel } from '@/components/ops/Primitives';
 import { VerificationBadge } from '@/components/ui/data-display';
 import { BRAND } from '@/lib/brand';
@@ -21,11 +17,7 @@ export const metadata: Metadata = {
  * a role from the browser.
  */
 export default async function AdminProfilePage() {
-<<<<<<< HEAD
   const profile = await requirePathAccess('/admin/profile');
-=======
-  const profile = await requireStaff('/admin/profile');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   const details: { label: string; value: string }[] = [
     { label: 'Full name', value: profile.fullName ?? 'Not recorded' },

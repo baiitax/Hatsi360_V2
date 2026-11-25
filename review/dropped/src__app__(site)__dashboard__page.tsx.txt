@@ -1,0 +1,16 @@
+
+--- hunk #1 (after kept line 22) ---
+        {/* Terminal-native header — no editorial hero in the dark shell */}
+        <div className="terminal-rail border-b border-terminal-border px-3 py-4 lg:px-4">
+          <div className="container-page">
+            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-terminal-muted">
+              Workspace
+            </p>
+            <h1 className="mt-1 font-display text-xl font-bold tracking-tight text-terminal-text">
+              Sign in to your workspace
+            </h1>
+            <p className="mt-1 max-w-2xl text-[0.8125rem] text-terminal-muted">
+              Save the commodities and markets you follow, set price alerts, and manage your API keys.
+            </p>
+          </div>
+        </div>

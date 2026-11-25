@@ -84,3 +84,22 @@ export function formatDateTime(iso: string | null | undefined): string {
 export function isoDate(iso: string): string {
   return iso.slice(0, 10);
 }
+
+/**
+ * Split a measurement unit's name into its short form and its qualifier.
+ *
+ * The bag is quoted as `bag (commodity-specific weight)` because a bag of
+ * sesame and a bag of maize do not weigh the same, and the platform refuses to
+ * imply otherwise. That qualifier is essential once, and noise on every row of
+ * a table. This keeps the short form for the grid and the qualifier for a
+ * tooltip or a footnote.
+ */
+export function splitUnitName(name: string | null | undefined): {
+  short: string;
+  qualifier: string | null;
+} {
+  if (!name) return { short: '', qualifier: null };
+  const match = /^([^(]+?)\s*\((.+)\)\s*$/.exec(name);
+  if (!match) return { short: name.trim(), qualifier: null };
+  return { short: match[1]!.trim(), qualifier: match[2]!.trim() };
+}

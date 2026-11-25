@@ -2,10 +2,7 @@ import 'server-only';
 
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
-<<<<<<< HEAD
 import { isDailyMarketReportingEnabled } from '@/lib/reporting/feature';
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import {
   operationalToday,
   startOfOperationalDay,
@@ -204,7 +201,6 @@ export interface FieldPerformance {
   daily: { date: string; submitted: number; approved: number }[];
 }
 
-<<<<<<< HEAD
 export interface FieldReportingSession {
   id: string;
   marketId: number;
@@ -219,8 +215,6 @@ export interface FieldReportingSession {
   completedCount: number;
 }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 export interface FieldHome {
   configured: boolean;
   today: string;
@@ -230,10 +224,7 @@ export interface FieldHome {
   alternatePhone: string | null;
   accountStatus: string | null;
   markets: FieldMarket[];
-<<<<<<< HEAD
   reportingSessions: FieldReportingSession[];
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   tasksToday: FieldAssignment[];
   upcoming: FieldAssignment[];
   completedToday: number;
@@ -341,10 +332,7 @@ interface ReferenceData {
   marketNames: Map<number, string>;
   stateNames: Map<number, string>;
   unitNames: Map<number, string>;
-<<<<<<< HEAD
   unitCodes: Map<number, string>;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   gradeNames: Map<number, string>;
   varietyNames: Map<number, string>;
 }
@@ -356,11 +344,7 @@ async function loadReference(): Promise<ReferenceData> {
     supabase.from('commodity_categories').select('id, name').limit(200),
     supabase.from('markets').select('id, name').limit(1000),
     supabase.from('states').select('id, name').limit(200),
-<<<<<<< HEAD
     supabase.from('measurement_units').select('id, name, code').limit(200),
-=======
-    supabase.from('measurement_units').select('id, name').limit(200),
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     supabase.from('commodity_grades').select('id, name').limit(500),
     supabase.from('commodity_varieties').select('id, name').limit(500),
   ]);
@@ -375,10 +359,7 @@ async function loadReference(): Promise<ReferenceData> {
     marketNames: new Map((markets.data ?? []).map((m) => [m.id as number, m.name as string])),
     stateNames: new Map((states.data ?? []).map((s) => [s.id as number, s.name as string])),
     unitNames: new Map((units.data ?? []).map((u) => [u.id as number, u.name as string])),
-<<<<<<< HEAD
     unitCodes: new Map((units.data ?? []).map((u) => [u.id as number, u.code as string])),
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     gradeNames: new Map((grades.data ?? []).map((g) => [g.id as number, g.name as string])),
     varietyNames: new Map((varieties.data ?? []).map((v) => [v.id as number, v.name as string])),
   };
@@ -1168,10 +1149,7 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
     alternatePhone: null,
     accountStatus: null,
     markets: [],
-<<<<<<< HEAD
     reportingSessions: [],
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     tasksToday: [],
     upcoming: [],
     completedToday: 0,
@@ -1191,7 +1169,6 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
 
   const supabase = await createClient();
 
-<<<<<<< HEAD
   const reportingSessionsQuery = isDailyMarketReportingEnabled()
     ? supabase
         .from('daily_market_reporting_sessions')
@@ -1202,9 +1179,6 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
     : Promise.resolve({ data: [] as Row[] });
 
   const [profileResult, agentProfileResult, observationsResult, notificationsResult, reportingSessionsResult] =
-=======
-  const [profileResult, agentProfileResult, observationsResult, notificationsResult] =
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     await Promise.all([
       supabase
         .from('profiles')
@@ -1230,10 +1204,7 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(50),
-<<<<<<< HEAD
       reportingSessionsQuery,
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     ]);
 
   home.agentName = (profileResult.data?.full_name as string) ?? 'Agent';
@@ -1251,7 +1222,6 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
   home.markets = markets;
   home.corrections = corrections;
 
-<<<<<<< HEAD
   const reportingRows = (reportingSessionsResult.data ?? []) as Row[];
   if (reportingRows.length > 0) {
     const sessionIds = reportingRows.map((row) => String(row.id));
@@ -1290,8 +1260,6 @@ export async function getFieldHome(userId: string): Promise<FieldHome> {
     });
   }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   home.tasksToday = assignments.filter((task) => task.dueOn === today);
   home.upcoming = assignments
     .filter((task) => task.dueOn > today && !['completed', 'cancelled', 'skipped'].includes(task.status))
@@ -1488,7 +1456,6 @@ export interface FieldSessionDetail {
   notes: string | null;
   taskId: number | null;
   taskDueOn: string | null;
-<<<<<<< HEAD
   dailyReporting: {
     sessionId: string;
     sessionKind: 'opening' | 'closing';
@@ -1515,8 +1482,6 @@ export interface FieldSessionDetail {
       displayOrder: number;
     }[];
   } | null;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   observations: {
     id: string;
     commodityId: number;
@@ -1578,7 +1543,6 @@ export async function getFieldSession(
   if (!batch) return null;
 
   const marketId = batch.market_id as number;
-<<<<<<< HEAD
   let dailyReportingHeader: Row | null = null;
   let dailyReportingItems: Row[] = [];
   if (isDailyMarketReportingEnabled()) {
@@ -1598,8 +1562,6 @@ export async function getFieldSession(
       dailyReportingItems = (items ?? []) as Row[];
     }
   }
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   const [taskResult, observationResult, scopeResult, scheduleResult] = await Promise.all([
     supabase
@@ -1747,13 +1709,9 @@ export async function getFieldSession(
     .map((row) => row.commodity_id)
     .filter((id): id is number => typeof id === 'number');
 
-<<<<<<< HEAD
   const expectedIds = dailyReportingHeader
     ? new Set<number>(dailyReportingItems.map((item) => Number(item.commodity_id)))
     : new Set<number>([...scopedIds, ...scheduledIds]);
-=======
-  const expectedIds = new Set<number>([...scopedIds, ...scheduledIds]);
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   let expectedCommodities: { id: number; name: string; collected: boolean }[] = [];
   if (expectedIds.size > 0) {
@@ -1788,7 +1746,6 @@ export async function getFieldSession(
     notes: (batch.notes as string | null) ?? null,
     taskId: task?.id ?? null,
     taskDueOn: task?.due_on ?? null,
-<<<<<<< HEAD
     dailyReporting: dailyReportingHeader
       ? {
           sessionId: String(dailyReportingHeader.id),
@@ -1822,8 +1779,6 @@ export async function getFieldSession(
           }),
         }
       : null,
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     observations: observations.map((observation) => ({
       id: observation.id,
       commodityId: observation.commodity_id,

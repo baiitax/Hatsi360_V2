@@ -1,9 +1,6 @@
 import 'server-only';
 
-<<<<<<< HEAD
 import { cache } from 'react';
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { getDataSource } from '@/lib/data';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { buildCandles, type CandleSeries, type ObservationInput, type Timeframe } from '@/lib/trade/candles';
@@ -21,11 +18,7 @@ import {
   type OpportunityResult,
   type SpreadResult,
 } from '@/lib/trade/opportunities';
-<<<<<<< HEAD
 import type { Commodity, PriceObservation } from '@/types/domain';
-=======
-import type { PriceObservation } from '@/types/domain';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 /**
  * The read layer between the live database and the analysis engine.
@@ -165,10 +158,6 @@ export async function getCommoditySeries(
         collectedAtPrecision: latest.collectedAtPrecision,
         verificationStatus: latest.verificationStatus,
         priceType: latest.priceType,
-<<<<<<< HEAD
-=======
-        cadence: 'daily',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       })
     : null;
 
@@ -324,7 +313,6 @@ export interface MovementRow {
  * observations share a series key — otherwise the "change" would be the
  * difference between two different things.
  */
-<<<<<<< HEAD
 interface CommodityOverviewDataset {
   commodities: Commodity[];
   observationsByCommodity: Map<number, PriceObservation[]>;
@@ -365,17 +353,6 @@ function buildMovements(
 
   for (const commodity of commodities) {
     const observations = observationsByCommodity.get(commodity.id) ?? [];
-=======
-export async function getMarketMovements(limit = 40): Promise<MovementRow[]> {
-  if (!isSupabaseConfigured()) return [];
-
-  const source = await getDataSource();
-  const commodities = await source.listCommodities();
-  const rows: MovementRow[] = [];
-
-  for (const commodity of commodities) {
-    const observations = await source.listObservationsForAnalysis({ commodityId: commodity.id });
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     if (observations.length === 0) continue;
 
     // Group by series so a price-type change is never read as a price movement.
@@ -397,14 +374,8 @@ export async function getMarketMovements(limit = 40): Promise<MovementRow[]> {
     const sorted = [...dominant].sort(
       (a, b) => new Date(b.collectedAt).getTime() - new Date(a.collectedAt).getTime(),
     );
-<<<<<<< HEAD
     const latest = sorted[0]!;
     const previous = sorted[1] ?? null;
-=======
-    const latest = sorted[0];
-    const previous = sorted[1] ?? null;
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     const latestAmount = latest.reportedAmount;
     const previousAmount = previous?.reportedAmount ?? null;
     const change =
@@ -437,7 +408,6 @@ export async function getMarketMovements(limit = 40): Promise<MovementRow[]> {
     .slice(0, limit);
 }
 
-<<<<<<< HEAD
 /** Movement for one commodity from rows the caller has already loaded. */
 export function getCommodityMovementFromObservations(
   commodity: Commodity,
@@ -501,8 +471,6 @@ export async function getMarketMovements(limit = 40): Promise<MovementRow[]> {
   return (await getTradeOverviewData(limit)).movements;
 }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 /* ------------------------------------------------------------- freshness -- */
 
 export interface CommodityFreshness {
@@ -518,38 +486,7 @@ export interface CommodityFreshness {
 /** The freshness of each commodity's most recent published observation. */
 export async function getCommodityFreshness(): Promise<CommodityFreshness[]> {
   if (!isSupabaseConfigured()) return [];
-<<<<<<< HEAD
   return (await getTradeOverviewData()).freshness;
-=======
-
-  const source = await getDataSource();
-  const commodities = await source.listCommodities();
-  const results: CommodityFreshness[] = [];
-
-  for (const commodity of commodities) {
-    const observations = await source.listObservationsForAnalysis({ commodityId: commodity.id });
-    if (observations.length === 0) continue;
-    const latest = observations[observations.length - 1];
-    const assessment = classifyFreshness({
-      collectedAt: latest.collectedAt,
-      collectedAtPrecision: latest.collectedAtPrecision,
-      verificationStatus: latest.verificationStatus,
-      priceType: latest.priceType,
-      cadence: 'daily',
-    });
-    results.push({
-      commodityId: commodity.id,
-      commodityName: commodity.name,
-      state: assessment.state,
-      label: assessment.label,
-      explanation: assessment.explanation,
-      collectedAt: latest.collectedAt,
-      observationCount: observations.length,
-    });
-  }
-
-  return results;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }
 
 /* ------------------------------------------------------------ comparison -- */
@@ -574,7 +511,6 @@ export interface SeriesOption {
  */
 export async function getCommoditySeriesOptions(
   commodityId: number,
-<<<<<<< HEAD
   publishedRows?: readonly PriceObservation[],
 ): Promise<SeriesOption[]> {
   if (!isSupabaseConfigured()) return [];
@@ -582,13 +518,6 @@ export async function getCommoditySeriesOptions(
   const rows = publishedRows
     ? [...publishedRows]
     : await (await getDataSource()).listObservationsForAnalysis({ commodityId });
-=======
-): Promise<SeriesOption[]> {
-  if (!isSupabaseConfigured()) return [];
-
-  const source = await getDataSource();
-  const rows = await source.listObservationsForAnalysis({ commodityId });
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const groups = new Map<string, { key: SeriesKey; items: PriceObservation[] }>();
 
   for (const observation of rows) {
@@ -600,7 +529,6 @@ export async function getCommoditySeriesOptions(
   }
 
   return [...groups.values()]
-<<<<<<< HEAD
     .map(({ key, items }) => ({
       key: seriesKeyId(key),
       label: [
@@ -616,30 +544,6 @@ export async function getCommoditySeriesOptions(
       observationCount: items.length,
       marketCount: new Set(items.map((i) => i.marketId)).size,
     }))
-=======
-    .map(({ key, items }) => {
-      // Use human-readable names from the first observation in this series
-      const sample = items[0];
-      const gradeLabel = sample?.gradeName ?? (key.gradeId ? `grade ${key.gradeId}` : 'no grade recorded');
-      const unitLabel = sample?.unitCode ?? sample?.unitName ?? (key.unitId ? `unit ${key.unitId}` : 'no unit recorded');
-
-      return {
-        key: seriesKeyId(key),
-        label: [
-          key.priceType.replace(/_/g, ' '),
-          gradeLabel,
-          unitLabel,
-          key.currencyCode,
-        ].join(' · '),
-        priceType: key.priceType,
-        gradeId: key.gradeId,
-        unitId: key.unitId,
-        currencyCode: key.currencyCode,
-        observationCount: items.length,
-        marketCount: new Set(items.map((i) => i.marketId)).size,
-      };
-    })
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     .sort((a, b) => b.observationCount - a.observationCount);
 }
 

@@ -1,0 +1,49 @@
+
+--- hunk #1 (after kept line 25) ---
+import { useEffect, useState } from 'react';
+
+--- hunk #2 (after kept line 62) ---
+  const open = openedAt !== null && openedAt === pathname;
+
+  // Escape closes the drawer, and the body stops scrolling while it is open.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenedAt(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previous;
+
+--- hunk #3 (after kept line 116) ---
+        type="button"
+        onClick={() => setOpenedAt(pathname)}
+        aria-expanded={open}
+
+--- hunk #4 (after kept line 134) ---
+
+--- hunk #5 (after kept line 141) ---
+            role="dialog"
+            aria-modal="true"
+            aria-label="Market menu"
+
+--- hunk #6 (after kept line 174) ---
+                    <ModuleGroup module={module} />
+
+--- hunk #7 (after kept line 185) ---
+
+--- hunk #8 (after kept line 197) ---
+                <Link href={workspaceHref} className="terminal-action w-full">
+
+--- hunk #9 (after kept line 202) ---
+                <Link href="/login" className="terminal-action w-full">
+
+--- hunk #10 (after kept line 234) ---
+function ModuleGroup({ module }: { module: (typeof MARKET_NAV)[number] }) {
+
+--- hunk #11 (after kept line 248) ---
+
+--- hunk #12 (after kept line 265) ---

@@ -378,11 +378,7 @@ export function describeSeries(
   }
   if (series.includesLegacyData) {
     disclosures.push(
-<<<<<<< HEAD
       'Includes data migrated from the previous system, which carries no unit, price type or verification trail.',
-=======
-      'This series may include historical records that carry no unit, price type or verification trail.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     );
   }
   if (series.gaps.length > 0) {

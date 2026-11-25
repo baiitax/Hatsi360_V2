@@ -1,0 +1,4 @@
+
+--- hunk #1 (after kept line 99) ---
+    '/admin/schedule',
+    '/admin/coverage',

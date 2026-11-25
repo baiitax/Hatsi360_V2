@@ -1,0 +1,16 @@
+
+--- hunk #1 (after kept line 1) ---
+import { requireStaff } from '@/lib/auth/guards';
+
+--- hunk #2 (after kept line 14) ---
+ * The current catalogue has no zones, so the empty
+ * state is the truthful state. Nothing is invented to fill it.
+ */
+export default async function AdminZonesPage() {
+  await requireStaff('/admin/zones');
+
+--- hunk #3 (after kept line 51) ---
+        description="Optional groupings of markets inside a state — a grains corridor, a river market belt. Zones are assigned by operations staff."
+
+--- hunk #4 (after kept line 61) ---
+          description="Zones are an optional operational grouping."

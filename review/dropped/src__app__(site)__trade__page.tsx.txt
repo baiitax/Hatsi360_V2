@@ -1,0 +1,68 @@
+
+--- hunk #1 (after kept line 0) ---
+import Link from 'next/link';
+import { getDataSource } from '@/lib/data';
+import { isSupabaseConfigured } from '@/lib/supabase/config';
+import {
+  getCommodityFreshness,
+  getMarketMovements,
+} from '@/lib/trade/queries';
+
+--- hunk #2 (after kept line 19) ---
+import { MarketWatchTable, type MarketWatchRow } from '@/components/market/MarketWatchTable';
+
+--- hunk #3 (after kept line 51) ---
+  const configured = isSupabaseConfigured();
+
+  const [movements, freshness, commodities, markets] = configured
+    ? await Promise.all([
+        getMarketMovements(40),
+        getCommodityFreshness(),
+        (await getDataSource()).listCommodities(),
+        (await getDataSource()).listMarkets(),
+      ])
+    : [[], [], [], []];
+
+--- hunk #4 (after kept line 146) ---
+            <dl className="grid gap-2 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+
+--- hunk #5 (after kept line 226) ---
+                <MarketWatchTable
+                  rows={watchRows}
+                  caption={`Each commodity's latest published observation against the previous one in the same price series, ${movements.length} commodities listed.`}
+                />
+
+--- hunk #6 (after kept line 256) ---
+                <div className="terminal-panel overflow-x-auto">
+
+--- hunk #7 (after kept line 272) ---
+                      {freshness.slice(0, 12).map((row) => {
+                        return (
+                          <tr key={row.commodityId}>
+                            <th scope="row" className="font-medium text-terminal-text">
+                              {row.commodityName}
+                            </th>
+                            <td>
+                              <span
+                                className={`inline-flex items-center rounded-pill border px-2 py-0.5 text-[0.6875rem] font-semibold ${PRICE_STATE_TONES[row.state]}`}
+                              >
+                                {row.label}
+                              </span>
+                            </td>
+                            <td className="num text-terminal-text-secondary">
+                              {row.observationCount}
+                            </td>
+                            <td className="num text-terminal-text-secondary">
+                              {row.collectedAt
+                                ? new Date(row.collectedAt).toLocaleDateString('en-NG')
+                                : '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+--- hunk #8 (after kept line 359) ---
+export function TradeLoading() {

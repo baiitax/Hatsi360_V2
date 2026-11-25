@@ -1,0 +1,14 @@
+
+--- hunk #1 (after kept line 25) ---
+
+--- hunk #2 (after kept line 89) ---
+describe('fixture isolation — the public read path', () => {
+
+--- hunk #3 (after kept line 139) ---
+describe('fixture isolation — the records themselves', () => {
+
+--- hunk #4 (after kept line 187) ---
+describe('fixture isolation — the connection to the demo accounts', () => {
+
+--- hunk #5 (after kept line 234) ---
+describe('fixture isolation — the demonstration is complete', () => {

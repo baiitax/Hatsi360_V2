@@ -1,0 +1,16 @@
+
+--- hunk #1 (after kept line 3) ---
+
+--- hunk #2 (after kept line 9) ---
+import { runQualityEngine } from '@/lib/operations/quality-integration';
+
+--- hunk #3 (after kept line 242) ---
+  // Run the quality engine against the submitted observation.
+  // This is a best-effort integration: failures do not block the submission.
+  const observationIdStr = String(observationId);
+  runQualityEngine(observationIdStr).catch(() => {
+    // Quality engine failures are logged but do not block submission
+  });
+
+
+--- hunk #4 (after kept line 531) ---

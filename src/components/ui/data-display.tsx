@@ -1,15 +1,11 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { formatDateTime, formatMoney } from '@/lib/money';
-<<<<<<< HEAD
 import {
   classifyFreshness,
   formatAge,
   requiresFreshnessWarning,
 } from '@/lib/trade/freshness';
-=======
-import { relativeTime, isStale, DEFAULT_FRESHNESS_HOURS } from '@/lib/pricing';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import {
   PRICE_TYPE_META,
   VERIFICATION_STATUS_META,
@@ -85,7 +81,6 @@ export function PriceMovementIndicator({
  */
 export function DataFreshnessIndicator({
   collectedAt,
-<<<<<<< HEAD
   precision = 'minute',
   verificationStatus,
   priceType,
@@ -126,39 +121,6 @@ export function DataFreshnessIndicator({
       <span aria-hidden="true" className={`size-1.5 rounded-full ${dot}`} />
       <span>
         {timestampNeedsReview ? 'Timestamp needs review' : freshness.label} · {label}
-=======
-  freshnessHours = DEFAULT_FRESHNESS_HOURS,
-  precision = 'minute',
-  className = '',
-}: {
-  collectedAt: string;
-  freshnessHours?: number;
-  precision?: 'minute' | 'date';
-  className?: string;
-}) {
-  const stale = isStale(collectedAt, freshnessHours);
-  const label =
-    precision === 'date'
-      ? formatDateTime(collectedAt).split(',')[0]
-      : relativeTime(collectedAt);
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 text-xs ${stale ? 'text-warning-700' : 'text-ink-500'} ${className}`}
-      title={
-        stale
-          ? `Collected ${formatDateTime(collectedAt)} — outside the ${freshnessHours}-hour freshness window for this commodity.`
-          : `Collected ${formatDateTime(collectedAt)}`
-      }
-    >
-      <span
-        aria-hidden="true"
-        className={`size-1.5 rounded-full ${stale ? 'bg-warning-500' : 'bg-success-500'}`}
-      />
-      <span>
-        Collected {label}
-        {stale ? ' — outside the freshness window' : ''}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       </span>
     </span>
   );
@@ -170,13 +132,8 @@ export function DataFreshnessIndicator({
  * The verification state of a record.
  *
  * Only a record that passed verification is labelled "Verified". Submitted but
-<<<<<<< HEAD
  * unreviewed records are labelled as pending, and migrated legacy records stay
  * labelled as unverified.
-=======
- * unreviewed records are labelled as pending, and historical records without a
- * verification trail stay labelled as unverified.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  */
 export function VerificationBadge({
   status,
@@ -205,11 +162,11 @@ export function VerificationBadge({
 
   const terminalTone =
     status === 'verified'
-      ? 'border-success-700/40 bg-success-700/15 text-success-700'
+      ? 'border-success-500/40 bg-success-500/15 text-success-300'
       : status === 'pending_verification'
-        ? 'border-info-700/40 bg-info-700/15 text-info-700'
+        ? 'border-info-500/40 bg-info-500/15 text-info-300'
         : status === 'rejected'
-          ? 'border-error-700/40 bg-error-700/15 text-error-700'
+          ? 'border-error-500/40 bg-error-500/15 text-error-300'
           : status === 'correction_requested'
             ? 'border-harvest-500/40 bg-harvest-500/15 text-harvest-300'
             : 'border-terminal-border bg-terminal-elevated text-terminal-text-secondary';
@@ -242,11 +199,7 @@ export function SourceAttribution({
 }) {
   const sourceLabel =
     observation.sourceSystem === 'legacy_import'
-<<<<<<< HEAD
       ? 'Migrated from the previous Pluck Live site'
-=======
-      ? 'Historical record'
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       : observation.sourceSystem === 'agent_app'
         ? 'Collected by a field agent'
         : 'Entered manually';
@@ -349,18 +302,10 @@ export function IntelligenceMetricCard({
 export function PriceCard({
   observation,
   unitLabel,
-<<<<<<< HEAD
-=======
-  freshnessHours,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   href,
 }: {
   observation: PriceObservation;
   unitLabel?: string | null;
-<<<<<<< HEAD
-=======
-  freshnessHours?: number;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   href?: string;
 }) {
   const priceType = PRICE_TYPE_META[observation.priceType];
@@ -394,13 +339,9 @@ export function PriceCard({
       <div className="mt-3">
         <DataFreshnessIndicator
           collectedAt={observation.collectedAt}
-<<<<<<< HEAD
           precision={observation.collectedAtPrecision}
           verificationStatus={observation.verificationStatus}
           priceType={observation.priceType}
-=======
-          freshnessHours={freshnessHours ?? DEFAULT_FRESHNESS_HOURS}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         />
       </div>
     </>

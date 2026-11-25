@@ -7,7 +7,7 @@
  */
 
 import type { Metadata } from 'next';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import {
   getHSCodes,
   getClassificationStats,
@@ -32,7 +32,7 @@ interface PageProps {
 }
 
 export default async function HSCodesManagementPage({ searchParams }: PageProps) {
-  await requireStaff('/admin/intelligence/hs-codes');
+  await requirePathAccess('/admin/intelligence/hs-codes');
 
   const params = await searchParams;
   const level = params.level as 'chapter' | 'heading' | 'subheading' | undefined;

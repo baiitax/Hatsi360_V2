@@ -1,0 +1,28 @@
+
+--- hunk #1 (after kept line 6) ---
+ * Brief §6.2 lists seven price states and insists that a latest observation
+ * is never simply labelled "live". This module implements them.
+
+--- hunk #2 (after kept line 29) ---
+  | 'live_feed';
+
+--- hunk #3 (after kept line 40) ---
+
+--- hunk #4 (after kept line 55) ---
+
+--- hunk #5 (after kept line 68) ---
+
+--- hunk #6 (after kept line 149) ---
+ *   2. older than the horizon       -> stale
+ *   3. non-binding price type       -> indicative
+ *   4. past the fresh window        -> latest_verified (verified)
+ *                                     delayed (not verified)
+ *   5. within the fresh window      -> live_feed (realtime source)
+
+--- hunk #7 (after kept line 204) ---
+  const ageMinutes = Math.max(0, Math.round((now.getTime() - observed.getTime()) / MINUTE));
+
+--- hunk #8 (after kept line 269) ---
+
+--- hunk #9 (after kept line 298) ---
+  return state === 'stale' || state === 'delayed' || state === 'indicative';

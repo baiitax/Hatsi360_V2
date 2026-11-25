@@ -1,0 +1,10 @@
+
+--- hunk #1 (after kept line 3) ---
+
+--- hunk #2 (after kept line 187) ---
+  it('never reports a negative age for a future timestamp', () => {
+
+--- hunk #3 (after kept line 193) ---
+    expect(result.ageMinutes).toBe(0);
+
+--- hunk #4 (after kept line 259) ---

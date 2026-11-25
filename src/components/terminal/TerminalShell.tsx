@@ -29,14 +29,10 @@
  */
 
 import Link from 'next/link';
-import { BRAND, MARKET_NAV } from '@/lib/brand';
-<<<<<<< HEAD
-import { BrandLogo } from '@/components/brand/Logo';
-=======
-import { BrandMark } from '@/components/brand/Logo';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
+import { BRAND, CONTACT, MARKET_NAV } from '@/lib/brand';
+import { BrandLockup } from '@/components/brand/Logo';
 import { SearchInput } from '../ui/primitives';
-import { IconBell, IconChevronDown, IconMenu, IconSearch, IconUser } from '../ui/icons';
+import { IconBell, IconChevronDown, IconMenu, IconPin, IconSearch, IconUser } from '../ui/icons';
 import { MobileNavigation } from './MobileNavigation';
 
 /* ---------------------------------------------------------------- the bar */
@@ -66,30 +62,26 @@ export function TerminalHeader({
     <header className="terminal-rail sticky top-0 z-[var(--z-header)]">
       {/* ---------------------------------------------------- the module bar */}
       <div className="flex h-[3.25rem] items-center gap-3 px-3 lg:px-4">
-<<<<<<< HEAD
-        {/* One supplied lockup keeps the mark and wordmark optically aligned. */}
+        {/* The supplied lockup, whole: mark, wordmark, category line and the
+            endorsement. It is the artwork the owner drew, reversed for the
+            deep-green rail — not a recomposed stand-in. */}
         <Link
           href="/"
           className="flex shrink-0 items-center rounded-control focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-harvest-300"
           aria-label={`${BRAND.productName} home`}
         >
-          <BrandLogo size={32} tone="dark" priority />
-=======
-        {/* The mark and the product name. */}
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-2"
-          aria-label={`${BRAND.productName} home`}
-        >
-          <BrandMark size={26} tone="dark" />
-          <span className="hidden font-display text-[0.9375rem] font-extrabold tracking-tight text-terminal-text sm:block">
-            {BRAND.productName}
-          </span>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
+          <BrandLockup
+            tone="dark"
+            priority
+            heightClassName="h-[2.25rem] sm:h-[2.75rem]"
+            className="[image-rendering:auto]"
+          />
         </Link>
 
-        {/* The six modules. */}
-        <MainNavigation className="ml-2" />
+        {/* The six modules. The lockup is 180 px wide at its documented height,
+            so it needs clear space before the first module rather than the 8 px
+            it had — the wordmark and "MARKETS" read as one string otherwise. */}
+        <MainNavigation className="ml-4 lg:ml-6" />
 
         <div className="ml-auto flex items-center gap-2">
           {/* Global search. Hidden below lg, where the drawer carries it. */}
@@ -100,9 +92,13 @@ export function TerminalHeader({
             className="hidden w-44 xl:block"
           />
 
+          {/* The drawer carries search below `lg`, and it carried it while this
+              button was also on screen. At 320 px the header measured 326 px
+              wide — logo, this button, Sign in and the drawer trigger — so the
+              page scrolled sideways. The duplicate goes first. */}
           <Link
             href="/prices"
-            className="terminal-control lg:hidden"
+            className="terminal-control hidden sm:inline-flex lg:hidden"
             aria-label="Open the market watch"
           >
             <IconSearch className="size-3.5" />
@@ -138,7 +134,22 @@ export function TerminalHeader({
         ) : null}
 
         <span aria-hidden="true" className="ml-auto h-3.5 w-px bg-terminal-border" />
-        <p className="text-[0.625rem] uppercase tracking-wider text-terminal-text-muted">
+        {/* The office address, from the same record the footer prints. It is in
+            the strip rather than the module bar so it never competes with the
+            navigation for space. */}
+        <a
+          href={CONTACT.mapHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex min-w-0 items-center gap-1.5 text-[0.625rem] uppercase tracking-wider text-terminal-text-muted transition-colors hover:text-terminal-text"
+        >
+          <IconPin className="size-3 shrink-0" />
+          <span className="truncate">
+            {CONTACT.address.line1}, {CONTACT.address.city}
+          </span>
+        </a>
+        <span aria-hidden="true" className="h-3.5 w-px bg-terminal-border" />
+        <p className="shrink-0 text-[0.625rem] uppercase tracking-wider text-terminal-text-muted">
           {BRAND.endorsement}
         </p>
       </div>
@@ -197,13 +208,8 @@ function ModuleLink({
   align?: 'start' | 'end';
 }) {
   return (
-<<<<<<< HEAD
     <div className="relative">
       <div className="flex items-center">
-=======
-    <div className="group/mod relative">
-      <span className="flex items-center">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         <Link
           href={module.href}
           className="inline-flex h-[1.875rem] items-center rounded-l-control px-2.5 text-[0.75rem] font-semibold uppercase tracking-wide text-terminal-text-secondary transition-colors duration-150 hover:bg-terminal-interactive hover:text-terminal-text"
@@ -211,7 +217,6 @@ function ModuleLink({
           {module.label}
         </Link>
         {module.items.length > 0 ? (
-<<<<<<< HEAD
           <details className="relative">
             <summary className="inline-flex h-[1.875rem] cursor-pointer list-none items-center rounded-r-control px-1 text-terminal-text-muted transition-colors duration-150 hover:bg-terminal-interactive hover:text-terminal-text focus-visible:bg-terminal-interactive focus-visible:text-terminal-text [&::-webkit-details-marker]:hidden">
               <span className="sr-only">{module.label} destinations</span>
@@ -251,52 +256,6 @@ function ModuleLink({
           </details>
         ) : null}
       </div>
-=======
-          <button
-            type="button"
-            aria-haspopup="true"
-            aria-label={`${module.label} destinations`}
-            className="inline-flex h-[1.875rem] items-center rounded-r-control px-1 text-terminal-text-muted transition-colors duration-150 hover:bg-terminal-interactive hover:text-terminal-text"
-          >
-            <IconChevronDown className="size-3" />
-          </button>
-        ) : null}
-      </span>
-
-      {module.items.length > 0 ? (
-        <div
-          className={`invisible absolute top-full z-[var(--z-header)] w-60 translate-y-1 rounded-panel border border-terminal-border bg-terminal-elevated py-1.5 opacity-0 shadow-terminal-lift transition-all duration-150 group-hover/mod:visible group-hover/mod:translate-y-0 group-hover/mod:opacity-100 group-focus-within/mod:visible group-focus-within/mod:translate-y-0 group-focus-within/mod:opacity-100 ${
-            align === 'end' ? 'right-0' : 'left-0'
-          }`}
-        >
-          <p className="px-2.5 pb-1 text-[0.625rem] leading-4 text-terminal-text-muted">
-            {module.summary}
-          </p>
-          {module.items.map((item) => (
-            <Link
-              key={`${module.id}-${item.label}`}
-              href={item.href}
-              className="block px-2.5 py-1 transition-colors hover:bg-terminal-interactive"
-            >
-              <span className="block text-[0.8125rem] font-medium text-terminal-text">
-                {item.label}
-              </span>
-              {item.description ? (
-                <span className="block text-[0.625rem] leading-4 text-terminal-text-muted">
-                  {item.description}
-                </span>
-              ) : null}
-            </Link>
-          ))}
-          {module.planned && module.planned.length > 0 ? (
-            <p className="mt-1 border-t border-terminal-border px-2.5 pt-1.5 text-[0.5625rem] leading-4 text-terminal-text-muted">
-              <span className="font-semibold uppercase tracking-wider">In development</span>
-              <span className="ml-1">{module.planned.join(', ')}</span>
-            </p>
-          ) : null}
-        </div>
-      ) : null}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     </div>
   );
 }
@@ -321,11 +280,7 @@ function FreshnessSummary({
   const tone =
     state === 'fresh' || state === 'today'
       ? 'text-success-700'
-<<<<<<< HEAD
       : state === 'stale' || state === 'timestamp_review'
-=======
-      : state === 'stale'
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         ? 'text-warning-700'
         : 'text-terminal-text-secondary';
 
@@ -336,10 +291,36 @@ function FreshnessSummary({
       {observedAt ? (
         <span className="figure-num text-terminal-text-muted">
           last observation {formatMoment(observedAt)}
+          {/* The absolute timestamp is correct but a reader should not have to
+              subtract dates to know whether a price is current. The age is
+              stated in words beside it. */}
+          {formatAge(observedAt) ? (
+            <span className="text-terminal-text-secondary"> · {formatAge(observedAt)}</span>
+          ) : null}
         </span>
       ) : null}
     </p>
   );
+}
+
+/**
+ * How old an observation is, in words. Deliberately coarse: "today", "3 days
+ * ago", "in 2 days". Returns null when the timestamp cannot be read.
+ */
+function formatAge(iso: string): string | null {
+  const then = new Date(iso).getTime();
+  if (!Number.isFinite(then)) return null;
+  const minutes = Math.round((then - Date.now()) / 60000);
+  const abs = Math.abs(minutes);
+  const ago = minutes < 0;
+  const say = (value: number, unit: string) => {
+    const plural = value === 1 ? unit : `${unit}s`;
+    return ago ? `${value} ${plural} ago` : `in ${value} ${plural}`;
+  };
+  if (abs < 60) return abs <= 1 ? (ago ? 'just now' : 'in a moment') : say(abs, 'minute');
+  if (abs < 60 * 24) return say(Math.round(abs / 60), 'hour');
+  if (abs < 60 * 24 * 60) return say(Math.round(abs / (60 * 24)), 'day');
+  return say(Math.round(abs / (60 * 24 * 30)), 'month');
 }
 
 function formatMoment(iso: string): string {
@@ -434,18 +415,20 @@ export function PageHeader({
 export function SectionHeader({
   title,
   count,
+  countLabel,
   action,
   href,
   className = '',
 }: {
   title: string;
   count?: number;
+  /** What the count counts. A bare numeral beside a heading is a riddle. */
+  countLabel?: string;
   action?: { href: string; label: string };
   href?: string;
   className?: string;
 }) {
   return (
-<<<<<<< HEAD
     // `flex-wrap` and `min-w-0` on both children: a section heading with a long
     // action label used to overflow a 360px phone by 16px, because neither the
     // title nor the action was allowed to move to its own line. The action now
@@ -454,10 +437,6 @@ export function SectionHeader({
     // worse than a stacked one.
     <div className={`flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pb-2 ${className}`}>
       <h2 className="flex min-w-0 items-baseline gap-2 font-display text-[0.9375rem] font-bold text-terminal-text">
-=======
-    <div className={`flex items-center justify-between gap-3 pb-2 ${className}`}>
-      <h2 className="flex items-baseline gap-2 font-display text-[0.9375rem] font-bold text-terminal-text">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         {href ? (
           <Link href={href} className="underline decoration-terminal-border underline-offset-4 hover:text-harvest-300">
             {title}
@@ -468,15 +447,12 @@ export function SectionHeader({
         {typeof count === 'number' ? (
           <span className="figure-num text-[0.6875rem] font-semibold text-terminal-text-muted">
             {count}
+            {countLabel ? <span className="ml-1 font-normal">{countLabel}</span> : null}
           </span>
         ) : null}
       </h2>
       {action ? (
-<<<<<<< HEAD
         <Link href={action.href} className="terminal-control min-w-0">
-=======
-        <Link href={action.href} className="terminal-control">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           {action.label}
         </Link>
       ) : null}

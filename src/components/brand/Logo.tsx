@@ -32,19 +32,11 @@ export const BRAND_ARTWORK = {
   /** The full lockup in a single light ink, for dark surfaces. */
   horizontalMonoLight: '/brand/hatsi360-logo-horizontal-mono-light.png',
   /** The mark and the name, for a header. */
-<<<<<<< HEAD
   compact: '/brand/hatsi360-lockup-compact.png',
   /** The mark and the name, reversed for dark surfaces. */
   compactLight: '/brand/hatsi360-lockup-compact-light.png',
   /** The mark and the name in a single ink, for light surfaces. */
   compactMono: '/brand/hatsi360-lockup-compact-mono.png',
-=======
-  compact: '/brand/hatsi360-logo-horizontal.png',
-  /** The mark and the name, reversed for dark surfaces. */
-  compactLight: '/brand/hatsi360-logo-horizontal-light.png',
-  /** The mark and the name in a single ink, for light surfaces. */
-  compactMono: '/brand/hatsi360-logo-horizontal-mono.png',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   /** The mark on its own, for light surfaces. */
   mark: '/brand/hatsi360-mark.png',
   /** The mark reversed for dark surfaces. */
@@ -53,11 +45,6 @@ export const BRAND_ARTWORK = {
   markMono: '/brand/hatsi360-mark-mono.png',
   /** The mark in a single light ink, for dark surfaces. */
   markMonoLight: '/brand/hatsi360-mark-mono-light.png',
-<<<<<<< HEAD
-=======
-  /** The complete brand lockup — emblem + HATSI360 + subtitle + underline + "Powered by Pluck Agro". */
-  fullLockup: '/brand/hatsi360-lockup-full.png',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   /** The social card. */
   social: '/brand/hatsi360-social-1200x630.png',
 } as const;
@@ -65,22 +52,30 @@ export const BRAND_ARTWORK = {
 /**
  * The intrinsic proportions of the artwork, so nothing is ever squashed.
  *
-<<<<<<< HEAD
  * The mark is very slightly taller than it is wide, and the compact lockup
  * is a wide band, so both are sized from their height and their width
  * follows.
-=======
- * The mark is very slightly taller than it is wide, the compact lockup
- * is a wide band, and the full lockup is 2075×758 (≈2.74:1).
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  */
 const COMPACT_RATIO = 415 / 1971;
 const MARK_RATIO = 1024 / 997;
-const HORIZONTAL_RATIO = 724 / 2016;
-<<<<<<< HEAD
-=======
-const FULL_LOCKUP_RATIO = 758 / 2075;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
+const HORIZONTAL_RATIO = 410 / 1954;
+
+/**
+ * The height of the header lockup, from `docs/BRAND_GUIDE.md` §2.3.
+ *
+ * It is declared once because the public terminal, the portal frames and the
+ * sign-in panel had drifted to 32, 36, 38 and 44 pixels — so the identity was
+ * a different size depending on which door a reader came in through.
+ *
+ * Below `sm` the lockup steps down one size. At 320 px the header measured
+ * 326 px wide with the lockup at its full height: the row overflowed the
+ * viewport and the page scrolled sideways.
+ */
+export const HEADER_LOCKUP_HEIGHT = 38;
+export const HEADER_LOCKUP_HEIGHT_CLASS = 'h-[2rem] sm:h-[2.375rem]';
+
+/** The lockup carries a gold gradient; at the default quality it bands. */
+const ARTWORK_QUALITY = 90;
 
 export function BrandMark({
   size = 40,
@@ -104,7 +99,8 @@ export function BrandMark({
       alt={title}
       width={size}
       height={Math.round(size * MARK_RATIO)}
-      className={`shrink-0 ${className}`}
+      quality={ARTWORK_QUALITY}
+      className={`h-auto w-auto shrink-0 ${className}`}
       priority={priority}
       sizes={`${size}px`}
     />
@@ -115,7 +111,7 @@ export type BrandLogoVariant = 'full' | 'mark' | 'wordmark';
 
 export function BrandLogo({
   variant = 'full',
-  size = 40,
+  size = HEADER_LOCKUP_HEIGHT,
   className = '',
   showDescriptor = false,
   tone = 'light',
@@ -145,22 +141,24 @@ export function BrandLogo({
     );
   }
 
-  // The header lockup: the mark and the name, sized from its height so the
-  // artwork keeps its own proportions.
+  // The header lockup: the mark and the name. The intrinsic width/height keep
+  // the artwork's own proportions; the height is set by a class so it can step
+  // down on a narrow screen without the width ever disagreeing with the image.
   const height = size;
   const width = Math.round(height / COMPACT_RATIO);
   const source = tone === 'dark' ? BRAND_ARTWORK.compactLight : BRAND_ARTWORK.compact;
 
   return (
-    <span className={`flex flex-col items-start ${className}`}>
+    <span className={`flex shrink-0 flex-col items-start ${className}`}>
       <Image
         src={source}
         alt={`${BRAND.name} — ${BRAND.descriptor}`}
         width={width}
         height={height}
-        className="h-auto w-auto"
+        quality={ARTWORK_QUALITY}
+        className={`w-auto ${HEADER_LOCKUP_HEIGHT_CLASS}`}
         priority={priority}
-        sizes={`${width}px`}
+        sizes={`(min-width: 640px) ${width}px, ${Math.round(32 / COMPACT_RATIO)}px`}
       />
       {showDescriptor ? (
         <span
@@ -184,32 +182,57 @@ export function BrandLogo({
 export function BrandLockup({
   className = '',
   tone = 'light',
-  width = 280,
+  width,
+  height,
+  heightClassName,
   priority = false,
 }: {
   className?: string;
   tone?: 'light' | 'dark';
+  /** The rendered width. Give a width or a height, never both. */
   width?: number;
+  /** The rendered height; the width follows the artwork's own ratio. */
+  height?: number;
+  /**
+   * A responsive height, e.g. `h-9 sm:h-12`. The intrinsic width/height keep
+   * the proportions, so a class can resize it without distorting it.
+   */
+  heightClassName?: string;
   priority?: boolean;
 }) {
   const source =
     tone === 'dark' ? BRAND_ARTWORK.horizontalLight : BRAND_ARTWORK.horizontal;
+
+  const renderedWidth = height ? Math.round(height / HORIZONTAL_RATIO) : (width ?? 280);
+  const renderedHeight = height ?? Math.round(renderedWidth * HORIZONTAL_RATIO);
+
   return (
     <Image
       src={source}
       alt={`${BRAND.name} — ${BRAND.descriptor}. ${BRAND.endorsement}.`}
-      width={width}
-      height={Math.round(width * HORIZONTAL_RATIO)}
-      className={`h-auto w-auto ${className}`}
+      width={renderedWidth}
+      height={renderedHeight}
+      quality={ARTWORK_QUALITY}
       priority={priority}
-      sizes={`(min-width: 1024px) ${width}px, ${Math.round(width * 0.8)}px`}
+      // Without `heightClassName` the artwork renders at its intrinsic size;
+      // with it, CSS drives the height and the width follows.
+      className={
+        heightClassName
+          ? `w-auto ${heightClassName} ${className}`
+          : `h-auto w-auto ${className}`
+      }
+      sizes={
+        heightClassName
+          ? `(min-width: 1024px) ${Math.round(56 / HORIZONTAL_RATIO)}px, ${Math.round(44 / HORIZONTAL_RATIO)}px`
+          : `(min-width: 1024px) ${renderedWidth}px, ${Math.round(renderedWidth * 0.8)}px`
+      }
     />
   );
 }
 
 /** The logo as a home link. The accessible name is the product name. */
 export function BrandHomeLink({
-  size = 40,
+  size = HEADER_LOCKUP_HEIGHT,
   showDescriptor = false,
   className = '',
 }: {
@@ -227,42 +250,6 @@ export function BrandHomeLink({
       <span className="sr-only">
         {BRAND.name} — {BRAND.descriptor}. {BRAND.endorsement}.
       </span>
-    </Link>
-  );
-}
-
-/**
- * The complete brand lockup as a home link.
- *
- * Uses the full lockup image (emblem + HATSI360 + subtitle + underline +
- * "Powered by Pluck Agro"). Sized from its height so proportions are preserved.
- * Best for the navbar where the full brand identity should be visible.
- */
-export function BrandFullLockup({
-  height = 40,
-  className = '',
-  priority = false,
-}: {
-  height?: number;
-  className?: string;
-  priority?: boolean;
-}) {
-  const width = Math.round(height / FULL_LOCKUP_RATIO);
-  return (
-    <Link
-      href="/"
-      className={`flex shrink-0 items-center ${className}`}
-      aria-label={`${BRAND.name} home — ${BRAND.descriptor}. ${BRAND.endorsement}.`}
-    >
-      <Image
-        src={BRAND_ARTWORK.fullLockup}
-        alt={`${BRAND.name} — ${BRAND.descriptor}. ${BRAND.endorsement}.`}
-        width={width}
-        height={height}
-        className="h-auto w-auto"
-        priority={priority}
-        sizes={`${width}px`}
-      />
     </Link>
   );
 }

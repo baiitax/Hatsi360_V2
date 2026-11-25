@@ -1,0 +1,5 @@
+
+--- hunk #1 (after kept line 206) ---
+    label: 'Historical record',
+    meaning:
+      'A historical record retained for provenance. It carries no unit, price type or verification trail and is not eligible for comparative price intelligence.',

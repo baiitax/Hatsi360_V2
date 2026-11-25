@@ -1,0 +1,3 @@
+
+--- hunk #1 (after kept line 5) ---
+ *    the public catalogue pages (captured

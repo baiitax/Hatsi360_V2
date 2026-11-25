@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-<<<<<<< HEAD
-import { landingPathForRole, ROLE_WORKSPACE, WORKSPACE_HOME } from '/home/user/pluck-live/src/lib/auth/routing';
-=======
 import { landingPathForRole, ROLE_WORKSPACE, WORKSPACE_HOME } from '@/lib/auth/routing';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 describe('demo account landing paths', () => {
   it.each([

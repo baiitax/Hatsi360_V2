@@ -8,11 +8,8 @@ import {
   priceTypeShort,
 } from '@/lib/operations/field';
 import { formatDateTime, formatDate } from '@/lib/money';
-<<<<<<< HEAD
 import { openDailyReportingSession } from '@/lib/operations/field-actions';
 import { isDailyMarketReportingEnabled } from '@/lib/reporting/feature';
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import {
   FieldCard,
   FieldEmpty,
@@ -28,39 +25,19 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-<<<<<<< HEAD
 /**
  * The agent's operations overview.
-=======
-/** Get time-based greeting for personalized experience */
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good morning';
-  if (hour < 17) return 'Good afternoon';
-  return 'Good evening';
-}
-
-/**
- * The agent's operations overview — Phase B enhanced.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  *
  * The screen answers four questions in order: what am I expected to do
  * today, what is outstanding, what needs my attention, and what have I
  * already done. Every figure comes from the records the agent is allowed to
  * see — the counters are counts of rows, not estimates.
-<<<<<<< HEAD
-=======
- *
- * Phase B improvements: Time-based greeting, enhanced visual hierarchy,
- * better progress indicators, improved empty states.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  */
 export default async function AgentHomePage() {
   const profile = await requireAgent('/agent/home');
   const home = await getFieldHome(profile.id);
 
   const firstName = profile.fullName?.split(' ')[0] ?? 'there';
-<<<<<<< HEAD
 
   return (
     <div className="space-y-5">
@@ -73,35 +50,6 @@ export default async function AgentHomePage() {
           assigned to you
           {home.region ? ` · ${home.region}` : ''}
         </p>
-=======
-  const greeting = getGreeting();
-  const activeMarkets = home.markets.filter((m) => m.assignmentStatus === 'active').length;
-
-  return (
-    <div className="space-y-5">
-      {/* Enhanced welcome section with time-based greeting */}
-      <header className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-brand-100/50 p-4">
-        <h1 className="text-xl font-bold tracking-tight text-ink-950">
-          {greeting}, {firstName} 👋
-        </h1>
-        <p className="mt-1 text-sm text-ink-600">
-          {formatDate(new Date().toISOString())}
-          {home.region && <span className="mx-1.5">·</span>}
-          {home.region}
-        </p>
-        <div className="mt-2 flex items-center gap-3 text-xs font-medium text-ink-500">
-          <span className="inline-flex items-center gap-1">
-            <span className="size-1.5 rounded-full bg-brand-600" />
-            {activeMarkets} active market{activeMarkets === 1 ? '' : 's'}
-          </span>
-          {home.pendingTasks > 0 && (
-            <span className="inline-flex items-center gap-1">
-              <span className="size-1.5 rounded-full bg-warning-500" />
-              {home.pendingTasks} task{home.pendingTasks === 1 ? '' : 's'} due
-            </span>
-          )}
-        </div>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       </header>
 
       {!home.configured ? (
@@ -111,7 +59,6 @@ export default async function AgentHomePage() {
         </FieldNote>
       ) : null}
 
-<<<<<<< HEAD
       {isDailyMarketReportingEnabled() ? (
         <FieldSection title="Today's market reports">
           {home.reportingSessions.length === 0 ? (
@@ -185,68 +132,34 @@ export default async function AgentHomePage() {
           value={home.markets.filter((market) => market.assignmentStatus === 'active').length}
           label="Assigned markets"
           href="/agent/markets"
-=======
-      {/* Enhanced operational summary with icons */}
-      <div className="grid grid-cols-3 gap-2">
-        <FieldStat
-          value={activeMarkets}
-          label="Markets"
-          href="/agent/markets"
-          icon="🏪"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         />
         <FieldStat
           value={home.pendingTasks}
           label="Tasks today"
           tone={home.pendingTasks > 0 ? 'warning' : 'default'}
           href="/agent/assignments"
-<<<<<<< HEAD
         />
         <FieldStat
           value={home.completedToday}
           label="Completed today"
           tone={home.completedToday > 0 ? 'good' : 'default'}
           href="/agent/assignments"
-=======
-          icon="📋"
-        />
-        <FieldStat
-          value={home.completedToday}
-          label="Completed"
-          tone={home.completedToday > 0 ? 'good' : 'default'}
-          href="/agent/assignments"
-          icon="✓"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         />
       </div>
 
       <div className="grid grid-cols-3 gap-2">
-<<<<<<< HEAD
         <FieldStat value={home.pendingSubmissions} label="Awaiting review" href="/agent/observations" />
-=======
-        <FieldStat
-          value={home.pendingSubmissions}
-          label="Pending review"
-          href="/agent/observations"
-          icon="⏳"
-        />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         <FieldStat
           value={home.approvedCount}
           label="Approved"
           tone={home.approvedCount > 0 ? 'good' : 'default'}
           href="/agent/observations"
-<<<<<<< HEAD
-=======
-          icon="✓"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         />
         <FieldStat
           value={home.corrections.length}
           label="To correct"
           tone={home.corrections.length > 0 ? 'warning' : 'default'}
           href="/agent/corrections"
-<<<<<<< HEAD
         />
       </div>
 
@@ -254,17 +167,6 @@ export default async function AgentHomePage() {
       {home.markets.some((market) => market.assignmentStatus === 'active') ? (
         <FieldPrimaryAction href="/agent/collection/new" className="w-full">
           Start collection
-=======
-          icon="✎"
-        />
-      </div>
-
-      {/* Enhanced primary action with icon */}
-      {home.markets.some((market) => market.assignmentStatus === 'active') ? (
-        <FieldPrimaryAction href="/agent/collection/new" className="w-full shadow-lg">
-          <span className="text-lg">📷</span>
-          Start new collection
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         </FieldPrimaryAction>
       ) : (
         <FieldEmpty
@@ -273,15 +175,9 @@ export default async function AgentHomePage() {
         />
       )}
 
-<<<<<<< HEAD
       {/* ----------------------------------------------------- pending work */}
       {home.corrections.length > 0 ? (
         <FieldNote tone="warning" title="A reviewer asked you to correct something">
-=======
-      {/* Enhanced corrections section */}
-      {home.corrections.length > 0 ? (
-        <FieldNote tone="warning" title="⚠️ Reviewer feedback requires correction">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           <ul className="mt-1.5 space-y-1.5">
             {home.corrections.slice(0, 3).map((correction) => (
               <li key={correction.observation.id}>
@@ -291,7 +187,6 @@ export default async function AgentHomePage() {
                 >
                   {correction.observation.commodityName} · {correction.observation.marketName}
                 </Link>
-<<<<<<< HEAD
                 {correction.reason ? <span className="block opacity-90">{correction.reason}</span> : null}
               </li>
             ))}
@@ -520,51 +415,6 @@ export default async function AgentHomePage() {
             ))}
           </ul>
         </FieldSection>
-=======
-                {correction.reason ? (
-                  <span className="mt-0.5 block text-xs opacity-90">"{correction.reason}"</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/agent/corrections"
-            className="mt-2 inline-flex items-center gap-1 text-xs font-bold underline underline-offset-2"
-          >
-            Open correction centre →
-          </Link>
-        </FieldNote>
-      ) : null}
-
-      {home.overdueTasks > 0 ? (
-        <FieldNote tone="warning" title={`⚠️ ${home.overdueTasks} overdue task(s)`}>
-          <Link href="/agent/assignments" className="font-bold underline underline-offset-2">
-            View overdue assignments →
-          </Link>
-        </FieldNote>
-      ) : null}
-
-      {home.drafts.length > 0 ? (
-        <FieldNote tone="info" title={`📝 ${home.drafts.length} draft(s) to submit`}>
-          <ul className="mt-1.5 space-y-1">
-            {home.drafts.slice(0, 3).map((draft) => (
-              <li key={draft.id}>
-                <Link
-                  href={`/agent/observations/${draft.id}`}
-                  className="font-semibold underline underline-offset-2"
-                >
-                  {draft.commodityName} · {draft.marketName}
-                </Link>
-                <span className="block text-xs opacity-90">
-                  {draft.reportedAmount === null
-                    ? 'No amount recorded'
-                    : `${draft.currencyCode} ${draft.reportedAmount.toLocaleString('en-NG')}`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </FieldNote>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       ) : null}
 
       {/* Operational notices */}

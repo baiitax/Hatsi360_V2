@@ -8,15 +8,9 @@ import { getPageImage } from '@/lib/images/registry';
 import { HatsiImage } from '@/components/media/HatsiImage';
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
   title: 'About Hatsi360',
   description:
     'How Hatsi360 collects, verifies and publishes agricultural commodity prices across Nigeria — our methodology, our data coverage and what we do not know.',
-=======
-  title: 'About Hatsi360 Markets | African Agricultural Intelligence',
-  description:
-    'Learn about Hatsi360 Markets, our mission to improve agricultural market intelligence and our commitment to helping businesses make better-informed decisions across African agricultural markets.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/about' },
   openGraph: {
     type: 'website',
@@ -26,13 +20,13 @@ export const metadata: Metadata = {
     description:
       'Learn about Hatsi360 Markets, our mission to improve agricultural market intelligence and our commitment to helping businesses make better-informed decisions.',
     url: '/about',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+    images: [{ url: '/brand/hatsi360-social-1200x630.png', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'About Hatsi360 Markets | African Agricultural Intelligence',
     description: 'Our mission to improve agricultural market intelligence across African markets.',
-    images: ['/brand/hatsi360-social-preview.png'],
+    images: ['/brand/hatsi360-social-1200x630.png'],
   },
 };
 
@@ -81,7 +75,9 @@ export default async function AboutPage() {
         image={getPageImage('about.hero')}
       />
 
-      <div className="section">
+      {/* The prose column sits on the terminal canvas, so it asks for the
+          terminal's text scale rather than paper ink. */}
+      <div className="section on-terminal">
         <div className="container-page grid gap-12 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold tracking-tight">How a price reaches this site</h2>
@@ -124,7 +120,7 @@ export default async function AboutPage() {
                     sizes="(min-width: 640px) 18rem, 92vw"
                     ratio="landscape"
                   />
-                  <figcaption className="bg-white px-4 py-3 text-xs font-semibold text-ink-700">
+                  <figcaption className="on-paper bg-white px-4 py-3 text-xs font-semibold text-ink-700">
                     {item.title}
                   </figcaption>
                 </figure>

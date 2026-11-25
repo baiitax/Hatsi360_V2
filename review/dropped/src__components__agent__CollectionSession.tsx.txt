@@ -1,0 +1,53 @@
+
+--- hunk #1 (after kept line 9) ---
+
+--- hunk #2 (after kept line 19) ---
+  isOnline,
+
+--- hunk #3 (after kept line 155) ---
+
+--- hunk #4 (after kept line 168) ---
+
+--- hunk #5 (after kept line 197) ---
+  const [online, setOnline] = useState(true);
+
+--- hunk #6 (after kept line 213) ---
+
+--- hunk #7 (after kept line 229) ---
+
+--- hunk #8 (after kept line 284) ---
+  useEffect(() => {
+    setOnline(isOnline());
+    const onOnline = () => setOnline(true);
+    const onOffline = () => setOnline(false);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, []);
+
+--- hunk #9 (after kept line 328) ---
+    setCommodityId(draft.commodityId);
+    setPriceType(draft.priceType);
+    setAmount(draft.amount);
+    setUnitId(draft.unitId);
+    setGradeId(draft.gradeId);
+    setCollectedAt(draft.collectedAt);
+    setNotes(draft.notes);
+    setAvailability(draft.availability);
+    setSupplyLevel(draft.supplyLevel);
+    setDemandLevel(draft.demandLevel);
+    setPriceDirection(draft.priceDirection);
+    setMarketActivity(draft.marketActivity);
+    setSentiment(draft.sentiment);
+    setDevelopments(draft.developments);
+    setIdempotencyKey(draft.idempotencyKey);
+    if (draft.commodityId) setStep('price');
+
+--- hunk #10 (after kept line 550) ---
+
+--- hunk #11 (after kept line 712) ---
+      {/* ------------------------------------------------------- the recorder */}
+      {!completed ? (

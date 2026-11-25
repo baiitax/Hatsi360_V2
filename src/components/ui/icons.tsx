@@ -285,6 +285,15 @@ export function IconBell(props: IconProps) {
   );
 }
 
+export function IconPin(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M12 21s-6.5-6.1-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 14.9 12 21 12 21Z" />
+      <circle cx="12" cy="10.5" r="2.4" />
+    </IconShape>
+  );
+}
+
 export function IconShare(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -504,9 +513,70 @@ export function IconPlus(props: IconProps) {
   );
 }
 
-<<<<<<< HEAD
-=======
-/* ------------------------------------------------------------------ homepage -- */
+/**
+ * The registry, so a component can be handed an icon by name rather than by
+ * import. Used by the terminal's navigation model, which carries an icon key
+ * alongside each module.
+ */
+export const ICONS = {
+  markets: IconMarkets,
+  commodities: IconCommodities,
+  trade: IconTrade,
+  charts: IconCharts,
+  fundamentals: IconFundamentals,
+  research: IconResearch,
+  search: IconSearch,
+  filter: IconFilter,
+  calendar: IconCalendar,
+  sort: IconSort,
+  arrowUp: IconArrowUp,
+  arrowDown: IconArrowDown,
+  arrowRight: IconArrowRight,
+  minus: IconMinus,
+  verified: IconVerified,
+  pending: IconPending,
+  alert: IconAlert,
+  info: IconInfo,
+  error: IconError,
+  clock: IconClock,
+  source: IconSource,
+  eyeOff: IconEyeOff,
+  star: IconStar,
+  bell: IconBell,
+  share: IconShare,
+  save: IconSave,
+  copy: IconCopy,
+  download: IconDownload,
+  close: IconClose,
+  menu: IconMenu,
+  chevronDown: IconChevronDown,
+  chevronRight: IconChevronRight,
+  chevronLeft: IconChevronLeft,
+  external: IconExternal,
+  user: IconUser,
+  signIn: IconSignIn,
+  signOut: IconSignOut,
+  settings: IconSettings,
+  home: IconHome,
+  map: IconMap,
+  table: IconTable,
+  layers: IconLayers,
+  globe: IconGlobe,
+  refresh: IconRefresh,
+  scale: IconScale,
+  book: IconBook,
+  check: IconCheck,
+  plus: IconPlus,
+} as const;
+
+/** The name of an icon in the registry. */
+export type IconName = keyof typeof ICONS;
+
+/** Render a registered icon by name. */
+export function Icon({ name, ...rest }: { name: IconName } & IconProps) {
+  const Component = ICONS[name];
+  return <Component {...rest} />;
+}
 
 export function IconLeaf(props: IconProps) {
   return (
@@ -658,7 +728,6 @@ export function IconCode(props: IconProps) {
   );
 }
 
-/** Triangle warning icon. */
 export function IconAlertTriangle(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -669,7 +738,6 @@ export function IconAlertTriangle(props: IconProps) {
   );
 }
 
-/** Single chart icon (alias for IconCharts). */
 export function IconChart(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -680,7 +748,6 @@ export function IconChart(props: IconProps) {
   );
 }
 
-/** Grid layout icon. */
 export function IconGrid(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -692,7 +759,6 @@ export function IconGrid(props: IconProps) {
   );
 }
 
-/** List layout icon. */
 export function IconList(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -706,7 +772,6 @@ export function IconList(props: IconProps) {
   );
 }
 
-/** Map pin marker icon. */
 export function IconMapPin(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -716,7 +781,6 @@ export function IconMapPin(props: IconProps) {
   );
 }
 
-/** X close icon. */
 export function IconX(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -726,7 +790,6 @@ export function IconX(props: IconProps) {
   );
 }
 
-/** Chevron up icon. */
 export function IconChevronUp(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -735,7 +798,6 @@ export function IconChevronUp(props: IconProps) {
   );
 }
 
-/** Zoom in icon. */
 export function IconZoomIn(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -747,7 +809,6 @@ export function IconZoomIn(props: IconProps) {
   );
 }
 
-/** Zoom out icon. */
 export function IconZoomOut(props: IconProps) {
   return (
     <IconShape {...props}>
@@ -756,101 +817,4 @@ export function IconZoomOut(props: IconProps) {
       <line x1="8" y1="11" x2="14" y2="11" />
     </IconShape>
   );
-}
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
-/**
- * The registry, so a component can be handed an icon by name rather than by
- * import. Used by the terminal's navigation model, which carries an icon key
- * alongside each module.
- */
-export const ICONS = {
-  markets: IconMarkets,
-  commodities: IconCommodities,
-  trade: IconTrade,
-  charts: IconCharts,
-  fundamentals: IconFundamentals,
-  research: IconResearch,
-  search: IconSearch,
-  filter: IconFilter,
-  calendar: IconCalendar,
-  sort: IconSort,
-  arrowUp: IconArrowUp,
-  arrowDown: IconArrowDown,
-  arrowRight: IconArrowRight,
-  minus: IconMinus,
-  verified: IconVerified,
-  pending: IconPending,
-  alert: IconAlert,
-  info: IconInfo,
-  error: IconError,
-  clock: IconClock,
-  source: IconSource,
-  eyeOff: IconEyeOff,
-  star: IconStar,
-  bell: IconBell,
-  share: IconShare,
-  save: IconSave,
-  copy: IconCopy,
-  download: IconDownload,
-  close: IconClose,
-<<<<<<< HEAD
-=======
-  alertTriangle: IconAlertTriangle,
-  chart: IconChart,
-  grid: IconGrid,
-  list: IconList,
-  mapPin: IconMapPin,
-  x: IconX,
-  chevronUp: IconChevronUp,
-  zoomIn: IconZoomIn,
-  zoomOut: IconZoomOut,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
-  menu: IconMenu,
-  chevronDown: IconChevronDown,
-  chevronRight: IconChevronRight,
-  chevronLeft: IconChevronLeft,
-  external: IconExternal,
-  user: IconUser,
-  signIn: IconSignIn,
-  signOut: IconSignOut,
-  settings: IconSettings,
-  home: IconHome,
-  map: IconMap,
-  table: IconTable,
-  layers: IconLayers,
-  globe: IconGlobe,
-  refresh: IconRefresh,
-  scale: IconScale,
-  book: IconBook,
-  check: IconCheck,
-  plus: IconPlus,
-<<<<<<< HEAD
-=======
-  leaf: IconLeaf,
-  shieldCheck: IconShieldCheck,
-  trendingUp: IconTrendingUp,
-  trendingDown: IconTrendingDown,
-  activity: IconActivity,
-  zap: IconZap,
-  users: IconUsers,
-  database: IconDatabase,
-  target: IconTarget,
-  briefcase: IconBriefcase,
-  bookOpen: IconBookOpen,
-  barChart: IconBarChart,
-  pieChart: IconPieChart,
-  award: IconAward,
-  send: IconSend,
-  code: IconCode,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
-} as const;
-
-/** The name of an icon in the registry. */
-export type IconName = keyof typeof ICONS;
-
-/** Render a registered icon by name. */
-export function Icon({ name, ...rest }: { name: IconName } & IconProps) {
-  const Component = ICONS[name];
-  return <Component {...rest} />;
 }

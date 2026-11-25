@@ -1,0 +1,13 @@
+
+--- hunk #1 (after kept line 26) ---
+const SOCIAL_CARD = '/brand/hatsi360-social-preview.png';
+
+--- hunk #2 (after kept line 105) ---
+  'Hatsi360 Markets provides agricultural commodity prices, market intelligence, price analytics, ' +
+  'commodity research and trade insights to help businesses, traders, producers and exporters make ' +
+  'informed decisions across African agricultural markets.';
+
+/** A shorter form, for cards and lists where space is tight. */
+export const PLATFORM_DESCRIPTION_SHORT =
+  'African agricultural commodity prices, market intelligence and trade insights ' +
+  'from Hatsi360 Markets.';
