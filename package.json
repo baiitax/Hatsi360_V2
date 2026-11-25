@@ -2,9 +2,9 @@
   "name": "hatsi360",
   "version": "1.0.0",
   "private": true,
-  "description": "Hatsi360 Markets — African Agricultural Market Intelligence and B2B Trading Infrastructure.",
+  "description": "Hatsi360 Markets \u2014 African Agricultural Market Intelligence and B2B Trading Infrastructure.",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "next dev",
