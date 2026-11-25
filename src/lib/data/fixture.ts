@@ -283,6 +283,9 @@ export const fixtureSource: DataSource = {
   async getCommodityBySlug(slug) {
     return COMMODITY_ROWS.find((c) => c.slug === slug) ?? null;
   },
+  async getCommodityBySlugForDetail(slug) {
+    return COMMODITY_ROWS.find((c) => c.slug === slug) ?? null;
+  },
   async getCommodityById(id) {
     return COMMODITY_ROWS.find((c) => c.id === id) ?? null;
   },

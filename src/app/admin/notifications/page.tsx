@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listNotifications } from '@/lib/notifications';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import { MarkReadButton } from '@/components/admin/NotificationControls';
@@ -19,7 +19,7 @@ const SEVERITY_TONE: Record<string, 'info' | 'success' | 'warning' | 'danger'> =
 };
 
 export default async function NotificationsPage() {
-  const profile = await requireStaff('/admin/notifications');
+  const profile = await requirePathAccess('/admin/notifications');
   const notifications = await listNotifications(profile.id, { limit: 100 });
   const unread = notifications.filter((notification) => !notification.readAt);
 

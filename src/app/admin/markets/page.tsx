@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listMarkets } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
@@ -18,7 +18,7 @@ export default async function MarketsPage({
   searchParams: Promise<{ q?: string; page?: string }>;
 }) {
   const params = await searchParams;
-  await requireStaff('/admin/markets');
+  await requirePathAccess('/admin/markets');
 
   const page = await listMarkets({
     q: params.q,
@@ -103,7 +103,7 @@ export default async function MarketsPage({
     <>
       <PageHeader
         title="Markets"
-        description="The markets GonaPulse covers. A market with no agent and no schedule is a coverage gap, and it is reported as one rather than hidden."
+        description="The markets Hatsi360 covers. A market with no agent and no schedule is a coverage gap, and it is reported as one rather than hidden."
         breadcrumbs={[
           { label: 'Control Centre', href: '/admin/overview' },
           { label: 'Markets' },

@@ -1,5 +1,5 @@
 /**
- * GonaPulse pricing rules.
+ * Hatsi360 pricing rules.
  *
  * Every rule that decides *what number the public sees* lives here, so it can be
  * unit-tested in isolation and referenced from the UI, the API and the database
@@ -25,6 +25,7 @@ import type {
   QualityFlag,
 } from '@/types/domain';
 import { PRICE_TYPE_META } from '@/types/domain';
+import { classifyFreshness } from '@/lib/trade/freshness';
 
 /**
  * The amount to display for an observation.
@@ -36,6 +37,68 @@ import { PRICE_TYPE_META } from '@/types/domain';
 export function amountForComparison(o: PriceObservation): number | null {
   if (o.normalizedAmount != null && o.normalizedUnitId != null) return o.normalizedAmount;
   return o.reportedAmount ?? null;
+}
+
+/** The unit in which `amountForComparison` returns this observation's amount. */
+export function unitIdForComparison(o: PriceObservation): number | null {
+  if (o.normalizedAmount != null && o.normalizedUnitId != null) return o.normalizedUnitId;
+  return o.reportedUnitId ?? null;
+}
+
+/**
+ * A stable key for one economic price series. Market may be omitted when the
+ * caller is intentionally comparing the same series across markets.
+ */
+export function comparisonSeriesKey(
+  o: PriceObservation,
+  options: { includeMarket?: boolean } = {},
+): string {
+  const includeMarket = options.includeMarket ?? true;
+  return [
+    o.commodityId,
+    includeMarket ? o.marketId : 'across-markets',
+    o.priceType,
+    o.gradeId ?? 'no-grade',
+    o.varietyId ?? 'no-variety',
+    unitIdForComparison(o) ?? 'no-unit',
+    o.currencyCode,
+  ].join('|');
+}
+
+/** Group records by an exact economic series before any aggregation. */
+export function groupByComparisonSeries<T extends PriceObservation>(
+  observations: readonly T[],
+  options: { includeMarket?: boolean } = {},
+): Map<string, T[]> {
+  const groups = new Map<string, T[]>();
+  for (const observation of observations) {
+    const key = comparisonSeriesKey(observation, options);
+    const group = groups.get(key) ?? [];
+    group.push(observation);
+    groups.set(key, group);
+  }
+  return groups;
+}
+
+/**
+ * Select the largest exact specification group without silently combining the
+ * others. Callers must report `excluded` whenever they render only `selected`.
+ */
+export function selectDominantComparisonSeries<T extends PriceObservation>(
+  observations: readonly T[],
+  options: { includeMarket?: boolean } = {},
+): { key: string | null; selected: T[]; excluded: T[] } {
+  const comparable = observations.filter((row) => isPriceTypeComparable(row.priceType));
+  const groups = [...groupByComparisonSeries(comparable, options).entries()].sort(
+    (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
+  );
+  const [key, selected] = groups[0] ?? [null, []];
+  const selectedIds = new Set(selected.map((row) => row.id));
+  return {
+    key,
+    selected,
+    excluded: observations.filter((row) => !selectedIds.has(row.id)),
+  };
 }
 
 /* ------------------------------------------------------------------ numeric */
@@ -168,12 +231,23 @@ export function checkComparable(
     reasons.push('Different currencies.');
   }
 
-  // Compare in whichever unit each amount is actually expressed in, so the
-  // unit check matches the value being compared.
-  const unitCheck = areUnitsCompatible(
-    units.byId.get(a.normalizedUnitId ?? a.reportedUnitId ?? -1),
-    units.byId.get(b.normalizedUnitId ?? b.reportedUnitId ?? -1),
-  );
+  // Amounts can only be compared directly when they are expressed in the same
+  // unit. A shared physical dimension (for example kg and tonne) is not enough:
+  // this function does not convert the numeric amounts. A verified conversion
+  // is comparable only after both amounts are actually normalised into the same
+  // unit ID.
+  const aUnitId = unitIdForComparison(a);
+  const bUnitId = unitIdForComparison(b);
+  const unitCheck =
+    aUnitId == null || bUnitId == null
+      ? { compatible: false, ambiguous: true, reason: 'A measurement unit is missing.' }
+      : aUnitId !== bUnitId
+        ? {
+            compatible: false,
+            ambiguous: false,
+            reason: 'Amounts are expressed in different units; convert both to the same verified unit before comparison.',
+          }
+        : areUnitsCompatible(units.byId.get(aUnitId), units.byId.get(bUnitId));
   if (!unitCheck.compatible) {
     reasons.push(unitCheck.reason ?? 'Incompatible measurement units.');
   }
@@ -236,41 +310,49 @@ export function relativeTime(collectedAt: string, now = new Date()): string {
 export function summariseByMarket(
   observations: PriceObservation[],
   options: {
-    windowHours?: number;
     now?: Date;
     previousWindow?: PriceObservation[];
   } = {},
 ): MarketPriceSummary[] {
-  const { windowHours = DEFAULT_FRESHNESS_HOURS, now = new Date(), previousWindow = [] } = options;
+  const { now = new Date(), previousWindow = [] } = options;
 
-  const groups = new Map<number, PriceObservation[]>();
-  for (const o of observations) {
-    const list = groups.get(o.marketId) ?? [];
-    list.push(o);
-    groups.set(o.marketId, list);
-  }
+  const eligibleObservations = observations.filter((o) => isPriceTypeComparable(o.priceType));
+  const groups = groupByComparisonSeries(eligibleObservations, { includeMarket: true });
 
-  const previousGroups = new Map<number, number[]>();
+  const previousGroups = new Map<string, number[]>();
   for (const o of previousWindow) {
+    if (!isPriceTypeComparable(o.priceType)) continue;
     const amount = amountForComparison(o);
     if (amount == null) continue;
-    const list = previousGroups.get(o.marketId) ?? [];
+    const key = comparisonSeriesKey(o, { includeMarket: true });
+    const list = previousGroups.get(key) ?? [];
     list.push(amount);
-    previousGroups.set(o.marketId, list);
+    previousGroups.set(key, list);
   }
 
   const summaries: MarketPriceSummary[] = [];
 
-  for (const [marketId, group] of groups) {
+  for (const group of groups.values()) {
+    const marketId = group[0]!.marketId;
     const amounts = group.map((o) => amountForComparison(o));
     const usable = amounts.filter((a): a is number => a != null);
     if (usable.length === 0) continue;
 
     const sorted = [...group].sort((a, b) => a.collectedAt.localeCompare(b.collectedAt));
     const latest = sorted[sorted.length - 1]!;
-    const unitId = group.find((o) => o.reportedUnitId != null)?.reportedUnitId ?? null;
+    const unitId = unitIdForComparison(latest);
+    // Public observations do not carry their collection schedule. Pass no
+    // cadence so the central engine uses the documented no-cadence thresholds
+    // instead of silently substituting the legacy 72-hour setting.
+    const freshness = classifyFreshness({
+      collectedAt: latest.collectedAt,
+      collectedAtPrecision: latest.collectedAtPrecision,
+      verificationStatus: latest.verificationStatus,
+      priceType: latest.priceType,
+      now,
+    });
 
-    const previous = previousGroups.get(marketId) ?? [];
+    const previous = previousGroups.get(comparisonSeriesKey(latest, { includeMarket: true })) ?? [];
     const previousMedian = median(previous);
     const currentMedian = median(usable)!;
 
@@ -287,6 +369,7 @@ export function summariseByMarket(
       gradeId: latest.gradeId ?? null,
       gradeName: latest.gradeName ?? null,
       varietyId: latest.varietyId ?? null,
+      varietyName: latest.varietyName ?? null,
       unitId,
       unitCode: latest.unitCode ?? null,
       unitName: latest.unitName ?? null,
@@ -303,7 +386,11 @@ export function summariseByMarket(
       latestCollectedAt: latest.collectedAt,
       latestVerifiedAt: latest.verifiedAt ?? null,
       unitAmbiguous: !(latest.unitIsSpecific ?? false),
-      isStale: isStale(latest.collectedAt, windowHours, now),
+      freshnessState: freshness.state,
+      isStale: freshness.state === 'stale',
+      timestampNeedsReview:
+        freshness.state === 'future_timestamp' ||
+        (freshness.state === 'no_data' && !Number.isFinite(new Date(latest.collectedAt).getTime())),
       changePercent:
         previousMedian != null && previousMedian !== 0
           ? round(((currentMedian - previousMedian) / previousMedian) * 100, 2)
@@ -322,9 +409,24 @@ export function summariseByMarket(
  * Each point carries its own observation count so the chart can be read
  * honestly — a day with one report is not the same as a day with six.
  */
-export function buildSeries(observations: PriceObservation[]): PriceSeriesPoint[] {
+export interface ComparableDailySeries {
+  points: PriceSeriesPoint[];
+  seriesKey: string | null;
+  observationCount: number;
+  excludedObservationCount: number;
+}
+
+/**
+ * Build a daily chart from one exact commodity/price-type/grade/variety/unit/
+ * currency series. If mixed input is supplied, the largest series is selected
+ * deterministically and the caller receives an exclusion count to disclose.
+ */
+export function buildComparableDailySeries(observations: PriceObservation[]): ComparableDailySeries {
+  const { key, selected, excluded } = selectDominantComparisonSeries(observations, {
+    includeMarket: false,
+  });
   const groups = new Map<string, number[]>();
-  for (const o of observations) {
+  for (const o of selected) {
     const amount = amountForComparison(o);
     if (amount == null) continue;
     const day = o.collectedAt.slice(0, 10);
@@ -333,7 +435,7 @@ export function buildSeries(observations: PriceObservation[]): PriceSeriesPoint[
     groups.set(day, list);
   }
 
-  return [...groups.entries()]
+  const points = [...groups.entries()]
     .map(([date, values]) => ({
       date,
       min: round(Math.min(...values)),
@@ -342,6 +444,18 @@ export function buildSeries(observations: PriceObservation[]): PriceSeriesPoint[
       observations: values.length,
     }))
     .sort((a, b) => a.date.localeCompare(b.date));
+
+  return {
+    points,
+    seriesKey: key,
+    observationCount: selected.length,
+    excludedObservationCount: excluded.length,
+  };
+}
+
+/** Backwards-compatible convenience; mixed inputs resolve to one series. */
+export function buildSeries(observations: PriceObservation[]): PriceSeriesPoint[] {
+  return buildComparableDailySeries(observations).points;
 }
 
 /* ------------------------------------------------------------------ quality */

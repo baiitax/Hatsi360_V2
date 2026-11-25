@@ -2,16 +2,22 @@ import { describe, expect, it } from 'vitest';
 import {
   amountForComparison,
   areUnitsCompatible,
+  buildComparableDailySeries,
   buildSeries,
   buildUnitIndex,
+  checkComparable,
   deriveQualityFlags,
   findDuplicates,
+  groupByComparisonSeries,
   findOutliers,
   isStale,
   median,
   relativeTime,
+  selectDominantComparisonSeries,
   summariseByMarket,
+  unitIdForComparison,
 } from '@/lib/pricing';
+import { classifyFreshness } from '@/lib/trade/freshness';
 import type { MeasurementUnit, PriceObservation } from '@/types/domain';
 
 function observation(overrides: Partial<PriceObservation> = {}): PriceObservation {
@@ -193,6 +199,25 @@ describe('unit comparability', () => {
   });
 });
 
+describe('observation comparability uses the amount unit', () => {
+  it('rejects amounts in different units unless both have been normalized to the same unit', () => {
+    const units = buildUnitIndex(UNITS);
+    const tonnePrice = observation({ reportedUnitId: 2, unitCode: 'tonne' });
+    const kgPrice = observation({ reportedUnitId: 1, unitCode: 'kg' });
+
+    expect(checkComparable(tonnePrice, kgPrice, units).comparable).toBe(false);
+
+    const normalizedTonne = observation({
+      reportedUnitId: 2,
+      normalizedAmount: 40,
+      normalizedUnitId: 1,
+      unitCode: 'kg',
+    });
+    expect(checkComparable(normalizedTonne, kgPrice, units).comparable).toBe(true);
+    expect(unitIdForComparison(normalizedTonne)).toBe(1);
+  });
+});
+
 describe('buildUnitIndex', () => {
   it('indexes units by id', () => {
     const index = buildUnitIndex(UNITS);
@@ -328,9 +353,111 @@ describe('summariseByMarket', () => {
     expect(dawanau.changePercent).toBeCloseTo(1.94, 2);
   });
 
-  it('marks a market whose latest observation is outside the freshness window as stale', () => {
-    const summaries = summariseByMarket(observations);
-    expect(summaries.every((s) => s.isStale)).toBe(true);
+  it('uses the shared no-cadence verification horizon instead of a fixed 72-hour cutoff', () => {
+    const summaries = summariseByMarket(observations, { now: new Date('2026-10-22T00:00:00.000Z') });
+    expect(summaries.find((summary) => summary.marketId === 1)?.isStale).toBe(false);
+    expect(summaries.find((summary) => summary.marketId === 2)?.isStale).toBe(true);
+  });
+
+  it('exposes exactly the shared freshness classifier state on each public summary', () => {
+    const now = new Date('2026-10-22T00:00:00.000Z');
+    const latest = observations
+      .filter((row) => row.marketId === 1)
+      .sort((a, b) => a.collectedAt.localeCompare(b.collectedAt))
+      .at(-1)!;
+    const expected = classifyFreshness({
+      collectedAt: latest.collectedAt,
+      collectedAtPrecision: latest.collectedAtPrecision,
+      verificationStatus: latest.verificationStatus,
+      priceType: latest.priceType,
+      now,
+    });
+    const summary = summariseByMarket(observations, { now }).find((row) => row.marketId === 1)!;
+
+    expect(summary.freshnessState).toBe(expected.state);
+    expect(summary.isStale).toBe(expected.state === 'stale');
+  });
+
+  it('flags a future collection timestamp separately from staleness', () => {
+    const summaries = summariseByMarket([
+      observation({ collectedAt: '2099-01-01T00:00:00.000Z' }),
+    ], { now: new Date('2026-10-22T00:00:00.000Z') });
+    expect(summaries[0]?.timestampNeedsReview).toBe(true);
+    expect(summaries[0]?.isStale).toBe(false);
+  });
+});
+
+describe('exact series grouping', () => {
+  it('keeps different commodities and economic price types in separate summaries', () => {
+    const rows = summariseByMarket([
+      observation({ id: 'rice', commodityId: 1, reportedAmount: 40_000 }),
+      observation({ id: 'maize', commodityId: 2, commodityName: 'Maize', reportedAmount: 25_000 }),
+      observation({ id: 'asking', priceType: 'wholesale_asking', reportedAmount: 41_000 }),
+    ]);
+
+    expect(rows).toHaveLength(3);
+    expect(new Set(rows.map((row) => row.commodityId))).toEqual(new Set([1, 2]));
+    expect(rows.map((row) => row.priceType)).toContain('wholesale_asking');
+  });
+
+  it('uses normalized unit IDs for the summary series and excludes unknown price types', () => {
+    const rows = summariseByMarket([
+      observation({ id: 'normalized-a', reportedUnitId: 2, normalizedUnitId: 1, normalizedAmount: 40 }),
+      observation({ id: 'normalized-b', reportedUnitId: 2, normalizedUnitId: 1, normalizedAmount: 42 }),
+      observation({ id: 'raw-kg', reportedUnitId: 1, reportedAmount: 41 }),
+      observation({ id: 'unknown-type', priceType: 'unspecified' }),
+    ]);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.unitId).toBe(1);
+    expect(rows[0]?.observationCount).toBe(3);
+  });
+
+  it('selects one largest comparable specification across markets and reports the exclusions', () => {
+    const input = [
+      observation({ id: 'a', marketId: 1 }),
+      observation({ id: 'b', marketId: 2 }),
+      observation({ id: 'c', marketId: 3, gradeId: 4, gradeName: 'Grade 1' }),
+      observation({ id: 'd', marketId: 4, priceType: 'indicative' }),
+    ];
+    const selection = selectDominantComparisonSeries(input, { includeMarket: false });
+
+    expect(selection.selected.map((row) => row.id)).toEqual(['a', 'b']);
+    expect(selection.excluded.map((row) => row.id).sort()).toEqual(['c', 'd']);
+    expect(groupByComparisonSeries(input, { includeMarket: false }).size).toBe(3);
+  });
+
+  it('never mixes price type, grade, unit, or currency in a cross-market comparison', () => {
+    const input = [
+      observation({ id: 'base-a', marketId: 1 }),
+      observation({ id: 'base-b', marketId: 2 }),
+      observation({ id: 'asking', marketId: 3, priceType: 'wholesale_asking' }),
+      observation({ id: 'other-grade', marketId: 4, gradeId: 2, gradeName: 'Grade 2' }),
+      observation({ id: 'other-unit', marketId: 5, reportedUnitId: 1, unitCode: 'kg' }),
+      observation({ id: 'other-currency', marketId: 6, currencyCode: 'USD', currencySymbol: '$' }),
+    ];
+    const comparison = selectDominantComparisonSeries(input, { includeMarket: false });
+
+    expect(comparison.selected.map((row) => row.id).sort()).toEqual(['base-a', 'base-b']);
+    expect(comparison.excluded.map((row) => row.id).sort()).toEqual([
+      'asking',
+      'other-currency',
+      'other-grade',
+      'other-unit',
+    ]);
+  });
+
+  it('builds chart points from one specification and reports excluded observations', () => {
+    const result = buildComparableDailySeries([
+      observation({ id: 'a', collectedAt: '2025-07-01T09:00:00.000Z', reportedAmount: 40_000 }),
+      observation({ id: 'b', collectedAt: '2025-07-01T10:00:00.000Z', reportedAmount: 42_000 }),
+      observation({ id: 'c', collectedAt: '2025-07-01T11:00:00.000Z', reportedUnitId: 9, unitCode: 'unspecified', unitIsSpecific: false, reportedAmount: 900 }),
+    ]);
+
+    expect(result.points).toHaveLength(1);
+    expect(result.points[0]?.median).toBe(41_000);
+    expect(result.observationCount).toBe(2);
+    expect(result.excludedObservationCount).toBe(1);
   });
 });
 

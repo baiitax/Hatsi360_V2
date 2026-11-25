@@ -2,6 +2,10 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/money';
 import { getDataSource } from '@/lib/data';
 import { relativeTime } from '@/lib/pricing';
+import {
+  classifyFreshness,
+  requiresFreshnessWarning,
+} from '@/lib/trade/freshness';
 
 /**
  * A banner that states, honestly, where the numbers on the page came from and
@@ -22,14 +26,28 @@ export async function DataCoverageNotice({
   const source = await getDataSource();
   const provenance = await source.getProvenance();
 
-  const stale =
-    latestCollectedAt != null &&
-    Date.now() - new Date(latestCollectedAt).getTime() > 72 * 3600_000;
+  const parsedLatestTimestamp = latestCollectedAt ? new Date(latestCollectedAt).getTime() : null;
+  const timestampIsInvalid =
+    parsedLatestTimestamp !== null && !Number.isFinite(parsedLatestTimestamp);
+  const freshness = latestCollectedAt
+    ? classifyFreshness({
+        collectedAt: latestCollectedAt,
+        collectedAtPrecision: /^\d{4}-\d{2}-\d{2}$/.test(latestCollectedAt) ? 'date' : 'minute',
+        // The price directory mixes commodities and does not receive their
+        // operational collection schedules. Omit cadence rather than inventing
+        // a daily schedule; the shared engine then applies its explicit legacy
+        // no-cadence thresholds.
+      })
+    : null;
+  const timestampNeedsReview = timestampIsInvalid || freshness?.state === 'future_timestamp';
+  const freshnessNeedsNotice = freshness ? requiresFreshnessWarning(freshness.state) : false;
 
-  if (!source.isMigrated && !stale) return null;
+  if (!source.isMigrated && !freshnessNeedsNotice && !timestampNeedsReview) return null;
 
   const latest = latestCollectedAt
-    ? formatDate(latestCollectedAt)
+    ? timestampIsInvalid
+      ? 'unreadable'
+      : formatDate(latestCollectedAt)
     : provenance
       ? formatDate(provenance.dateRange[1])
       : null;
@@ -48,7 +66,11 @@ export async function DataCoverageNotice({
         </span>
         <div className="min-w-0 flex-1">
           <h2 className="text-base font-bold text-amber-950">
-            {source.isMigrated ? 'Migrated price records — read this first' : 'Price coverage notice'}
+            {source.isMigrated
+              ? 'Migrated price records — read this first'
+              : timestampNeedsReview
+                ? 'Observation timestamp needs review'
+                : 'Price coverage notice'}
           </h2>
 
           {source.isMigrated && provenance ? (
@@ -83,7 +105,7 @@ export async function DataCoverageNotice({
                   </dt>
                   <dd className="mt-0.5 font-medium text-amber-950">
                     {latest ?? '—'}
-                    {latestCollectedAt ? (
+                    {latestCollectedAt && !timestampNeedsReview ? (
                       <span className="ml-1 font-normal text-amber-800">
                         ({relativeTime(latestCollectedAt)})
                       </span>
@@ -111,13 +133,22 @@ export async function DataCoverageNotice({
                 </Link>
               </div>
             </>
+          ) : timestampNeedsReview ? (
+            <p className="mt-2 text-sm leading-relaxed text-amber-900">
+              The most recent recorded collection time ({latest ?? 'unreadable'}) is later than, or
+              cannot be parsed against, the platform clock. Its age and freshness cannot be
+              established, so it must not be described as current until the timestamp is checked.
+              {' '}{observationCount ?? 0} observation{observationCount === 1 ? '' : 's'} are in
+              this result set.
+            </p>
           ) : (
             <p className="mt-2 text-sm leading-relaxed text-amber-900">
-              The most recent published observation is dated {latest} (
-              {relativeTime(latestCollectedAt!)}). Prices older than the commodity&rsquo;s
-              freshness window are still shown, but they are marked as stale.{' '}
+              The newest observation in this result set is dated {latest} (
+              {relativeTime(latestCollectedAt!)}). The shared freshness policy classifies it as{' '}
+              <strong> {freshness?.label.toLowerCase() ?? 'requiring review'}</strong>.{' '}
+              {freshness?.explanation}{' '}
               {observationCount ?? 0} observation{observationCount === 1 ? '' : 's'} are currently
-              published.
+              published; this status describes the newest timestamp, not every historical row.
             </p>
           )}
         </div>

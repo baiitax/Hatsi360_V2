@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { formatDate, formatDateTime, formatMoney } from '@/lib/money';
+import { PRICE_STATE_LABELS, PRICE_STATE_TONES } from '@/lib/trade/freshness';
 import { PRICE_TYPE_META } from '@/types/domain';
-import type { PriceObservation } from '@/types/domain';
+import type { MarketPriceFreshnessState, PriceObservation } from '@/types/domain';
 import { PriceFigure, ProvenanceLine, UnitUnknownBadge } from '@/components/ui';
 
 /**
@@ -115,6 +116,7 @@ export function PriceTable({
                       verifiedAt={observation.verifiedAt}
                       status={observation.verificationStatus}
                       precision={observation.collectedAtPrecision}
+                      priceType={observation.priceType}
                       className="flex-col items-start gap-1.5"
                     />
                   </td>
@@ -134,7 +136,16 @@ export function PriceTable({
  * A summary row always carries the observation count and the window it covers,
  * so a single report is never presented as the definitive market price.
  */
+const FRESHNESS_TONE_CLASSES = {
+  neutral: 'border-ink-200 bg-ink-50 text-ink-700',
+  info: 'border-blue-200 bg-blue-50 text-blue-800',
+  success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+  warning: 'border-amber-200 bg-amber-50 text-amber-900',
+  danger: 'border-red-200 bg-red-50 text-red-800',
+} as const;
+
 export function MarketComparisonTable({
+
   rows,
   caption,
 }: {
@@ -153,7 +164,9 @@ export function MarketComparisonTable({
     unitName: string | null;
     unitIsSpecific: boolean;
     unitAmbiguous: boolean;
+    freshnessState: MarketPriceFreshnessState;
     isStale: boolean;
+    timestampNeedsReview?: boolean;
     latestCollectedAt: string;
     windowStart: string;
     windowEnd: string;
@@ -225,6 +238,17 @@ export function MarketComparisonTable({
                 </td>
                 <td className="px-5 py-4 whitespace-nowrap">
                   <span className="text-ink-700">{formatDate(row.latestCollectedAt)}</span>
+                  <span
+                    aria-label={`Freshness: ${PRICE_STATE_LABELS[row.freshnessState]}`}
+                    className={`mt-1 inline-flex rounded-full border px-2 py-0.5 text-xs font-semibold ${FRESHNESS_TONE_CLASSES[PRICE_STATE_TONES[row.freshnessState]]}`}
+                  >
+                    {PRICE_STATE_LABELS[row.freshnessState]}
+                  </span>
+                  {row.timestampNeedsReview ? (
+                    <span className="mt-1 block text-xs font-semibold text-red-700">
+                      Timestamp needs review
+                    </span>
+                  ) : null}
                   {row.unitAmbiguous ? (
                     <div className="mt-1.5">
                       <UnitUnknownBadge />

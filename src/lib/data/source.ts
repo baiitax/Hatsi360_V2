@@ -36,6 +36,8 @@ export interface DataSource {
   getMarketBySlug(slug: string): Promise<Market | null>;
   listCommodities(): Promise<Commodity[]>;
   getCommodityBySlug(slug: string): Promise<Commodity | null>;
+  /** Resolve a public detail route without loading catalogue-wide observation counts. */
+  getCommodityBySlugForDetail(slug: string): Promise<Commodity | null>;
   getCommodityById(id: number): Promise<Commodity | null>;
   listUnits(): Promise<MeasurementUnit[]>;
 

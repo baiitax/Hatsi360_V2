@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/analytics/../auth/guards';
+import { requirePathAccess } from '@/lib/analytics/../auth/guards';
 import { getAnalytics } from '@/lib/analytics/queries';
 import { periodLabel } from '@/lib/analytics/format';
 import { METRIC_DEFINITIONS } from '@/lib/analytics/definitions';
@@ -29,7 +29,7 @@ export default async function AnalyticsPage({
   const params = await searchParams;
   const days = PERIODS.includes(Number(params.days)) ? Number(params.days) : 30;
 
-  await requireStaff('/admin/analytics');
+  await requirePathAccess('/admin/analytics');
 
   const { snapshot, agents, markets, commodities, trends } = await getAnalytics(days);
 

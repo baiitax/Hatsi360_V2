@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listSchedules } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default async function SchedulePage() {
-  await requireStaff('/admin/schedule');
+  await requirePathAccess('/admin/schedule');
 
   const schedules = await listSchedules();
 

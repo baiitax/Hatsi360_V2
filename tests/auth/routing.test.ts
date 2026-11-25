@@ -6,6 +6,7 @@ import {
   loginRedirectFor,
   ROLE_WORKSPACE,
   safeRedirectPath,
+  safeRedirectPathForRole,
   WORKSPACE_HOME,
 } from '@/lib/auth/routing';
 
@@ -56,15 +57,23 @@ describe('canRoleVisitPath', () => {
   it('keeps an agent out of the control centre', () => {
     expect(canRoleVisitPath('agent', '/admin/overview')).toBe(false);
     expect(canRoleVisitPath('agent', '/admin/agents')).toBe(false);
+    expect(canRoleVisitPath('customer', '/admin/customers')).toBe(false);
+    expect(canRoleVisitPath('customer', '/agent/collection/new')).toBe(false);
   });
 
   it('keeps a market agent out of the agent-only administration areas', () => {
     expect(canRoleVisitPath('market_supervisor', '/admin/agents')).toBe(true);
     expect(canRoleVisitPath('agent', '/admin/agents')).toBe(false);
+    expect(canRoleVisitPath('customer', '/admin/customers')).toBe(false);
+    expect(canRoleVisitPath('customer', '/agent/collection/new')).toBe(false);
   });
 
   it('keeps a verification officer out of the settings', () => {
     expect(canRoleVisitPath('verification_officer', '/admin/settings')).toBe(false);
+    expect(canRoleVisitPath('verification_officer', '/admin/customers')).toBe(false);
+    expect(canRoleVisitPath('market_supervisor', '/admin/analytics')).toBe(false);
+    expect(canRoleVisitPath('analyst', '/admin/analytics')).toBe(true);
+    expect(canRoleVisitPath('analyst', '/admin/agents')).toBe(false);
     expect(canRoleVisitPath('admin', '/admin/settings')).toBe(true);
   });
 
@@ -84,6 +93,11 @@ describe('safeRedirectPath', () => {
   it('accepts a same-origin path inside a known area', () => {
     expect(safeRedirectPath('/admin/overview', '/dashboard')).toBe('/admin/overview');
     expect(safeRedirectPath('/agent/home', '/dashboard')).toBe('/agent/home');
+  });
+
+  it('accepts protected trade and password-reset destinations', () => {
+    expect(safeRedirectPath('/trade/watchlist', '/dashboard')).toBe('/trade/watchlist');
+    expect(safeRedirectPath('/reset-password', '/dashboard')).toBe('/reset-password');
   });
 
   it('accepts a path with a query string', () => {
@@ -124,6 +138,22 @@ describe('safeRedirectPath', () => {
   });
 });
 
+describe('safeRedirectPathForRole', () => {
+  it('keeps users out of another role’s workspace after sign-in', () => {
+    expect(safeRedirectPathForRole('/admin/settings', 'customer')).toBe('/dashboard');
+    expect(safeRedirectPathForRole('/admin/settings', 'verification_officer')).toBe(
+      '/admin/verification',
+    );
+    expect(safeRedirectPathForRole('/agent/home', 'customer')).toBe('/dashboard');
+  });
+
+  it('preserves a permitted workspace or public destination', () => {
+    expect(safeRedirectPathForRole('/admin/analytics', 'analyst')).toBe('/admin/analytics');
+    expect(safeRedirectPathForRole('/agent/history', 'agent')).toBe('/agent/history');
+    expect(safeRedirectPathForRole('/trade/alerts', 'customer')).toBe('/trade/alerts');
+  });
+});
+
 describe('loginRedirectFor', () => {
   it('returns the landing page when there is no next', () => {
     expect(loginRedirectFor('agent')).toBe('/agent/home');
@@ -131,6 +161,10 @@ describe('loginRedirectFor', () => {
 
   it('keeps a valid next', () => {
     expect(loginRedirectFor('agent', '/agent/tasks')).toBe('/login?next=%2Fagent%2Ftasks');
+  });
+
+  it('does not preserve a next path that belongs to another workspace', () => {
+    expect(loginRedirectFor('agent', '/admin/settings')).toBe('/agent/home');
   });
 
   it('discards a next that is not allowed', () => {

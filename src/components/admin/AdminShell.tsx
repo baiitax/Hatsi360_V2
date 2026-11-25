@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { BrandMark } from '@/components/brand/Logo';
+import { NotificationCenter } from '@/components/site/navigation';
 import { BRAND } from '@/lib/brand';
 
 /**
- * GonaPulse — the admin console shell.
+ * Hatsi360 — the admin console shell.
  *
  * A collapsible sidebar, a top bar with search and the notification count,
  * and the page body. The navigation is passed in from the server, already
@@ -46,12 +47,56 @@ export function AdminShell({
 }: AdminShellProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openedAt, setOpenedAt] = useState<string | null>(null);
+  const mobileOpen = openedAt !== null && openedAt === pathname;
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileDialogRef = useRef<HTMLDivElement>(null);
 
-  // Close the mobile drawer whenever the route changes.
   useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+    if (!mobileOpen) return;
+
+    const trigger = mobileTriggerRef.current;
+    const dialog = mobileDialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    document.body.style.overflow = 'hidden';
+    const focusable = dialog ? Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector)) : [];
+    (focusable[0] ?? dialog)?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpenedAt(null);
+        return;
+      }
+      if (event.key !== 'Tab' || !dialog) return;
+
+      const items = Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector));
+      if (items.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      trigger?.focus();
+    };
+  }, [mobileOpen]);
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -60,7 +105,7 @@ export function AdminShell({
     <nav aria-label="Admin sections" className="flex h-full flex-col gap-6 overflow-y-auto p-3">
       {groups.map((group) => (
         <div key={group.label}>
-          <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-widest text-ink-400">
+          <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-widest text-brand-300">
             {group.label}
           </p>
           <ul className="space-y-0.5">
@@ -70,12 +115,13 @@ export function AdminShell({
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    onClick={() => setOpenedAt(null)}
                     aria-current={active ? 'page' : undefined}
                     title={collapsed ? item.label : undefined}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       active
-                        ? 'bg-brand-700 text-white shadow-sm'
-                        : 'text-ink-600 hover:bg-ink-100 hover:text-ink-900'
+                        ? 'bg-brand-950 text-white shadow-sm ring-1 ring-brand-600/50'
+                        : 'text-brand-100 hover:bg-brand-700 hover:text-white'
                     } ${collapsed ? 'justify-center px-0' : ''}`}
                   >
                     <span aria-hidden="true" className="w-5 shrink-0 text-center text-base">
@@ -87,7 +133,7 @@ export function AdminShell({
                       <span className="flex-1 truncate">{item.label}</span>
                     )}
                     {!collapsed && item.badge ? (
-                      <span className="rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                      <span className="rounded-full bg-error-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
                         {item.badge > 99 ? '99+' : item.badge}
                       </span>
                     ) : null}
@@ -109,18 +155,28 @@ export function AdminShell({
           <button
             type="button"
             aria-label="Close navigation"
+            tabIndex={-1}
+            aria-hidden="true"
             className="absolute inset-0 bg-ink-950/40"
-            onClick={() => setMobileOpen(false)}
+            onClick={() => setOpenedAt(null)}
           />
-          <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto bg-white shadow-xl">
-            <div className="flex items-center justify-between border-b border-ink-200 px-4 py-3">
-              <span className="text-sm font-bold text-brand-900">
+          <div
+            ref={mobileDialogRef}
+            id="admin-mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Control Centre navigation"
+            tabIndex={-1}
+            className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto bg-brand-800 shadow-xl"
+          >
+            <div className="flex items-center justify-between border-b border-brand-700 px-4 py-3">
+              <span className="text-sm font-bold text-white">
                 {BRAND.name} Control Centre
               </span>
               <button
                 type="button"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-md p-1 text-ink-500 hover:bg-ink-100"
+                onClick={() => setOpenedAt(null)}
+                className="rounded-md p-1 text-brand-100 hover:bg-brand-700"
                 aria-label="Close navigation"
               >
                 ✕
@@ -133,21 +189,21 @@ export function AdminShell({
 
       {/* Desktop rail */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 hidden border-r border-ink-200 bg-white transition-all lg:block ${
+        className={`fixed inset-y-0 left-0 z-30 hidden border-r border-brand-900 bg-brand-800 transition-all lg:block ${
           collapsed ? 'w-[4.5rem]' : 'w-64'
         }`}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-ink-200 px-4">
+        <div className="flex h-16 items-center gap-2 border-b border-brand-700 px-4">
           <Link
             href="/admin/overview"
             className="flex items-center gap-2"
             aria-label={`${BRAND.name} ${BRAND.surfaces.controlCentre}`}
           >
-            <BrandMark size={36} />
+            <BrandMark size={36} tone="dark" />
             {!collapsed ? (
-              <span className="text-sm font-bold leading-tight text-brand-900">
+              <span className="text-sm font-bold leading-tight text-white">
                 {BRAND.name}
-                <span className="block text-[11px] font-semibold uppercase tracking-wide text-ink-400">
+                <span className="block text-[11px] font-semibold uppercase tracking-wide text-brand-300">
                   Control Centre
                 </span>
               </span>
@@ -158,7 +214,7 @@ export function AdminShell({
         <button
           type="button"
           onClick={() => setCollapsed((value) => !value)}
-          className="absolute -right-3 top-20 grid size-6 place-items-center rounded-full border border-ink-200 bg-white text-xs text-ink-500 shadow-sm hover:bg-ink-100"
+          className="absolute -right-3 top-20 grid size-6 place-items-center rounded-full border border-brand-700 bg-brand-800 text-xs text-brand-100 shadow-sm hover:bg-brand-700"
           aria-label={collapsed ? 'Expand the navigation' : 'Collapse the navigation'}
           title={collapsed ? 'Expand' : 'Collapse'}
         >
@@ -170,10 +226,13 @@ export function AdminShell({
         <header className="sticky top-0 z-20 border-b border-ink-200 bg-white/95 backdrop-blur">
           <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
             <button
+              ref={mobileTriggerRef}
               type="button"
-              onClick={() => setMobileOpen(true)}
+              onClick={() => setOpenedAt(pathname)}
               className="rounded-md p-2 text-ink-600 hover:bg-ink-100 lg:hidden"
               aria-label="Open navigation"
+              aria-expanded={mobileOpen}
+              aria-controls="admin-mobile-navigation"
             >
               ☰
             </button>
@@ -198,25 +257,23 @@ export function AdminShell({
             </form>
 
             <div className="ml-auto flex items-center gap-2">
-              <Link
+              <NotificationCenter
                 href="/admin/notifications"
-                className="relative rounded-lg border border-ink-200 bg-white p-2 text-ink-600 hover:bg-ink-100"
-                aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}
-              >
-                <span aria-hidden="true">🔔</span>
-                {unreadCount > 0 ? (
-                  <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
-                ) : null}
-              </Link>
+                unreadCount={unreadCount}
+                label="Inbox"
+                className="border border-ink-200 bg-white"
+              />
 
-              <div className="hidden text-right sm:block">
+              <Link
+                href="/admin/profile"
+                className="hidden text-right sm:block"
+                aria-label="Your profile"
+              >
                 <p className="text-sm font-semibold leading-tight text-ink-900">{userName}</p>
-                <p className="text-[11px] uppercase tracking-wide text-ink-400">
+                <p className="text-[11px] uppercase tracking-wide text-ink-500">
                   {userRole.replace('_', ' ')}
                 </p>
-              </div>
+              </Link>
 
               <form action="/api/auth/signout" method="post">
                 <button

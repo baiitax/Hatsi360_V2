@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listAgents, listMarkets, listObservations, listReferenceData } from '@/lib/operations/admin';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import { formatDateTime, formatMoney } from '@/lib/money';
@@ -16,7 +16,7 @@ export default async function SearchPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const params = await searchParams;
-  await requireStaff('/admin/search');
+  await requirePathAccess('/admin/search');
 
   const query = (params.q ?? '').trim();
 

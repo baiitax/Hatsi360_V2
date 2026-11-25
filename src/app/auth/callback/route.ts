@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
+import { safeRedirectPath } from '@/lib/auth/routing';
 
 /**
  * Supabase email-confirmation and password-reset callback.
@@ -14,8 +15,10 @@ export async function GET(request: Request) {
   const code = url.searchParams.get('code');
   const next = url.searchParams.get('next') ?? '/dashboard';
 
-  // Only allow same-origin relative redirects.
-  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/dashboard';
+  // Apply the same strict root-relative allowlist used by sign-in. In
+  // particular, reject backslashes: URL parsers treat a backslash URL as
+  // protocol-relative and would otherwise allow an external redirect.
+  const safeNext = safeRedirectPath(next, '/dashboard');
 
   if (!isSupabaseConfigured()) {
     return NextResponse.redirect(new URL('/login?error=not_configured', url.origin));

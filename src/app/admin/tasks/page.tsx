@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listTasks } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import {
@@ -35,7 +35,7 @@ export default async function TasksPage({
   searchParams: Promise<{ status?: string; overdue?: string; page?: string }>;
 }) {
   const params = await searchParams;
-  await requireStaff('/admin/tasks');
+  await requirePathAccess('/admin/tasks');
 
   const page = await listTasks({
     status: params.status || undefined,

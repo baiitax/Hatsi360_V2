@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listQualityFlags } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
@@ -33,7 +33,7 @@ const SEVERITY_TONE: Record<string, 'info' | 'warning' | 'danger'> = {
 };
 
 export default async function QualityPage() {
-  await requireStaff('/admin/quality');
+  await requirePathAccess('/admin/quality');
 
   const flags = (await listQualityFlags(200)) as FlagRow[];
   const rules = ruleCatalogue();

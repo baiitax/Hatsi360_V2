@@ -1,8 +1,17 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { formatDateTime, formatMoney } from '@/lib/money';
-import { relativeTime, isStale, DEFAULT_FRESHNESS_HOURS } from '@/lib/pricing';
-import { VERIFICATION_STATUS_META, type VerificationStatus } from '@/types/domain';
+import { relativeTime } from '@/lib/pricing';
+import {
+  classifyFreshness,
+  formatAge,
+  requiresFreshnessWarning,
+} from '@/lib/trade/freshness';
+import {
+  VERIFICATION_STATUS_META,
+  type PriceType,
+  type VerificationStatus,
+} from '@/types/domain';
 
 /* --------------------------------------------------------------- headings */
 
@@ -100,7 +109,7 @@ export function StaleBadge({ className = '' }: { className?: string }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-900 ${className}`}
-      title="This observation is older than the freshness window configured for the commodity."
+      title="This observation is beyond the shared policy's maximum age for the available collection-cadence information."
     >
       <span aria-hidden="true">⚠</span>
       Stale
@@ -163,31 +172,54 @@ export function ProvenanceLine({
   verifiedAt,
   status,
   precision = 'minute',
-  freshnessHours = DEFAULT_FRESHNESS_HOURS,
+  priceType,
   className = '',
 }: {
   collectedAt: string;
   verifiedAt?: string | null;
   status: VerificationStatus;
   precision?: 'minute' | 'date';
-  freshnessHours?: number;
+  priceType?: PriceType;
   className?: string;
 }) {
-  const stale = isStale(collectedAt, freshnessHours);
+  const freshness = classifyFreshness({
+    collectedAt,
+    collectedAtPrecision: precision,
+    verificationStatus: status,
+    priceType,
+  });
+  const timestampNeedsReview =
+    freshness.state === 'future_timestamp' || freshness.state === 'no_data';
+  const warning = timestampNeedsReview
+    ? 'Timestamp needs review'
+    : requiresFreshnessWarning(freshness.state)
+      ? freshness.label
+      : null;
+  const timestamp = timestampNeedsReview
+    ? 'timestamp needs review'
+    : precision === 'date'
+      ? formatDateTime(collectedAt).split(',')[0]
+      : relativeTime(collectedAt);
+  const collectedTitle = timestampNeedsReview ? timestamp : formatDateTime(collectedAt);
+
   return (
     <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-500 ${className}`}>
-      <span title={formatDateTime(collectedAt)}>
-        Collected{' '}
-        <span className="font-medium text-ink-700">
-          {precision === 'date' ? formatDateTime(collectedAt).split(',')[0] : relativeTime(collectedAt)}
-        </span>
-        {precision === 'date' ? ' (date only)' : null}
+      <span title={collectedTitle}>
+        Collected <span className="font-medium text-ink-700">{timestamp}</span>
+        {precision === 'date' && !timestampNeedsReview ? ' (date only)' : null}
       </span>
       {verifiedAt ? (
         <span title={formatDateTime(verifiedAt)}>Verified {relativeTime(verifiedAt)}</span>
       ) : null}
       <StatusBadge status={status} />
-      {stale ? <StaleBadge /> : null}
+      {warning === 'Stale' ? <StaleBadge /> : warning ? (
+        <span
+          className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-900"
+          title={freshness.explanation}
+        >
+          {warning}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -348,3 +380,31 @@ export function TableSkeleton({ rows = 5, columns = 5 }: { rows?: number; column
     </div>
   );
 }
+
+
+/* -------------------------------------------------- design-system catalogue */
+
+/**
+ * The catalogue names required by the design system.
+ *
+ * Every component below is defined once — here or in the module it comes from
+ * — and reused across the public site, the customer workspace, the Field App
+ * and the Control Centre.
+ */
+export {
+  PriceMovementIndicator,
+  DataFreshnessIndicator,
+  VerificationBadge,
+  SourceAttribution,
+  IntelligenceMetricCard,
+  PriceCard,
+  ErrorState,
+  FilterPanel,
+  FilterSelect,
+  DateRangeSelector,
+} from './data-display';
+
+export { PageHero, PageHero as PageHeader } from './PageHero';
+export { HistoricalPriceChart, ObservationCountChart } from '@/components/data/PriceChart';
+/** The catalogue name for the loading placeholder. */
+export const LoadingSkeleton = Skeleton;

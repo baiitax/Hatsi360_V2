@@ -2,6 +2,13 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 
+/**
+ * Tests are isolated by default. This config deliberately does not call
+ * `loadEnv` or read `.env.local`; `tests/setup/isolate-environment.ts` refuses
+ * ambient application credentials and accepts only explicitly named local-test
+ * endpoints. Live Supabase authentication and remote DB access are never a
+ * default test behaviour.
+ */
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -14,6 +21,7 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
+    setupFiles: ['./tests/setup/isolate-environment.ts'],
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
     globals: true,
   },

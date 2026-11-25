@@ -2,7 +2,13 @@ import { z } from 'zod';
 import { createApiHandler } from '@/lib/api/handler';
 import { errors } from '@/lib/api/response';
 import { getDataSource } from '@/lib/data';
-import { summariseByMarket } from '@/lib/pricing';
+import {
+  groupByComparisonSeries,
+  isPriceTypeComparable,
+  selectDominantComparisonSeries,
+  summariseByMarket,
+  unitIdForComparison,
+} from '@/lib/pricing';
 
 const querySchema = z
   .object({
@@ -68,7 +74,6 @@ export const GET = createApiHandler({
 
     const observations = await source.listObservationsForAnalysis({
       commodityId: commodity.id,
-      marketId: marketIds?.[0],
       priceType: context.price_type,
     });
 
@@ -76,23 +81,19 @@ export const GET = createApiHandler({
       ? observations.filter((o) => marketIds.includes(o.marketId))
       : observations;
 
-    const priceType = context.price_type ?? scoped[0]?.priceType;
-    const typed = priceType ? scoped.filter((o) => o.priceType === priceType) : [];
+    const priceType = context.price_type ?? scoped.find((o) => isPriceTypeComparable(o.priceType))?.priceType;
+    const typed =
+      priceType && isPriceTypeComparable(priceType)
+        ? scoped.filter((o) => o.priceType === priceType)
+        : [];
 
-    // Bucket by unit so only compatible units are compared.
-    const unitBuckets = new Map<string, typeof typed>();
-    for (const observation of typed) {
-      const key = String(observation.reportedUnitId ?? 'none');
-      const list = unitBuckets.get(key) ?? [];
-      list.push(observation);
-      unitBuckets.set(key, list);
-    }
-
-    const buckets = [...unitBuckets.entries()].sort((a, b) => b[1].length - a[1].length);
-    const primary = buckets[0];
-    const excluded = buckets.slice(1);
-
-    const summaries = primary ? summariseByMarket(primary[1]) : [];
+    // Select one exact grade/variety/unit/currency series across markets. A
+    // shared dimension or unit family does not justify averaging raw amounts.
+    const { selected: primary, excluded } = selectDominantComparisonSeries(typed, {
+      includeMarket: false,
+    });
+    const summaries = summariseByMarket(primary);
+    const primaryUnitId = primary[0] ? unitIdForComparison(primary[0]) : null;
 
     // The spread is the lowest and highest median in the comparison — not the
     // first and last rows, which are ordered by market rather than by price.
@@ -112,18 +113,29 @@ export const GET = createApiHandler({
     return {
       commodity: { slug: commodity.slug, name: commodity.name },
       priceType,
-      unit: primary
+      specification: primary[0]
         ? {
-            code: primary[1][0]?.unitCode ?? null,
-            name: primary[1][0]?.unitName ?? null,
-            recorded: primary[1].every((o) => o.unitIsSpecific !== false),
+            grade: primary[0].gradeName,
+            variety: primary[0].varietyName,
+            currency: primary[0].currencyCode,
+            unitId: primaryUnitId,
+          }
+        : null,
+      unit: primary[0]
+        ? {
+            code: primary[0].unitCode ?? null,
+            name: primary[0].unitName ?? null,
+            recorded: primary.every((o) => o.unitIsSpecific !== false),
           }
         : null,
       comparisonRule:
-        'Only observations sharing a commodity, price type and compatible measurement unit are compared.',
+        'Only one exact commodity, price type, grade, variety, currency and unit series is compared across markets. Indicative and unspecified price types are not comparable. Other specification groups are returned separately as excluded.',
       prices: summaries.map((summary) => ({
         market: { slug: summary.marketSlug, id: summary.marketId, name: summary.marketName },
         state: summary.stateName,
+        priceType: summary.priceType,
+        grade: summary.gradeName,
+        variety: summary.varietyName,
         medianAmount: summary.medianAmount,
         latestAmount: summary.latestAmount,
         minAmount: summary.minAmount,
@@ -132,14 +144,40 @@ export const GET = createApiHandler({
         currency: summary.currencyCode,
         windowStart: summary.windowStart,
         windowEnd: summary.windowEnd,
+        freshnessState: summary.freshnessState,
         isStale: summary.isStale,
+        timestampNeedsReview: summary.timestampNeedsReview,
       })),
       spread,
-      excludedForUnitMismatch: excluded.map(([, list]) => ({
-        unitCode: list[0]?.unitCode ?? null,
-        observationCount: list.length,
-        markets: Array.from(new Set(list.map((o) => o.marketName))),
-      })),
+      excludedForUnitMismatch: [...excluded
+        .filter((o) => unitIdForComparison(o) !== primaryUnitId)
+        .reduce((groups, observation) => {
+          const key = `${unitIdForComparison(observation) ?? 'no-unit'}`;
+          const group = groups.get(key) ?? [];
+          group.push(observation);
+          groups.set(key, group);
+          return groups;
+        }, new Map<string, typeof excluded>())]
+        .map(([unitId, list]) => ({
+          unitId,
+          unitCode: list[0]?.unitCode ?? null,
+          observationCount: list.length,
+          markets: Array.from(new Set(list.map((o) => o.marketName))),
+        })),
+      excludedForSpecificationMismatch: [
+        ...groupByComparisonSeries(
+          excluded.filter((observation) => unitIdForComparison(observation) === primaryUnitId),
+          { includeMarket: false },
+        ),
+      ].map(([, group]) => ({
+          grade: group[0]?.gradeName ?? null,
+          variety: group[0]?.varietyName ?? null,
+          unit: group[0]?.unitCode ?? null,
+          currency: group[0]?.currencyCode ?? null,
+          observationCount: group.length,
+          markets: Array.from(new Set(group.map((o) => o.marketName))),
+        })),
+
     };
   },
 });

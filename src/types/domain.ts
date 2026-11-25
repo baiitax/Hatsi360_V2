@@ -1,5 +1,5 @@
 /**
- * GonaPulse domain types.
+ * Hatsi360 domain types.
  *
  * These mirror the Supabase schema in `supabase/migrations/`. They are the single
  * source of truth for shapes that cross the server/client boundary.
@@ -76,6 +76,8 @@ export interface Commodity {
   categoryName?: string | null;
   categorySlug?: string | null;
   synonyms?: string[];
+  /** How long an observation of this commodity stays fresh. */
+  freshnessWindowHours?: number;
   /** Markets that have at least one published observation. */
   marketCount?: number;
   latestObservationAt?: string | null;
@@ -280,7 +282,7 @@ export const VERIFICATION_STATUS_META: Record<VerificationStatus, VerificationSt
     code: 'legacy_unverified',
     label: 'Legacy record — unverified',
     description:
-      'Migrated from the previous GonaPulse system. It carries no verification trail, so it is published with an explicit unverified label rather than being retroactively marked verified.',
+      'Migrated from the previous Pluck Live system. It carries no verification trail, so it is published with an explicit unverified label rather than being retroactively marked verified.',
     publiclyReadable: true,
     tone: 'warning',
   },
@@ -323,6 +325,9 @@ export interface PriceObservation {
   currencySymbol: string;
 
   collectedAt: string;
+  /** Operational reporting session, separate from the economic price type. */
+  reportingSessionKind?: 'opening' | 'closing' | null;
+  reportingBusinessDate?: string | null;
   /** 'minute' when the real clock time is known; 'date' when only the day is known. */
   collectedAtPrecision: 'minute' | 'date';
   submittedAt: string | null;
@@ -349,9 +354,21 @@ export interface PriceObservation {
   varietyName?: string | null;
   unitCode?: string | null;
   unitName?: string | null;
+  reportedUnitName?: string | null;
+  reportedUnitCode?: string | null;
   unitDimension?: 'mass' | 'volume' | 'count' | 'length' | 'unknown';
   unitIsSpecific?: boolean;
 }
+
+export type MarketPriceFreshnessState =
+  | 'no_data'
+  | 'stale'
+  | 'delayed'
+  | 'indicative'
+  | 'latest_verified'
+  | 'recently_updated'
+  | 'live_feed'
+  | 'future_timestamp';
 
 /** A published summary of one market's price for one commodity. */
 export interface MarketPriceSummary {
@@ -367,6 +384,7 @@ export interface MarketPriceSummary {
   gradeId: number | null;
   gradeName: string | null;
   varietyId: number | null;
+  varietyName: string | null;
   unitId: number | null;
   unitCode: string | null;
   unitName: string | null;
@@ -389,8 +407,12 @@ export interface MarketPriceSummary {
 
   /** True when the unit was never recorded (legacy data). */
   unitAmbiguous: boolean;
-  /** True when the newest observation is older than the freshness rule. */
+  /** Full state from the shared freshness classifier, with cadence omitted if unknown. */
+  freshnessState: MarketPriceFreshnessState;
+  /** True only when the observation is past its applicable verification horizon. */
   isStale: boolean;
+  /** True when its timestamp is invalid or lies in the future relative to now. */
+  timestampNeedsReview: boolean;
   /** Mean change against the previous window, when enough data exists. */
   changePercent: number | null;
 }

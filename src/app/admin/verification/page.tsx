@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { PageHeader, Panel, Pill, VERIFICATION_LABELS, verificationTone } from '@/components/ops/Primitives';
@@ -36,7 +36,7 @@ export default async function VerificationPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const params = await searchParams;
-  await requireStaff('/admin/verification');
+  await requirePathAccess('/admin/verification');
 
   const filter = params.status ?? 'submitted';
   const rows: QueueRow[] = [];

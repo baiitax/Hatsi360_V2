@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { reportsForRole } from '@/lib/reports';
 import { listExportJobs } from '@/lib/operations/admin';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
@@ -22,7 +22,7 @@ export default async function ReportsPage({
   const params = await searchParams;
   const days = PERIODS.includes(Number(params.days)) ? Number(params.days) : 30;
 
-  const profile = await requireStaff('/admin/reports');
+  const profile = await requirePathAccess('/admin/reports');
   const reports = reportsForRole(profile.role);
   const exportJobs = await listExportJobs(25);
 

@@ -25,6 +25,7 @@ import type {
   State,
   VerificationStatus,
 } from '@/types/domain';
+import { collectAllPages } from './pagination';
 import type { DataSource } from './source';
 
 /* --------------------------------------------------------------- row types */
@@ -43,6 +44,8 @@ interface ObservationRow {
   normalized_unit_id: number | null;
   currency_code: string;
   collected_at: string;
+  reporting_session_kind?: 'opening' | 'closing' | null;
+  reporting_business_date?: string | null;
   collected_at_precision: 'minute' | 'date';
   submitted_at: string | null;
   verified_at: string | null;
@@ -68,6 +71,8 @@ interface ObservationRow {
   variety_name: string | null;
   unit_code: string | null;
   unit_name: string | null;
+  reported_unit_name?: string | null;
+  reported_unit_code?: string | null;
   unit_dimension: MeasurementUnit['dimension'] | null;
   unit_is_specific: boolean | null;
   display_amount: number | null;
@@ -93,6 +98,8 @@ function toObservation(row: ObservationRow): PriceObservation {
     currencyCode: row.currency_code,
     currencySymbol: CURRENCY_SYMBOLS[row.currency_code] ?? row.currency_code,
     collectedAt: row.collected_at,
+    reportingSessionKind: row.reporting_session_kind ?? null,
+    reportingBusinessDate: row.reporting_business_date ?? null,
     collectedAtPrecision: row.collected_at_precision,
     submittedAt: row.submitted_at,
     verifiedAt: row.verified_at,
@@ -114,6 +121,8 @@ function toObservation(row: ObservationRow): PriceObservation {
     varietyName: row.variety_name,
     unitCode: row.unit_code,
     unitName: row.unit_name,
+    reportedUnitName: row.reported_unit_name ?? null,
+    reportedUnitCode: row.reported_unit_code ?? null,
     unitDimension: row.unit_dimension ?? 'unknown',
     unitIsSpecific: row.unit_is_specific ?? false,
   };
@@ -223,18 +232,29 @@ export const supabaseSource: DataSource = {
 
   async listMarkets(): Promise<Market[]> {
     const supabase = await createClient();
-    const [{ data: markets }, { data: states }] = await Promise.all([
-      supabase.from('markets').select('*').eq('is_active', true).order('name'),
-      supabase.from('states').select('*'),
-    ]);
+    const [{ data: markets, error: marketsError }, { data: states, error: statesError }] =
+      await Promise.all([
+        supabase.from('markets').select('*').eq('is_active', true).order('name'),
+        supabase.from('states').select('*'),
+      ]);
+
+    if (marketsError) throw new Error(`Could not read active markets: ${marketsError.message}`);
+    if (statesError) throw new Error(`Could not read market states: ${statesError.message}`);
 
     const stateMap = new Map((states ?? []).map((s) => [s.id as number, s]));
-    const { data: counts } = await supabase
-      .from('published_price_observations')
-      .select('market_id, collected_at');
+    const counts = await collectAllPages(async (offset, limit) => {
+      const { data, error } = await supabase
+        .from('published_price_observations')
+        .select('market_id, collected_at, id')
+        .order('collected_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(offset, offset + limit - 1);
+      if (error) throw new Error(`Could not read published market coverage: ${error.message}`);
+      return (data ?? []) as { market_id: number; collected_at: string; id: string }[];
+    });
 
     const perMarket = new Map<number, { count: number; latest: string }>();
-    for (const row of counts ?? []) {
+    for (const row of counts) {
       const id = row.market_id as number;
       const entry = perMarket.get(id) ?? { count: 0, latest: '' };
       entry.count += 1;
@@ -291,12 +311,24 @@ export const supabaseSource: DataSource = {
       synonymMap.set(id, list);
     }
 
-    const { data: counts } = await supabase
-      .from('published_price_observations')
-      .select('commodity_id, market_id, collected_at');
+    const counts = await collectAllPages(async (offset, limit) => {
+      const { data, error } = await supabase
+        .from('published_price_observations')
+        .select('commodity_id, market_id, collected_at, id')
+        .order('collected_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(offset, offset + limit - 1);
+      if (error) throw new Error(`Could not read published commodity coverage: ${error.message}`);
+      return (data ?? []) as {
+        commodity_id: number;
+        market_id: number;
+        collected_at: string;
+        id: string;
+      }[];
+    });
 
     const perCommodity = new Map<number, { count: number; markets: Set<number>; latest: string }>();
-    for (const row of counts ?? []) {
+    for (const row of counts) {
       const id = row.commodity_id as number;
       const entry = perCommodity.get(id) ?? { count: 0, markets: new Set<number>(), latest: '' };
       entry.count += 1;
@@ -320,6 +352,7 @@ export const supabaseSource: DataSource = {
         defaultVarietyId: c.default_variety_id as number | null,
         categoryName: (category?.name as string) ?? null,
         categorySlug: (category?.slug as string) ?? null,
+        freshnessWindowHours: (c.freshness_window_hours as number) ?? 72,
         synonyms: synonymMap.get(c.id as number) ?? [],
         marketCount: stats?.markets.size ?? 0,
         latestObservationAt: stats?.latest ?? null,
@@ -331,6 +364,31 @@ export const supabaseSource: DataSource = {
   async getCommodityBySlug(slug) {
     const commodities = await this.listCommodities();
     return commodities.find((c) => c.slug === slug) ?? null;
+  },
+
+  async getCommodityBySlugForDetail(slug) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('commodities')
+      .select(
+        'id, legacy_id, category_id, name, slug, description, is_active, default_variety_id, freshness_window_hours',
+      )
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return {
+      id: data.id as number,
+      legacyId: data.legacy_id as number | null,
+      categoryId: data.category_id as number,
+      name: data.name as string,
+      slug: data.slug as string,
+      description: data.description as string | null,
+      isActive: data.is_active as boolean,
+      defaultVarietyId: data.default_variety_id as number | null,
+      freshnessWindowHours: (data.freshness_window_hours as number) ?? 72,
+    };
   },
 
   async getCommodityById(id) {
@@ -364,6 +422,9 @@ export const supabaseSource: DataSource = {
     };
     const chosen = sortMap[query.sort ?? 'recent']!;
     builder = builder.order(chosen.column, { ascending: chosen.ascending });
+    // Stable tie-breaker prevents same-timestamp/equal-price rows from jumping
+    // across adjacent pages.
+    builder = builder.order('id', { ascending: true });
     builder = builder.range((page - 1) * pageSize, page * pageSize - 1);
 
     const { data, count } = await builder;
@@ -380,20 +441,25 @@ export const supabaseSource: DataSource = {
 
   async listObservationsForAnalysis(query) {
     const supabase = await createClient();
-    let builder = supabase.from('published_price_observations').select(OBSERVATION_COLUMNS);
+    const rows = await collectAllPages(async (offset, limit) => {
+      let builder = supabase.from('published_price_observations').select(OBSERVATION_COLUMNS);
 
-    const { filters, or } = buildFilters(query);
-    for (const filter of filters) {
-      if (filter.op === 'eq') builder = builder.eq(filter.column, filter.value);
-      else if (filter.op === 'gte') builder = builder.gte(filter.column, filter.value);
-      else builder = builder.lte(filter.column, filter.value);
-    }
-    if (or.length) builder = builder.or(or.join(','));
+      const { filters, or } = buildFilters(query);
+      for (const filter of filters) {
+        if (filter.op === 'eq') builder = builder.eq(filter.column, filter.value);
+        else if (filter.op === 'gte') builder = builder.gte(filter.column, filter.value);
+        else builder = builder.lte(filter.column, filter.value);
+      }
+      if (or.length) builder = builder.or(or.join(','));
 
-    builder = builder.order('collected_at', { ascending: true });
-
-    const { data } = await builder;
-    return (data ?? []).map((row) => toObservation(row as unknown as ObservationRow));
+      const { data, error } = await builder
+        .order('collected_at', { ascending: true })
+        .order('id', { ascending: true })
+        .range(offset, offset + limit - 1);
+      if (error) throw new Error(`Could not read published observations for analysis: ${error.message}`);
+      return (data ?? []) as unknown as ObservationRow[];
+    });
+    return rows.map((row) => toObservation(row));
   },
 
   async getProvenance() {

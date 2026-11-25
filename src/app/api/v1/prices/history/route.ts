@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createApiHandler } from '@/lib/api/handler';
 import { errors } from '@/lib/api/response';
 import { getDataSource } from '@/lib/data';
-import { buildSeries } from '@/lib/pricing';
+import { buildComparableDailySeries, selectDominantComparisonSeries } from '@/lib/pricing';
 
 const querySchema = z
   .object({
@@ -29,9 +29,17 @@ const querySchema = z
  * GET /api/v1/prices/history
  *
  * A daily price series for one commodity in one market.
+ *
+ * Extended history is a premium capability, so this route is the first to
+ * resolve access through the central engine rather than the legacy check. The
+ * public read scope stays open at /api/v1/prices/latest: a caller without the
+ * entitlement is told which capability is missing and where the free data is,
+ * not simply refused.
  */
 export const GET = createApiHandler({
   query: querySchema,
+  feature: 'commodities.extended_history',
+  action: 'read',
   handler: async (context) => {
     const source = await getDataSource();
     const [commodities, markets] = await Promise.all([
@@ -56,11 +64,23 @@ export const GET = createApiHandler({
       collectedTo: context.end_date ? `${context.end_date}T23:59:59.999Z` : undefined,
     });
 
-    const series = buildSeries(observations);
+    const selectedSeries = selectDominantComparisonSeries(observations, { includeMarket: false });
+    const series = buildComparableDailySeries(observations).points;
+    const selectedObservation = selectedSeries.selected[0] ?? null;
 
     return {
       commodity: { slug: commodity.slug, name: commodity.name },
       market: { slug: market.slug, name: market.name, state: market.stateName },
+      specification: selectedObservation
+        ? {
+            priceType: selectedObservation.priceType,
+            grade: selectedObservation.gradeName,
+            variety: selectedObservation.varietyName,
+            unit: selectedObservation.unitName,
+            currency: selectedObservation.currencyCode,
+          }
+        : null,
+      excludedObservationCount: selectedSeries.excluded.length,
       range: {
         start: context.start_date ?? series[0]?.date ?? null,
         end: context.end_date ?? series[series.length - 1]?.date ?? null,
@@ -72,9 +92,9 @@ export const GET = createApiHandler({
         maxAmount: point.max,
         observations: point.observations,
       })),
-      observationCount: observations.length,
+      observationCount: selectedSeries.selected.length,
       calculationRule:
-        'Each point is the median of that day\'s observations; minAmount and maxAmount are the observed range.',
+        'Each daily point is the median of observations in one exact commodity/market/price-type/grade/variety/unit/currency series. Other specifications and non-comparable price types are excluded and counted separately; minAmount and maxAmount are the observed range.'
     };
   },
 });

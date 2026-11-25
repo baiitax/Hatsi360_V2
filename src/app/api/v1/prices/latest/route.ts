@@ -73,6 +73,8 @@ export const GET = createApiHandler({
         marketName: summary.marketName,
         state: summary.stateName,
         priceType: summary.priceType,
+        grade: summary.gradeName ? { id: summary.gradeId, name: summary.gradeName } : null,
+        variety: summary.varietyName ? { id: summary.varietyId, name: summary.varietyName } : null,
         unit: summary.unitCode
           ? { code: summary.unitCode, name: summary.unitName, recorded: summary.unitIsSpecific }
           : null,
@@ -86,7 +88,9 @@ export const GET = createApiHandler({
         windowEnd: summary.windowEnd,
         latestCollectedAt: summary.latestCollectedAt,
         latestVerifiedAt: summary.latestVerifiedAt,
+        freshnessState: summary.freshnessState,
         isStale: summary.isStale,
+        timestampNeedsReview: summary.timestampNeedsReview,
         unitAmbiguous: summary.unitAmbiguous,
       })),
       pagination: {

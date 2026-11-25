@@ -4,6 +4,15 @@ import { NextResponse } from 'next/server';
 import type { ZodType } from 'zod';
 import { authenticateApiKey, checkRateLimit, logApiUsage, type ApiApplication } from './auth';
 import { hasEntitlement, type EntitlementKey } from '@/lib/entitlements';
+import type { EntitlementDecision } from '@/lib/entitlement';
+import {
+  apiDenialBody,
+  authorizeAlways,
+  httpStatusForDecision,
+  retryAfterForDecision,
+  buildPolicyContext,
+} from '@/lib/entitlement';
+import { legacyKeysToFeatures, apiTierToSubscriptionStatus } from '@/lib/entitlement/legacy';
 
 export interface HandlerContext {
   request: Request;
@@ -22,8 +31,30 @@ export interface HandlerOptions<TQuery extends object, TData> {
    * The entitlement a caller must hold to use this endpoint.
    *
    * The check happens on the server. The interface is never the control.
+   *
+   * This is the Phase 10 §18 legacy path: it is kept so no existing check is
+   * weakened during migration. New endpoints should declare `feature` instead,
+   * which resolves through the central engine and returns a structured
+   * decision. When both are declared the engine runs first, so a route is
+   * never less protected than it was.
    */
   entitlement?: EntitlementKey;
+
+  /**
+   * The central-registry feature this endpoint requires.
+   *
+   * §13: a module registers its feature in the central registry and resolves
+   * access through the central service, rather than implementing subscription
+   * logic of its own. The decision is evaluated server-side and its denial
+   * carries a distinct reason code.
+   */
+  feature?: string;
+
+  /** The action being performed, for the decision and the audit trail. */
+  action?: EntitlementDecision['action'];
+
+  /** The feature's region restrictions, when it has any. */
+  featureRegions?: readonly string[] | null;
   handler: (
     context: HandlerContext & TQuery & { application: ApiApplication | null },
   ) => Promise<TData | NextResponse>;
@@ -65,8 +96,63 @@ export function createApiHandler<TQuery extends object, TData>(
       }
     }
 
-    // Entitlement gating. A premium endpoint is refused to a caller without
-    // the entitlement, whatever their key's scopes say.
+    // Centralized entitlement gating. Phase 10 §13: a route resolves access
+    // through the central engine rather than implementing subscription logic of
+    // its own. The decision is built from server-side facts only — the API
+    // key's owner and the resolved subscription — never from anything the
+    // request carries.
+    if (options.feature) {
+      const owner = auth.application?.userId ?? null;
+      const decision = authorizeAlways(
+        options.feature,
+        options.action ?? 'read',
+        buildPolicyContext({
+          principalId: owner,
+          accountStatus: owner ? 'active' : 'unknown',
+          // §18: the legacy coarse keys are mapped to their central-registry
+          // equivalents rather than guessed at, so a subscription means the
+          // same thing before and after migration.
+          grantKeys: owner
+            ? legacyKeysToFeatures(auth.application?.entitlements ?? {})
+            : [],
+          subscription: owner
+            ? { status: apiTierToSubscriptionStatus(auth.application?.tier) }
+            : null,
+          region: request.headers.get('x-hatsi-region'),
+          featureRegions: options.featureRegions ?? null,
+        }),
+      );
+
+      if (!decision.allowed) {
+        const body = apiDenialBody(decision);
+        // The denial's own fields sit directly on `error`, alongside the code
+        // and message the envelope already carries, so a client reads one
+        // object rather than a nested duplicate.
+        const response = NextResponse.json(
+          {
+            error: {
+              code: body.error.code,
+              message: body.error.message,
+              feature: body.error.feature,
+              action: body.error.action,
+              ...(body.error.upgradeRequired ? { upgradeRequired: true } : {}),
+              ...(body.error.allowance ? { allowance: body.error.allowance } : {}),
+            },
+            meta: {
+              requestId: crypto.randomUUID(),
+              generatedAt: new Date().toISOString(),
+            },
+          },
+          { status: httpStatusForDecision(decision) },
+        );
+        const retryAfter = retryAfterForDecision(decision);
+        if (retryAfter !== null) response.headers.set('Retry-After', String(retryAfter));
+        return response;
+      }
+    }
+
+    // Legacy entitlement gating. A premium endpoint is refused to a caller
+    // without the entitlement, whatever their key's scopes say.
     if (options.entitlement) {
       const entitled = auth.application
         ? hasEntitlement(auth.application.entitlementSet, options.entitlement)

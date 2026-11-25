@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { getOverview } from '@/lib/analytics/queries';
 import { periodLabel } from '@/lib/analytics/format';
 import { METRIC_DEFINITIONS } from '@/lib/analytics/definitions';
@@ -42,7 +42,7 @@ export default async function AdminOverviewPage({
   const params = await searchParams;
   const days = PERIODS.includes(Number(params.days)) ? Number(params.days) : 7;
 
-  await requireStaff('/admin/overview');
+  await requirePathAccess('/admin/overview');
 
   const { snapshot, metrics, feed, trends, coverage } = await getOverview(days);
 

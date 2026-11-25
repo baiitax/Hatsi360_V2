@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { isSupabaseConfigured } from '@/lib/supabase/config';
+import { getSiteUrl, isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
-import { landingPathForRole, safeRedirectPath } from './routing';
+import { landingPathForRole, safeRedirectPathForRole } from './routing';
 import {
   checkSignInLimit,
   clearSignInAttempts,
@@ -131,8 +131,7 @@ export async function signIn(
   await recordSignInAttempt(email, true, ip);
   await clearSignInAttempts(email);
 
-  const landing = landingPathForRole(role);
-  const target = safeRedirectPath(parsed.data.next, landing);
+  const target = safeRedirectPathForRole(parsed.data.next, role);
 
   revalidatePath('/', 'layout');
   redirect(target);
@@ -182,7 +181,7 @@ export async function signUp(
         full_name: parsed.data.fullName,
         organisation: parsed.data.organisation ?? null,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/callback`,
+      emailRedirectTo: new URL('/auth/callback', getSiteUrl()).toString(),
     },
   });
 
@@ -221,7 +220,11 @@ export async function requestPasswordReset(
 
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/reset-password`,
+    redirectTo: (() => {
+      const callback = new URL('/auth/callback', getSiteUrl());
+      callback.searchParams.set('next', '/reset-password');
+      return callback.toString();
+    })(),
   });
 
   return {

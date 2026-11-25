@@ -1,41 +1,58 @@
 /**
- * GonaPulse brand configuration.
+ * Hatsi360 brand configuration.
  *
  * Every user-facing name, strapline, contact detail and navigation entry in
  * the product resolves through this file. Nothing else hard-codes the product
  * name, so a brand change is a change in one place.
  *
- * The relationship with Pluck Agro is deliberate and subordinate: GonaPulse is
+ * The relationship with Pluck Agro is deliberate and subordinate: Hatsi360 is
  * the product; Pluck Agro is the endorsement.
  */
 
 /* -------------------------------------------------------------- identity -- */
 
 export const BRAND = {
-  /** The product name. Never "Pluck Live" in customer-facing copy. */
-  name: 'GonaPulse',
+  /** The product name. Never a legacy name in customer-facing copy. */
+  name: 'Hatsi360',
+  /**
+   * The product name as the market terminal presents it.
+   *
+   * `name` stays `Hatsi360` because it is the name in the URLs, the footer,
+   * the structured data and the logo artwork. `productName` is the *terminal's*
+   * name — the wordmark a trader sees in the header bar. The two are never
+   * mixed: nothing renders `Hatsi360` where it means the terminal, and
+   * nothing renders `Hatsi360 Markets` where it means the company.
+   */
+  productName: 'Hatsi360 Markets',
+  /** The product category — what the product is. */
+  category: 'African Agricultural Market Intelligence',
   /** The category line shown under the wordmark. */
-  descriptor: 'Agricultural Market Intelligence',
-  /** The strapline. */
-  tagline: 'Know the market. Move with confidence.',
+  descriptor: 'African Agricultural Market Intelligence',
+  /** The longer descriptor used on brand assets and in partner material. */
+  commodityDescriptor: 'Agricultural Commodity Intelligence',
+  /**
+   * The tagline. Three clauses, in the order a user acts: know what was
+   * harvested, understand what the market is doing, then trade.
+   */
+  tagline: 'Know the harvest. Understand the market. Trade with confidence.',
   /** The corporate endorsement. Subordinate to the product brand. */
   endorsement: 'Powered by Pluck Agro',
   /**
    * The ownership statement. The wording is deliberately non-specific about
-   * legal structure: `docs/GONAPULSE_TRANSFORMATION_AUDIT.md` §4 records that
-   * the exact legal language must be confirmed by authorised company
-   * information before publication.
+   * legal structure: `docs/HATSI360_TRANSFORMATION_AUDIT.md` records that the
+   * exact legal language must be confirmed by authorised company information
+   * before publication.
    */
   ownershipStatement:
-    'GonaPulse is an independent agricultural market intelligence platform powered by Pluck Agro.',
+    'Hatsi360 is an independent agricultural market intelligence platform powered by Pluck Agro.',
   /** The product's own name for its main surfaces. */
   surfaces: {
-    publicSite: 'GonaPulse',
-    portal: 'GonaPulse Access Portal',
-    fieldApp: 'GonaPulse Field App',
-    controlCentre: 'GonaPulse Intelligence Control Centre',
-    customerWorkspace: 'GonaPulse Customer Workspace',
-    reporting: 'GonaPulse Market Intelligence',
+    publicSite: 'Hatsi360',
+    portal: 'Hatsi360 Access Portal',
+    fieldApp: 'Hatsi360 Field',
+    controlCentre: 'Hatsi360 Intelligence Control Centre',
+    customerWorkspace: 'Hatsi360 Customer Workspace',
+    reporting: 'Hatsi360 Market Intelligence',
   },
   /** The operating market, stated plainly rather than implied. */
   operatingMarket: 'Northern Nigeria',
@@ -48,9 +65,27 @@ export const BRAND = {
 
 /* --------------------------------------------------------------- contact -- */
 
+/**
+ * The contact details of the operating business.
+ *
+ * Every one of these is reproduced exactly as the legacy site publishes it,
+ * because they are the only contact details that can be verified. Nothing
+ * here is invented and nothing here assumes a Hatsi360 domain.
+ *
+ * The mailbox and the number still carry the previous domain and brand. They
+ * are replaced only when a confirmed Hatsi360 domain exists, which is tracked
+ * as an open item in `docs/HATSI360_TRANSFORMATION_AUDIT.md`.
+ */
 export const CONTACT = {
+  /** Published on every legacy page, in the header and the footer. */
   phone: '+234 801 234 5678',
   phoneHref: 'tel:+2348012345678',
+  /**
+   * The mailbox published by the legacy site. It is the only address that can
+   * be verified, so it is used unchanged. It still carries the previous
+   * domain; replacing it requires a confirmed Hatsi360 domain and is tracked
+   * as an open item in `docs/HATSI360_TRANSFORMATION_AUDIT.md`.
+   */
   email: 'info@agripricelive.com',
   emailHref: 'mailto:info@agripricelive.com',
   /**
@@ -70,27 +105,201 @@ export const CONTACT = {
 export interface NavLink {
   href: string;
   label: string;
-  /** A one-line explanation used by the footer and the mobile drawer. */
+  /** A one-line explanation used in the footer and the mobile drawer. */
   description?: string;
+  /**
+   * The short form of the label, used in the desktop navigation bar where
+   * every item has to fit on one line. The full label is kept for the mobile
+   * drawer, the footer, the page metadata and search engines.
+   */
+  short?: string;
 }
 
 export const PRIMARY_NAV: NavLink[] = [
-  { href: '/prices', label: 'Prices', description: 'Current eligible price observations' },
+  {
+    href: '/trade',
+    label: 'Trade Intelligence',
+    short: 'Trade',
+    description: 'Market terminal, price movement and trading opportunities',
+  },
   { href: '/commodities', label: 'Commodities', description: 'The commodity catalogue' },
+  {
+    href: '/prices',
+    label: 'Market Prices',
+    short: 'Prices',
+    description: 'Current eligible price observations',
+  },
   { href: '/markets', label: 'Markets', description: 'Markets under coverage' },
-  { href: '/compare', label: 'Compare', description: 'Multi-market comparison' },
-  { href: '/insights', label: 'Insights', description: 'Market insights and analysis' },
+  {
+    href: '/compare',
+    label: 'Compare Prices',
+    short: 'Compare',
+    description: 'Multi-market comparison',
+  },
+  {
+    href: '/insights',
+    label: 'Market Insights',
+    short: 'Insights',
+    description: 'Market insights and analysis',
+  },
   { href: '/reports', label: 'Reports', description: 'Published market intelligence' },
+  {
+    href: '/solutions',
+    label: 'Solutions',
+    short: 'Solutions',
+    description: 'What each kind of customer does with the data',
+  },
   { href: '/about', label: 'About', description: 'The platform and its methodology' },
 ];
 
 export const SECONDARY_NAV: NavLink[] = [
   { href: '/coverage', label: 'Coverage', description: 'Where we collect, and what that means' },
   { href: '/methodology', label: 'Methodology', description: 'How a price becomes a published price' },
-  { href: '/pricing', label: 'Intelligence plans', description: 'Access tiers for professional data' },
+  { href: '/pricing', label: 'Plans & Pricing', description: 'Access tiers for professional data' },
   { href: '/api-docs', label: 'API', description: 'Programmatic market data access' },
   { href: '/faq', label: 'FAQs', description: 'Common questions' },
   { href: '/contact', label: 'Contact', description: 'Business enquiries and support' },
+];
+
+/* ------------------------------------------------- the terminal's modules -- */
+
+/**
+ * The six modules of the Hatsi360 Markets terminal.
+ *
+ * This is the product's primary information architecture, and it is
+ * deliberately different from `PRIMARY_NAV`. `PRIMARY_NAV` is the *site*
+ * vocabulary — it answers "what is on this website" and is what the footer,
+ * the sitemap and the mobile index use. `MARKET_NAV` is the *terminal*
+ * vocabulary — it answers "what do I open to work the market this morning",
+ * and it is what the header bar uses.
+ *
+ * Two rules govern every entry:
+ *
+ *  1. **A module only links to a route that exists.** Anything the platform
+ *     does not yet serve is listed under `planned` — named, so the roadmap is
+ *     visible — and is never rendered as a link. `tests/brand/brand.test.ts`
+ *     asserts this by walking `src/app`.
+ *  2. **A module never promises a destination it cannot fill.** "Weather and
+ *     Rainfall" is a real part of fundamental intelligence; the platform has
+ *     no weather data, so it appears in the documentation and in `planned`,
+ *     and nowhere in the interface.
+ */
+export interface MarketModule {
+  id: string;
+  /** The label in the header bar. Upper case, one word where possible. */
+  label: string;
+  /** The module's landing route. Always a real, existing route. */
+  href: string;
+  /** One line explaining what the module is for. */
+  summary: string;
+  /** The destinations inside the module. Every one is a real route. */
+  items: NavLink[];
+  /**
+   * Named destinations the platform intends to serve and does not yet.
+   * These are documentation, never navigation.
+   */
+  planned?: string[];
+}
+
+export const MARKET_NAV: MarketModule[] = [
+  {
+    id: 'markets',
+    label: 'Markets',
+    href: '/markets',
+    summary: 'The market register, the live watch and the movers.',
+    items: [
+      { href: '/markets', label: 'Market Overview', description: 'Every market under coverage' },
+      { href: '/prices', label: 'Live Market Watch', description: 'Eligible current price observations' },
+      { href: '/prices', label: 'Market Movers', description: 'Movement between comparable observations' },
+      { href: '/compare', label: 'Market Comparisons', description: 'The same commodity across markets' },
+      { href: '/coverage', label: 'Regional Market Activity', description: 'Where collection actually happens' },
+    ],
+    planned: ['Market activity heatmap', 'Market operating hours'],
+  },
+  {
+    id: 'commodities',
+    label: 'Commodities',
+    href: '/commodities',
+    summary: 'The commodity catalogue, its grades and its history.',
+    items: [
+      { href: '/commodities', label: 'Commodity Directory', description: 'The full catalogue' },
+      { href: '/commodities', label: 'Commodity Profiles', description: 'Grades, units and reporting markets' },
+      { href: '/prices', label: 'Historical Prices', description: 'The published record for a commodity' },
+    ],
+    planned: ['Grades and specifications detail', 'Variety directory'],
+  },
+  {
+    id: 'trade',
+    label: 'Trade',
+    href: '/trade',
+    summary: 'Where the verified offers and the spread actually are.',
+    items: [
+      { href: '/trade', label: 'Trade Overview', description: 'The market terminal' },
+      { href: '/trade/best-buy', label: 'Sourcing Intelligence', description: 'The lowest verified observation' },
+      { href: '/trade/best-sell', label: 'Procurement Intelligence', description: 'The highest verified observation' },
+    ],
+    planned: ['Market spread monitor', 'Export offers'],
+  },
+  {
+    id: 'charts',
+    label: 'Charts',
+    href: '/charts',
+    summary: 'The chart workspace: history, comparison and context.',
+    items: [
+      { href: '/charts', label: 'Price Charts', description: 'The chart workspace' },
+      { href: '/prices', label: 'Historical Analysis', description: 'The published record, as a table' },
+      { href: '/compare', label: 'Market Comparisons', description: 'Two markets, one commodity' },
+    ],
+    planned: ['Technical indicators', 'Model-generated projections'],
+  },
+  {
+    id: 'fundamentals',
+    label: 'Fundamentals',
+    href: '/trade/fundamentals',
+    summary: 'The supply, demand and seasonal picture behind a price.',
+    items: [
+      { href: '/trade/fundamentals', label: 'Fundamental Overview', description: 'What the fundamentals surface reports today' },
+      { href: '/coverage', label: 'Collection Coverage', description: 'What the platform actually observes' },
+    ],
+    planned: [
+      'Supply and demand',
+      'Seasonal intelligence',
+      'Weather and rainfall',
+      'Production intelligence',
+      'Trade policy',
+      'FX and logistics factors',
+    ],
+  },
+  {
+    id: 'research',
+    label: 'Research',
+    href: '/insights',
+    summary: 'Market briefs, reports and the archive.',
+    items: [
+      { href: '/insights', label: 'Market Briefs', description: 'Short-form market commentary' },
+      { href: '/reports', label: 'Research Reports', description: 'Published market intelligence' },
+    ],
+    planned: ['Daily market brief', 'Weekly reports', 'Monthly outlook', 'Export intelligence'],
+  },
+];
+
+/** Every route the terminal's modules link to, flattened and de-duplicated. */
+export const MARKET_NAV_ROUTES: string[] = Array.from(
+  new Set(MARKET_NAV.flatMap((module) => [module.href, ...module.items.map((item) => item.href)])),
+);
+
+/**
+ * The destinations a signed-in market user reaches from the account menu.
+ *
+ * Only `/dashboard`, `/trade/watchlist` and `/trade/alerts` exist today, so
+ * only those three are listed. Preferences and saved searches are named in
+ * `planned` and are not rendered as links.
+ */
+export const ACCOUNT_NAV: NavLink[] = [
+  { href: '/dashboard', label: 'User Workspace', description: 'Your watchlists, alerts and access' },
+  { href: '/trade/watchlist', label: 'Watchlists', description: 'The commodities and markets you follow' },
+  { href: '/trade/alerts', label: 'Alerts', description: 'The price movements you asked to be told about' },
+  { href: '/login', label: 'Sign in', description: 'Access the workspace' },
 ];
 
 export const LEGAL_NAV: NavLink[] = [
@@ -174,9 +383,10 @@ export const INTELLIGENCE_TIERS: IntelligenceTier[] = [
 /* --------------------------------------------------------------- palette -- */
 
 /**
- * The GonaPulse palette, in one place, so the design system and the brand
+ * The Hatsi360 palette, in one place, so the design system and the brand
  * documentation cannot drift apart. The values here are the same ones the
- * Tailwind theme exposes as `brand-*`, `leaf-*`, `harvest-*` and `earth-*`.
+ * Tailwind theme exposes as `brand-*`, `leaf-*`, `harvest-*`, `sand-*`,
+ * `earth-*` and `ink-*`.
  *
  * `contrastOnWhite` records the measured contrast ratio against white for the
  * colours that are allowed to carry text. `tests/brand/brand.test.ts` asserts
@@ -194,76 +404,324 @@ export interface BrandColour {
 
 export const PALETTE: BrandColour[] = [
   {
-    name: 'Deep field',
-    hex: '#0d2c1b',
-    role: 'Primary brand — headers, primary buttons, the mark',
-    contrastOnWhite: 15.1,
+    name: 'Deep Harvest Green',
+    hex: '#123B2A',
+    role: 'Primary brand surface — navigation, hero panels, the mark',
+    contrastOnWhite: 12.46,
     textSafe: true,
   },
   {
-    name: 'Harvest',
-    hex: '#17512f',
+    name: 'Forest Green',
+    hex: '#174D35',
     role: 'Primary action colour, links, focus rings',
-    contrastOnWhite: 9.3,
+    contrastOnWhite: 9.77,
     textSafe: true,
   },
   {
-    name: 'Leaf',
-    hex: '#2a8a4e',
-    role: 'Supporting accent — verified states, chart series',
-    contrastOnWhite: 4.3,
-    textSafe: false,
-  },
-  {
-    name: 'Fresh leaf',
-    hex: '#34b877',
-    role: 'Secondary accent — positive deltas, highlights',
-    contrastOnWhite: 2.5,
-    textSafe: false,
-  },
-  {
-    name: 'Harvest gold',
-    hex: '#c4841e',
-    role: 'Secondary accent — alerts, highlights, report marks',
-    contrastOnWhite: 3.2,
-    textSafe: false,
-  },
-  {
-    name: 'Deep gold',
-    hex: '#8f6216',
-    role: 'Gold used as text on light backgrounds',
-    contrastOnWhite: 5.4,
+    name: 'Agricultural Green',
+    hex: '#26734B',
+    role: 'Accent and body accent — links on white, chart series',
+    contrastOnWhite: 5.78,
     textSafe: true,
   },
   {
-    name: 'Earth',
-    hex: '#8a6a4f',
-    role: 'Muted data-visualisation series, secondary text',
-    contrastOnWhite: 4.9,
-    textSafe: true,
+    name: 'Fresh Growth Green',
+    hex: '#5B9A57',
+    role: 'Supporting accent — positive movement, highlights',
+    contrastOnWhite: 3.38,
+    textSafe: false,
+  },
+  {
+    name: 'Grain Gold',
+    hex: '#D5A441',
+    role: 'Secondary accent — the mark, report marks, selected states',
+    contrastOnWhite: 2.28,
+    textSafe: false,
+  },
+  {
+    name: 'Harvest Amber',
+    hex: '#E5B95F',
+    role: 'Signal colour on dark surfaces — market pulse, chart highlight',
+    contrastOnWhite: 1.84,
+    textSafe: false,
+  },
+  {
+    name: 'Wheat Beige',
+    hex: '#E9D8B5',
+    role: 'Light grain tone on dark surfaces, category accents',
+    contrastOnWhite: 1.4,
+    textSafe: false,
+  },
+  {
+    name: 'Natural Sand',
+    hex: '#F4EFE4',
+    role: 'Warm editorial panel background',
+    contrastOnWhite: 1.15,
+    textSafe: false,
   },
   {
     name: 'Charcoal',
-    hex: '#1e2420',
+    hex: '#202923',
     role: 'Body typography',
-    contrastOnWhite: 15.8,
+    contrastOnWhite: 14.97,
     textSafe: true,
   },
   {
-    name: 'Canvas',
-    hex: '#faf9f6',
-    role: 'Page background — a warm off-white',
+    name: 'Deep Slate',
+    hex: '#34423A',
+    role: 'Secondary headings, dense UI text',
+    contrastOnWhite: 10.57,
+    textSafe: true,
+  },
+  {
+    name: 'Muted Grey',
+    hex: '#718078',
+    role: 'Muted graphic tone — large text and rules only',
+    contrastOnWhite: 4.15,
+    textSafe: false,
+  },
+  {
+    name: 'Soft Background',
+    hex: '#F7F8F5',
+    role: 'Page background',
     contrastOnWhite: null,
     textSafe: false,
   },
   {
-    name: 'Paper',
+    name: 'White',
     hex: '#ffffff',
-    role: 'Cards and surfaces',
+    role: 'Cards and analytical surfaces',
     contrastOnWhite: null,
     textSafe: false,
   },
+  {
+    name: 'Border',
+    hex: '#E3E9E2',
+    role: 'Hairline borders and table rules',
+    contrastOnWhite: null,
+    textSafe: false,
+  },
+  {
+    name: 'Success',
+    hex: '#228B55',
+    role: 'Status — verified, published, positive movement',
+    contrastOnWhite: 4.29,
+    textSafe: false,
+  },
+  {
+    name: 'Warning',
+    hex: '#D69E2E',
+    role: 'Status — stale data, pending review',
+    contrastOnWhite: 2.39,
+    textSafe: false,
+  },
+  {
+    name: 'Error',
+    hex: '#C84B45',
+    role: 'Status — rejected, failed, negative movement',
+    contrastOnWhite: 4.62,
+    textSafe: true,
+  },
+  {
+    name: 'Information',
+    hex: '#3478B8',
+    role: 'Status — informational notices',
+    contrastOnWhite: 4.64,
+    textSafe: true,
+  },
 ];
+
+/**
+ * The design tokens that the Tailwind theme exposes. The values are mirrored
+ * in `src/app/globals.css`; `tests/brand/brand.test.ts` asserts that the two
+ * files agree, so a token cannot change in one place only.
+ */
+export const DESIGN_TOKENS: Record<string, string> = {
+  'brand-50': '#F1F7F0',
+  'brand-100': '#E1EFE0',
+  'brand-200': '#C2DEC1',
+  'brand-300': '#9BC798',
+  'brand-400': '#7CB277',
+  'brand-500': '#2F8257',
+  'brand-600': '#26734B',
+  'brand-700': '#174D35',
+  'brand-800': '#123B2A',
+  'brand-900': '#0E2C1F',
+  'brand-950': '#071A12',
+  'leaf-100': '#E6F1E4',
+  'leaf-200': '#C9E2C5',
+  'leaf-300': '#9BC798',
+  'leaf-400': '#7CB277',
+  'leaf-500': '#5B9A57',
+  'leaf-600': '#467C43',
+  'leaf-700': '#376136',
+  'harvest-100': '#FAF1DC',
+  'harvest-200': '#F3DFB2',
+  'harvest-300': '#E9C97E',
+  'harvest-400': '#E5B95F',
+  'harvest-500': '#D5A441',
+  'harvest-600': '#B98B2E',
+  'harvest-700': '#96702A',
+  'sand-50': '#FBF8F1',
+  'sand-100': '#F4EFE4',
+  'sand-200': '#E9D8B5',
+  'sand-300': '#DCC79A',
+  'sand-400': '#CBB078',
+  'sand-500': '#B0945F',
+  'sand-600': '#8B7548',
+  'sand-700': '#6B5A36',
+  'earth-100': '#EDE7DE',
+  'earth-200': '#D9CDBC',
+  'earth-300': '#BFAF9A',
+  'earth-400': '#A28F78',
+  'earth-500': '#85735C',
+  'earth-600': '#675844',
+  'earth-700': '#4C4132',
+  'ink-50': '#F7F8F5',
+  'ink-100': '#EFF2EE',
+  'ink-200': '#E3E9E2',
+  'ink-300': '#CBD5CD',
+  'ink-400': '#68756E',
+  'ink-450': '#718078',
+  'ink-500': '#5A6760',
+  'ink-600': '#465149',
+  'ink-700': '#3A443D',
+  'ink-800': '#34423A',
+  'ink-900': '#202923',
+  'ink-950': '#121815',
+  'success-500': '#228B55',
+  'success-700': '#1C6E45',
+  'warning-500': '#D69E2E',
+  'warning-700': '#8A6520',
+  'error-500': '#C84B45',
+  'error-700': '#A63E39',
+  'info-500': '#3478B8',
+  'info-700': '#2C628F',
+  /* ------------------------------------------ dark market terminal layer -- */
+  'terminal-bg': '#101713',
+  'terminal-surface': '#17211B',
+  'terminal-elevated': '#1C2921',
+  'terminal-interactive': '#24332A',
+  'terminal-border': '#2C3A31',
+  'terminal-text': '#F3F6F2',
+  'terminal-text-secondary': '#A8B5AA',
+  'terminal-text-muted': '#85938A',
+  'terminal-outline': '#637166',
+  'focus-terminal': '#E9C97E',
+  'focus-light': '#174D35',
+  /* ------------------------------------------- light editorial layer ----- */
+  'editorial-bg': '#F7F8F5',
+  'editorial-surface': '#FFFFFF',
+  'editorial-soft': '#F0F3EE',
+  'editorial-text': '#202923',
+  'editorial-text-secondary': '#59665E',
+  'editorial-border': '#E3E9E2',
+  'editorial-control-border': '#8B9790',
+  /* ------------------------------------------- market movement semantics -- */
+  'move-up-light': '#26734B',
+  'move-up-soft-light': '#E6F1E4',
+  'move-down-light': '#A63E39',
+  'move-down-soft-light': '#FDF0EF',
+  'move-flat-light': '#59665E',
+  'move-up': '#26734B',
+  'move-up-soft': '#E6F1E4',
+  'move-down': '#A63E39',
+  'move-down-soft': '#FDF0EF',
+  'move-flat': '#59665E',
+  'move-up-terminal': '#50B77A',
+  'move-up-soft-terminal': '#14301F',
+  'move-down-terminal': '#EB7770',
+  'move-down-soft-terminal': '#331A18',
+  'move-flat-terminal': '#A8B5AA',
+};
+
+/**
+ * The typography scale.
+ *
+ * The numeric roles exist because a terminal is mostly numbers. A price that
+ * is set in the body size is either too small to read across a desk or too
+ * large to fit twenty to a row, so the scale has its own figures: `figure`
+ * for a table cell, `figure-lg` for a panel headline, `figure-xl` for the one
+ * number a panel exists to show.
+ *
+ * The values are mirrored in `src/app/globals.css` under the `--text-*`
+ * namespace and asserted by `tests/brand/brand.test.ts`.
+ */
+export const TYPE_SCALE = {
+  micro: { size: '0.625rem', lineHeight: '0.875rem', tracking: '0.06em' },
+  metadata: { size: '0.75rem', lineHeight: '1rem', tracking: '0' },
+  label: { size: '0.75rem', lineHeight: '1.125rem', tracking: '0' },
+  'body-sm': { size: '0.875rem', lineHeight: '1.375rem', tracking: '0' },
+  figure: { size: '1rem', lineHeight: '1.5rem', tracking: '-0.01em' },
+  'figure-lg': { size: '1.25rem', lineHeight: '1.5rem', tracking: '-0.015em' },
+  'figure-xl': { size: '1.75rem', lineHeight: '2rem', tracking: '-0.02em' },
+} as const;
+
+/** A typography role and what it is for. */
+export interface TypeRole {
+  role: string;
+  usage: string;
+  /** The scale entry the role uses. */
+  scale: keyof typeof TYPE_SCALE | 'display' | 'h1' | 'h2' | 'h3' | 'body';
+  family: 'sans' | 'display';
+  weight: string;
+  /** Numeric roles must render tabular figures. */
+  tabular: boolean;
+}
+
+/**
+ * The typography roles the terminal is built from.
+ *
+ * Two families, both self-hosted by `next/font` at build time so that no
+ * third-party font request ever reaches a field agent's phone:
+ *
+ *  - **Inter** carries the interface and every number. Its tabular figures are
+ *    what keep a column of prices aligned while the digits change.
+ *  - **Manrope** carries the editorial voice — page titles, section headings
+ *    and anything read rather than scanned.
+ */
+export const TYPE_ROLES: TypeRole[] = [
+  { role: 'Display', usage: 'The one figure a panel exists to show', scale: 'figure-xl', family: 'display', weight: '700', tabular: true },
+  { role: 'H1', usage: 'Page title', scale: 'h1', family: 'display', weight: '700', tabular: false },
+  { role: 'H2', usage: 'Main section heading', scale: 'h2', family: 'display', weight: '700', tabular: false },
+  { role: 'H3', usage: 'Card and panel heading', scale: 'h3', family: 'display', weight: '600', tabular: false },
+  { role: 'Body', usage: 'General information', scale: 'body', family: 'sans', weight: '400', tabular: false },
+  { role: 'Secondary', usage: 'Supporting description', scale: 'body-sm', family: 'sans', weight: '400', tabular: false },
+  { role: 'Label', usage: 'Filters and form labels', scale: 'label', family: 'sans', weight: '500', tabular: false },
+  { role: 'Metadata', usage: 'Timestamps, sources, units', scale: 'metadata', family: 'sans', weight: '400', tabular: false },
+  { role: 'Numeric', usage: 'Commodity prices and statistics', scale: 'figure', family: 'sans', weight: '600', tabular: true },
+  { role: 'Micro-label', usage: 'Decorative microcopy only; not for essential dates, states or control labels', scale: 'micro', family: 'sans', weight: '600', tabular: false },
+];
+
+/**
+ * The motion vocabulary.
+ *
+ * A terminal is read repeatedly all day, so nothing moves for longer than the
+ * wait it represents. Three durations, one easing curve, and every one of them
+ * disabled under `prefers-reduced-motion: reduce` by the block at the foot of
+ * `src/app/globals.css`.
+ */
+export const MOTION = {
+  instant: '90ms',
+  fast: '140ms',
+  panel: '200ms',
+  ease: 'cubic-bezier(0.2, 0, 0.1, 1)',
+} as const;
+
+/**
+ * The named z-index layers.
+ *
+ * Nothing in the application may pick a number. A header that sits above a
+ * drawer that sits above a modal is a decision, and it is made once, here.
+ */
+export const Z_LAYERS = {
+  sticky: 20,
+  header: 40,
+  drawer: 60,
+  modal: 70,
+  tooltip: 80,
+  boot: 200,
+} as const;
 
 /* --------------------------------------------------------------- helpers -- */
 
@@ -282,13 +740,15 @@ export function pageDescription(description: string): string {
 
 /** The organisation behind the product, for structured data. */
 export const ORGANISATION = {
-  name: 'GonaPulse',
-  legalName: 'GonaPulse',
+  name: BRAND.name,
+  legalName: BRAND.name,
   descriptor: BRAND.descriptor,
   endorsement: BRAND.endorsement,
   ownershipStatement: BRAND.ownershipStatement,
   url: '/',
-  logo: '/brand/gonapulse-logo-horizontal.svg',
+  logo: '/brand/hatsi360-logo-horizontal.png',
+  /** The mark on its own, for icon and avatar use. */
+  mark: '/brand/hatsi360-mark.png',
   email: CONTACT.email,
   telephone: CONTACT.phone,
   areaServed: 'Nigeria',

@@ -1,7 +1,7 @@
 import type { UserRole } from '@/types/domain';
 
 /**
- * GonaPulse — where a signed-in person belongs.
+ * Hatsi360 — where a signed-in person belongs.
  *
  * The routing table is the single place that decides which workspace a role
  * lands in. The server guards enforce the same table, so the redirect after
@@ -48,42 +48,57 @@ export function landingPathForRole(role: UserRole): string {
  * a convenience, the policies are the control.
  */
 const ROLE_PATHS: Record<UserRole, string[]> = {
-  public_user: ['/dashboard', '/prices', '/commodities', '/markets', '/compare', '/insights'],
-  customer: ['/dashboard', '/prices', '/commodities', '/markets', '/compare', '/insights'],
+  public_user: ['/dashboard', '/prices', '/commodities', '/markets', '/compare', '/insights', '/trade'],
+  customer: ['/dashboard', '/prices', '/commodities', '/markets', '/compare', '/insights', '/trade'],
   agent: ['/agent'],
   market_supervisor: [
     '/agent',
     '/admin/overview',
+    '/admin/operations',
     '/admin/search',
     '/admin/verification',
     '/admin/observations',
     '/admin/quality',
     '/admin/tasks',
     '/admin/agents',
+    '/admin/assignments',
     '/admin/markets',
+    '/admin/zones',
+    '/admin/commodities',
+    '/admin/categories',
     '/admin/schedule',
     '/admin/reports',
     '/admin/notifications',
+    '/admin/profile',
   ],
   verification_officer: [
     '/admin/overview',
+    '/admin/operations',
     '/admin/search',
     '/admin/verification',
     '/admin/observations',
     '/admin/quality',
     '/admin/reports',
     '/admin/notifications',
+    '/admin/profile',
   ],
   analyst: [
     '/admin/overview',
+    '/admin/operations',
     '/admin/search',
     '/admin/analytics',
     '/admin/observations',
     '/admin/quality',
     '/admin/tasks',
     '/admin/markets',
+    '/admin/assignments',
+    '/admin/commodities',
+    '/admin/categories',
+    '/admin/grades',
+    '/admin/units',
     '/admin/reports',
     '/admin/notifications',
+    '/admin/profile',
   ],
   admin: ['/admin'],
   super_admin: ['/admin'],
@@ -115,6 +130,8 @@ const ALLOWED_REDIRECT_PREFIXES = [
   '/markets',
   '/compare',
   '/insights',
+  '/trade',
+  '/reset-password',
   '/auth',
 ];
 
@@ -141,10 +158,31 @@ export function safeRedirectPath(next: string | null | undefined, fallback: stri
   return allowed ? candidate : fallback;
 }
 
+/**
+ * Keep authenticated redirects inside the caller's permitted workspace.
+ * Public destinations remain usable by every role; `/admin` and `/agent`
+ * destinations must also pass the centralized role path policy.
+ */
+export function safeRedirectPathForRole(
+  next: string | null | undefined,
+  role: UserRole,
+): string {
+  const fallback = landingPathForRole(role);
+  const target = safeRedirectPath(next, fallback);
+  const [path] = target.split('?');
+  const isWorkspacePath =
+    path === '/admin' ||
+    path.startsWith('/admin/') ||
+    path === '/agent' ||
+    path.startsWith('/agent/');
+
+  return isWorkspacePath && !canRoleVisitPath(role, path) ? fallback : target;
+}
+
 /** The sign-in page's own query parameters that need to survive a redirect. */
 export function loginRedirectFor(role: UserRole, next?: string | null): string {
   const landing = landingPathForRole(role);
-  const target = safeRedirectPath(next, landing);
+  const target = safeRedirectPathForRole(next, role);
   if (target === landing) return landing;
   return `/login?next=${encodeURIComponent(target)}`;
 }

@@ -2,7 +2,14 @@
 
 import Link from 'next/link';
 import { useActionState } from 'react';
-import { signIn, signUp, requestPasswordReset, type AuthActionState } from '@/lib/auth/actions';
+import {
+  requestPasswordReset,
+  signIn,
+  signUp,
+  updatePassword,
+  type AuthActionState,
+} from '@/lib/auth/actions';
+import { HatsiSpinner } from '@/components/loading/HatsiActionLoader';
 
 const fieldClass =
   'w-full rounded-xl border border-ink-200 bg-white px-3.5 py-2.5 text-sm text-ink-900 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none';
@@ -74,13 +81,21 @@ export function SignInForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        aria-busy={pending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
       >
-        {pending ? 'Signing in…' : 'Sign in'}
+        {pending ? (
+          <>
+            <HatsiSpinner />
+            Signing in…
+          </>
+        ) : (
+          'Sign in'
+        )}
       </button>
 
       <p className="text-center text-sm text-ink-600">
-        New to GonaPulse?{' '}
+        New to Hatsi360?{' '}
         <Link href="/register" className="font-semibold text-brand-700 hover:text-brand-800">
           Create an account
         </Link>
@@ -154,9 +169,17 @@ export function SignUpForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        aria-busy={pending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
       >
-        {pending ? 'Creating account…' : 'Create account'}
+        {pending ? (
+          <>
+            <HatsiSpinner />
+            Creating account…
+          </>
+        ) : (
+          'Create account'
+        )}
       </button>
 
       <p className="text-center text-sm text-ink-600">
@@ -196,9 +219,17 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+        aria-busy={pending}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
       >
-        {pending ? 'Sending…' : 'Send reset link'}
+        {pending ? (
+          <>
+            <HatsiSpinner />
+            Sending…
+          </>
+        ) : (
+          'Send reset link'
+        )}
       </button>
 
       <p className="text-center text-sm text-ink-600">
@@ -206,6 +237,78 @@ export function ForgotPasswordForm() {
           Back to sign in
         </Link>
       </p>
+    </form>
+  );
+}
+
+
+/** Complete password recovery from the session established by the auth callback. */
+export function ResetPasswordForm() {
+  const [state, formAction, pending] = useActionState<AuthActionState, FormData>(
+    updatePassword,
+    {},
+  );
+
+  return (
+    <form action={formAction} className="space-y-5">
+      <Alert state={state} />
+
+      {!state.success ? (
+        <>
+          <div>
+            <label htmlFor="new-password" className="mb-1.5 block text-sm font-semibold text-ink-800">
+              New password
+            </label>
+            <input
+              id="new-password"
+              name="password"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              className={fieldClass}
+            />
+            <p className="mt-1.5 text-xs text-ink-500">Use at least 8 characters.</p>
+          </div>
+
+          <div>
+            <label htmlFor="confirm-password" className="mb-1.5 block text-sm font-semibold text-ink-800">
+              Confirm new password
+            </label>
+            <input
+              id="confirm-password"
+              name="confirm"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              className={fieldClass}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={pending}
+            aria-busy={pending}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
+          >
+            {pending ? (
+              <>
+                <HatsiSpinner />
+                Updating password…
+              </>
+            ) : (
+              'Set new password'
+            )}
+          </button>
+        </>
+      ) : (
+        <p className="text-center text-sm text-ink-600">
+          <Link href="/login" className="font-semibold text-brand-700 underline">
+            Continue to sign in
+          </Link>
+        </p>
+      )}
     </form>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { listObservations, listReferenceData } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader, Panel, Pill, VERIFICATION_LABELS, verificationTone } from '@/components/ops/Primitives';
@@ -35,7 +35,7 @@ export default async function ObservationsPage({
   }>;
 }) {
   const params = await searchParams;
-  await requireStaff('/admin/observations');
+  await requirePathAccess('/admin/observations');
 
   const filters = {
     q: params.q,

@@ -1,12 +1,14 @@
 import 'server-only';
 
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { operationalToday } from '@/lib/analytics/format';
 import { deliverPending } from '@/lib/notifications';
+import { isDailyMarketReportingEnabled } from '@/lib/reporting/feature';
 
 /**
- * GonaPulse — scheduled job runner.
+ * Hatsi360 — scheduled job runner.
  *
  * The jobs are ordinary server-side functions. They are invoked by an
  * authenticated scheduler (see `src/app/api/jobs/run/route.ts`), never by a
@@ -49,6 +51,50 @@ export const JOB_DEFINITIONS: JobDefinition[] = [
       return {
         recordsProcessed: created,
         detail: `${created} collection task(s) created for ${scheduledFor.slice(0, 10)}.`,
+      };
+    },
+  },
+  {
+    name: 'generate_daily_market_reporting_sessions',
+    description: 'Creates idempotent opening and closing reporting sessions for active agent-market coverage.',
+    cadence: 'Daily, before the opening reporting window',
+    async run({ scheduledFor }) {
+      if (!isDailyMarketReportingEnabled()) {
+        return { recordsProcessed: 0, detail: 'Daily reporting is feature-disabled until its migration is active.' };
+      }
+      const supabase = createAdminClient();
+      const scheduledInstant = new Date(scheduledFor);
+      const businessDate = Number.isNaN(scheduledInstant.getTime())
+        ? operationalToday()
+        : operationalToday(scheduledInstant);
+      const { data, error } = await supabase.rpc('generate_daily_market_reporting_sessions', {
+        p_date: businessDate,
+      });
+      if (error) throw new Error(error.message);
+      const created = typeof data === 'number' ? data : 0;
+      return {
+        recordsProcessed: created,
+        detail: `${created} opening/closing reporting session(s) generated for ${businessDate} (Africa/Lagos).`,
+      };
+    },
+  },
+  {
+    name: 'mark_overdue_daily_market_reporting_sessions',
+    description: 'Marks opening and closing reports overdue after their configured local-time window and grace period.',
+    cadence: 'Hourly',
+    async run() {
+      if (!isDailyMarketReportingEnabled()) {
+        return { recordsProcessed: 0, detail: 'Daily reporting is feature-disabled until its migration is active.' };
+      }
+      const supabase = createAdminClient();
+      const { data, error } = await supabase.rpc('mark_overdue_daily_market_reporting_sessions', {
+        p_now: new Date().toISOString(),
+      });
+      if (error) throw new Error(error.message);
+      const marked = typeof data === 'number' ? data : 0;
+      return {
+        recordsProcessed: marked,
+        detail: `${marked} daily reporting session(s) marked overdue.`,
       };
     },
   },
@@ -155,7 +201,10 @@ export async function runJob(
   }
 
   const scheduledFor = options.scheduledFor ?? new Date().toISOString();
-  const supabase = await createClient();
+  // runJob is reachable only through an admin-guarded action or the secret-
+  // protected scheduler route. Use the server-only service client for the job
+  // ledger, which has no end-user session to satisfy RLS under a cron request.
+  const supabase = createAdminClient();
 
   // Claim the slot. The unique constraint makes a concurrent or repeated
   // invocation a no-op rather than a second execution.
