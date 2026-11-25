@@ -21,6 +21,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   IconBell,
@@ -148,14 +149,41 @@ export function Navbar({
               className="flex items-center flex-shrink-0"
               aria-label="Hatsi360 home"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/hatsi360-lockup-full.png"
-                alt="Hatsi360"
-                width={140}
-                height={40}
-                className="h-auto w-auto"
-              />
+              {/* Mobile: Compact logo (mark only) */}
+              <div className="block h-10 w-auto sm:hidden">
+                <Image
+                  src="/brand/hatsi360-mark.png"
+                  alt="Hatsi360"
+                  width={40}
+                  height={42}
+                  className="h-10 w-auto"
+                  priority
+                />
+              </div>
+
+              {/* Tablet: Compact lockup */}
+              <div className="hidden h-10 w-auto sm:block lg:hidden">
+                <Image
+                  src="/brand/hatsi360-lockup-compact.png"
+                  alt="Hatsi360"
+                  width={124}
+                  height={40}
+                  className="h-10 w-auto"
+                  priority
+                />
+              </div>
+
+              {/* Desktop: Full lockup */}
+              <div className="hidden h-12 w-auto lg:block">
+                <Image
+                  src="/brand/hatsi360-lockup-full.png"
+                  alt="Hatsi360"
+                  width={184}
+                  height={48}
+                  className="h-12 w-auto"
+                  priority
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -293,14 +321,16 @@ export function Navbar({
           <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl">
             {/* Drawer Header */}
             <div className="flex items-center justify-between border-b border-[#E3EAE5] px-4 py-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/hatsi360-lockup-full.png"
-                alt="Hatsi360"
-                width={120}
-                height={34}
-                className="h-auto w-auto"
-              />
+              <div className="h-9 w-auto">
+                <Image
+                  src="/brand/hatsi360-lockup-compact.png"
+                  alt="Hatsi360"
+                  width={110}
+                  height={36}
+                  className="h-9 w-auto"
+                  priority
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
