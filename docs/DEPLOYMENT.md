@@ -68,6 +68,45 @@ npm start                       # production server on $PORT (default 3000)
 * Set `NEXT_PUBLIC_SITE_URL` to the final production origin **before** the first deploy, because
   it is baked into the sitemap and the Open Graph URLs at build time.
 
+### Status, 25 November 2026
+
+`main` now carries the reviewed UI (lockup branding, Zainawa address in the
+header, rebuilt contact page) and builds clean on Node 20 with
+`NODE_OPTIONS=--max-old-space-size=1400`. `https://hatsi360.vercel.app` still
+serves the previous build; the deploy itself is blocked on token scope, not on
+the code:
+
+| Fact | Value |
+| --- | --- |
+| Live host | `hatsi360.vercel.app` — serves the pre-review build |
+| Vercel project | `hatsi360`, owned by team `baiitax` |
+| Token presented on 25 Nov | scoped to team `baiita-x-degen-s-projects`, where the only visible project is `pluck-agro` |
+| What that token can do | read `pluck-agro`; `POST /v11/projects` → *"You don't have permission to create the project"*; `GET /v2/user` → *User not found* |
+| What it cannot do | see or deploy `hatsi360` |
+
+Two ways forward:
+
+1. **Dashboard (no code needed).** In Vercel, open the `hatsi360` project →
+   *Settings → Git* → confirm it is connected to `baiitax/Hatsi360_V2` with
+   production branch `main`. The push at 16:30 UTC on 25 Nov then deploys on
+   its own; if the connection points at another repository, reconnect it. Add
+   the four variables from §2 if they are missing.
+2. **Script.** With a token that has deploy rights on the `baiitax` team:
+
+   ```bash
+   VERCEL_TOKEN=... TEAM_SLUG=baiitax ./scripts/deploy_vercel.sh
+   ```
+
+   The script checks the token, finds or creates the project linked to the
+   repository, upserts the public environment variables from `.env.local`,
+   queues a production deployment of `main`, and waits for `READY`.
+
+Verify after either route:
+
+```bash
+curl -s https://hatsi360.vercel.app/contact | grep -c 'What happens next'   # expect 1
+```
+
 ### On a plain Node host (systemd)
 
 ```ini
