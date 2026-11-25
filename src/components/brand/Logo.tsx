@@ -60,6 +60,23 @@ const COMPACT_RATIO = 415 / 1971;
 const MARK_RATIO = 1024 / 997;
 const HORIZONTAL_RATIO = 724 / 2016;
 
+/**
+ * The height of the header lockup, from `docs/BRAND_GUIDE.md` §2.3.
+ *
+ * It is declared once because the public terminal, the portal frames and the
+ * sign-in panel had drifted to 32, 36, 38 and 44 pixels — so the identity was
+ * a different size depending on which door a reader came in through.
+ *
+ * Below `sm` the lockup steps down one size. At 320 px the header measured
+ * 326 px wide with the lockup at its full height: the row overflowed the
+ * viewport and the page scrolled sideways.
+ */
+export const HEADER_LOCKUP_HEIGHT = 38;
+export const HEADER_LOCKUP_HEIGHT_CLASS = 'h-[2rem] sm:h-[2.375rem]';
+
+/** The lockup carries a gold gradient; at the default quality it bands. */
+const ARTWORK_QUALITY = 90;
+
 export function BrandMark({
   size = 40,
   className = '',
@@ -82,7 +99,8 @@ export function BrandMark({
       alt={title}
       width={size}
       height={Math.round(size * MARK_RATIO)}
-      className={`shrink-0 ${className}`}
+      quality={ARTWORK_QUALITY}
+      className={`h-auto w-auto shrink-0 ${className}`}
       priority={priority}
       sizes={`${size}px`}
     />
@@ -93,7 +111,7 @@ export type BrandLogoVariant = 'full' | 'mark' | 'wordmark';
 
 export function BrandLogo({
   variant = 'full',
-  size = 40,
+  size = HEADER_LOCKUP_HEIGHT,
   className = '',
   showDescriptor = false,
   tone = 'light',
@@ -123,23 +141,24 @@ export function BrandLogo({
     );
   }
 
-  // The header lockup: the mark and the name, sized from its height so the
-  // artwork keeps its own proportions.
+  // The header lockup: the mark and the name. The intrinsic width/height keep
+  // the artwork's own proportions; the height is set by a class so it can step
+  // down on a narrow screen without the width ever disagreeing with the image.
   const height = size;
   const width = Math.round(height / COMPACT_RATIO);
   const source = tone === 'dark' ? BRAND_ARTWORK.compactLight : BRAND_ARTWORK.compact;
 
   return (
-    <span className={`flex flex-col items-start ${className}`}>
+    <span className={`flex shrink-0 flex-col items-start ${className}`}>
       <Image
         src={source}
         alt={`${BRAND.name} — ${BRAND.descriptor}`}
         width={width}
         height={height}
-        className="object-contain"
-        style={{ height, width: 'auto' }}
+        quality={ARTWORK_QUALITY}
+        className={`w-auto ${HEADER_LOCKUP_HEIGHT_CLASS}`}
         priority={priority}
-        sizes={`${width}px`}
+        sizes={`(min-width: 640px) ${width}px, ${Math.round(32 / COMPACT_RATIO)}px`}
       />
       {showDescriptor ? (
         <span
@@ -179,6 +198,7 @@ export function BrandLockup({
       alt={`${BRAND.name} — ${BRAND.descriptor}. ${BRAND.endorsement}.`}
       width={width}
       height={Math.round(width * HORIZONTAL_RATIO)}
+      quality={ARTWORK_QUALITY}
       className={`h-auto w-auto ${className}`}
       priority={priority}
       sizes={`(min-width: 1024px) ${width}px, ${Math.round(width * 0.8)}px`}
@@ -188,7 +208,7 @@ export function BrandLockup({
 
 /** The logo as a home link. The accessible name is the product name. */
 export function BrandHomeLink({
-  size = 40,
+  size = HEADER_LOCKUP_HEIGHT,
   showDescriptor = false,
   className = '',
 }: {

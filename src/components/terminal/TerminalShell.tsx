@@ -68,11 +68,13 @@ export function TerminalHeader({
           className="flex shrink-0 items-center rounded-control focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-harvest-300"
           aria-label={`${BRAND.productName} home`}
         >
-          <BrandLogo size={32} tone="dark" priority />
+          <BrandLogo tone="dark" priority />
         </Link>
 
-        {/* The six modules. */}
-        <MainNavigation className="ml-2" />
+        {/* The six modules. The lockup is 180 px wide at its documented height,
+            so it needs clear space before the first module rather than the 8 px
+            it had — the wordmark and "MARKETS" read as one string otherwise. */}
+        <MainNavigation className="ml-4 lg:ml-6" />
 
         <div className="ml-auto flex items-center gap-2">
           {/* Global search. Hidden below lg, where the drawer carries it. */}
@@ -83,9 +85,13 @@ export function TerminalHeader({
             className="hidden w-44 xl:block"
           />
 
+          {/* The drawer carries search below `lg`, and it carried it while this
+              button was also on screen. At 320 px the header measured 326 px
+              wide — logo, this button, Sign in and the drawer trigger — so the
+              page scrolled sideways. The duplicate goes first. */}
           <Link
             href="/prices"
-            className="terminal-control lg:hidden"
+            className="terminal-control hidden sm:inline-flex lg:hidden"
             aria-label="Open the market watch"
           >
             <IconSearch className="size-3.5" />

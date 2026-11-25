@@ -9,7 +9,10 @@ function source(path: string): string {
 describe('keyboard-accessible navigation disclosures', () => {
   it('uses the supplied compact logo lockup in the terminal header for optical alignment', () => {
     const header = source('src/components/terminal/TerminalShell.tsx');
-    expect(header).toContain('<BrandLogo size={32} tone="dark" priority />');
+    // The lockup, reversed for the deep-green rail, at the height the brand
+    // guide declares — and not at a number invented in the header.
+    expect(header).toMatch(/<BrandLogo tone="dark" priority \/>/);
+    expect(header).not.toMatch(/<BrandLogo[^>]*size=\{\d+\}/);
     expect(header).not.toContain('<BrandMark size={26} tone="dark" />');
     expect(header).toContain('focus-visible:outline-offset-2');
   });

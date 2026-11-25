@@ -82,9 +82,12 @@ export default async function LoginPage({
           className="pointer-events-none absolute -bottom-32 -left-16 size-[28rem] rounded-full bg-brand-700/40 blur-3xl"
         />
 
-        <div className="relative flex items-center gap-3">
-          <BrandLogo size={44} tone="dark" />
-          <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-brand-200">
+        <div className="relative flex items-center gap-5">
+          {/* The endpoint's own artwork already carries the endorsement; the
+              line beside it is the panel's, and it needs clear space rather
+              than touching the mark. */}
+          <BrandLogo size={44} tone="dark" className="[&_img]:h-[2.75rem]" />
+          <span className="border-l border-brand-500/40 pl-5 text-[0.6rem] font-semibold uppercase leading-relaxed tracking-[0.2em] text-brand-200">
             {BRAND.endorsement}
           </span>
         </div>
