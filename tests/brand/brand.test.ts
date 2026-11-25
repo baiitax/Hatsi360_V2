@@ -11,7 +11,10 @@ import {
   MARKET_NAV_ROUTES,
   MOTION,
   TYPE_ROLES,
+<<<<<<< HEAD
   TYPE_SCALE,
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   Z_LAYERS,
   INTELLIGENCE_TIERS,
   LEGAL_NAV,
@@ -518,6 +521,7 @@ describe('the terminal module navigation', () => {
 });
 
 describe('the terminal design vocabulary', () => {
+<<<<<<< HEAD
   it('keeps essential text roles at the approved minimum sizes and mirrors CSS tokens', () => {
     const css = readFileSync(join(process.cwd(), 'src', 'app', 'globals.css'), 'utf8');
     expect(TYPE_SCALE.metadata.size).toBe('0.75rem');
@@ -536,6 +540,8 @@ describe('the terminal design vocabulary', () => {
     expect(css).toContain('outline: 2px solid var(--focus-ring-color, var(--color-focus-light));');
   });
 
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('defines a typography role for every kind of figure the terminal shows', () => {
     const roles = TYPE_ROLES.map((role) => role.role);
     for (const required of ['Display', 'H1', 'H2', 'H3', 'Body', 'Label', 'Metadata', 'Numeric', 'Micro-label']) {

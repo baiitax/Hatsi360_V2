@@ -43,9 +43,12 @@ export interface QueuedPrice {
   marketActivity?: string | null;
   sentiment?: string | null;
   developments?: string | null;
+<<<<<<< HEAD
   /** Daily-report queue metadata; absent for legacy task/session submissions. */
   dailySessionId?: string;
   dailyItemId?: string;
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   state: QueueState;
   attempts: number;
   lastError?: string;

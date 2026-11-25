@@ -67,6 +67,7 @@ const ROLE_PATHS: Record<UserRole, string[]> = {
     '/admin/commodities',
     '/admin/categories',
     '/admin/schedule',
+    '/admin/coverage',
     '/admin/reports',
     '/admin/notifications',
     '/admin/profile',
@@ -96,6 +97,11 @@ const ROLE_PATHS: Record<UserRole, string[]> = {
     '/admin/categories',
     '/admin/grades',
     '/admin/units',
+<<<<<<< HEAD
+=======
+    '/admin/schedule',
+    '/admin/coverage',
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     '/admin/reports',
     '/admin/notifications',
     '/admin/profile',

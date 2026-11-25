@@ -52,10 +52,34 @@ import { Select } from '@/components/ui/primitives';
  */
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: 'Chart workspace',
   description:
     'Published agricultural price history by comparable series: commodity, market, grade, price type, unit and currency, with the observations behind every point.',
   alternates: { canonical: '/charts' },
+=======
+  title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+  description:
+    'Analyse agricultural commodity price movements, historical observations and market comparisons using available Hatsi360 market intelligence data.',
+  alternates: { canonical: '/charts' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Hatsi360 Markets',
+    locale: BRAND.locale,
+    title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+    description:
+      'Analyse agricultural commodity price movements, historical observations and market comparisons.',
+    url: '/charts',
+    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+    description:
+      'Analyse agricultural commodity price movements, historical observations and market comparisons.',
+    images: ['/brand/hatsi360-social-preview.png'],
+  },
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 export const dynamic = 'force-dynamic';
@@ -263,7 +287,11 @@ export default async function ChartsWorkspacePage({
           source="Source: published_price_observations, aggregated by period. Each bar spans the lowest and highest published observation in the period."
           footnote={
             series?.includesLegacyData
+<<<<<<< HEAD
               ? 'This series includes records migrated from the previous system, labelled legacy_unverified. They are never presented as verified.'
+=======
+              ? 'This series may include records without a verification trail. They are shown with their original data and never presented as verified.'
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               : undefined
           }
           height="18rem"
@@ -411,6 +439,10 @@ function describeSeries(option: {
 }
 
 /** The streaming fallback for the chart panel. */
+<<<<<<< HEAD
 function ChartsFallback() {
+=======
+export function ChartsFallback() {
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return <ChartSkeleton height="18rem" />;
 }

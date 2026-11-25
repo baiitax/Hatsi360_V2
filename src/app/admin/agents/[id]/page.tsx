@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
+=======
+import { requireStaff } from '@/lib/auth/guards';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { getAgentRecord } from '@/lib/operations/admin';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { DataTable, type Column } from '@/components/ops/DataTable';
@@ -57,7 +61,11 @@ function formatDateTime(value: string | null): string {
  * accurately, and accurate prices are the purpose of the platform.
  */
 export default async function AdminAgentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+<<<<<<< HEAD
   await requirePathAccess('/admin/agents');
+=======
+  await requireStaff('/admin/agents');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const { id } = await params;
 
   if (!isSupabaseConfigured()) {

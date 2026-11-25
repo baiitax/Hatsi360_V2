@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
+=======
+import { requireStaff } from '@/lib/auth/guards';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { listCustomers, listEntitlementTiers } from '@/lib/operations/commercial';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { DataTable, type Column } from '@/components/ops/DataTable';
@@ -35,7 +39,11 @@ export default async function AdminCustomersPage({
 }: {
   searchParams: Promise<{ page?: string; q?: string }>;
 }) {
+<<<<<<< HEAD
   await requirePathAccess('/admin/customers');
+=======
+  await requireStaff('/admin/customers');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const params = await searchParams;
 
   if (!isSupabaseConfigured()) {

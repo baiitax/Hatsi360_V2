@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   CADENCE_THRESHOLDS,
+<<<<<<< HEAD
   LEGACY_THRESHOLDS,
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   classifyFreshness,
   formatAge,
   isPresentableAsCurrent,
@@ -185,18 +188,26 @@ describe('classifyFreshness', () => {
     expect(result.isDayPrecisionOnly).toBe(true);
   });
 
+<<<<<<< HEAD
   it('does not treat a future timestamp as fresh or report a zero age', () => {
+=======
+  it('never reports a negative age for a future timestamp', () => {
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     const result = classifyFreshness({
       collectedAt: new Date(NOW.getTime() + 60 * 60_000).toISOString(),
       cadence: 'daily',
       now: NOW,
     });
+<<<<<<< HEAD
     expect(result.state).toBe('future_timestamp');
     expect(result.ageMinutes).toBeNull();
     expect(result.explanation).toContain('later than the platform clock');
     expect(isPresentableAsCurrent(result.state)).toBe(false);
     expect(requiresFreshnessWarning(result.state)).toBe(true);
     expect(formatAge(result)).toBe('timestamp needs review');
+=======
+    expect(result.ageMinutes).toBe(0);
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 });
 
@@ -257,11 +268,14 @@ describe('describePriceType', () => {
 });
 
 describe('the freshness thresholds', () => {
+<<<<<<< HEAD
   it('uses the approved no-cadence 30-day fresh window and 730-day verified horizon', () => {
     expect(LEGACY_THRESHOLDS.freshWindowMinutes).toBe(30 * 24 * 60);
     expect(LEGACY_THRESHOLDS.verifiedHorizonMinutes).toBe(730 * 24 * 60);
   });
 
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('gives a daily cadence a window longer than one day', () => {
     // A single missed day must not turn a good price stale.
     expect(CADENCE_THRESHOLDS.daily.freshWindowMinutes).toBeGreaterThan(24 * 60);

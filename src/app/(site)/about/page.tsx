@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { BRAND } from '@/lib/brand';
 import { PageHero } from '@/components/ui/PageHero';
 import { getDataSource } from '@/lib/data';
 import { formatDate } from '@/lib/money';
@@ -7,10 +8,32 @@ import { getPageImage } from '@/lib/images/registry';
 import { HatsiImage } from '@/components/media/HatsiImage';
 
 export const metadata: Metadata = {
+<<<<<<< HEAD
   title: 'About Hatsi360',
   description:
     'How Hatsi360 collects, verifies and publishes agricultural commodity prices across Nigeria — our methodology, our data coverage and what we do not know.',
+=======
+  title: 'About Hatsi360 Markets | African Agricultural Intelligence',
+  description:
+    'Learn about Hatsi360 Markets, our mission to improve agricultural market intelligence and our commitment to helping businesses make better-informed decisions across African agricultural markets.',
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/about' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Hatsi360 Markets',
+    locale: BRAND.locale,
+    title: 'About Hatsi360 Markets | African Agricultural Intelligence',
+    description:
+      'Learn about Hatsi360 Markets, our mission to improve agricultural market intelligence and our commitment to helping businesses make better-informed decisions.',
+    url: '/about',
+    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Hatsi360 Markets | African Agricultural Intelligence',
+    description: 'Our mission to improve agricultural market intelligence across African markets.',
+    images: ['/brand/hatsi360-social-preview.png'],
+  },
 };
 
 const STEPS = [
@@ -116,7 +139,6 @@ export default async function AboutPage() {
                   <li>· Observations that passed verification, with their verification time</li>
                   <li>· The commodity, market, unit and price type behind each figure</li>
                   <li>· The number of observations and the window a summary covers</li>
-                  <li>· Legacy records, clearly labelled as unverified</li>
                 </ul>
               </div>
               <div className="card p-5">
@@ -137,32 +159,6 @@ export default async function AboutPage() {
               price results only once it actually has published observations.
             </p>
 
-            {source.isMigrated && provenance ? (
-              <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-6">
-                <h3 className="text-base font-bold text-amber-950">
-                  The honest state of the data today
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-amber-900">
-                  The price records currently published were migrated from the previous Pluck Live
-                  system — this platform&rsquo;s earlier name — on{' '}
-                  {formatDate(provenance.collectedAt)}. They were reconstructed from the
-                  daily summaries that system published, and every reconstruction was checked
-                  against the latest prices that system displayed — all{' '}
-                  {provenance.validation.publishedLatestValuesChecked} checks matched.
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-amber-900">
-                  What those records do not contain: the measurement unit, the price type, the time
-                  of day the price was collected, the grade, and any verification trail. Rather than
-                  inventing those fields, we publish the figures as they were and label them{' '}
-                  <em>Legacy record — unverified</em>.
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-amber-900">
-                  New observations collected through the agent network carry all of those fields and
-                  a verification record. They are marked{' '}
-                  <em>Verified</em> and show their collection and verification times.
-                </p>
-              </div>
-            ) : null}
           </div>
 
           <aside className="space-y-5">

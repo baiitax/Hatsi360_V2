@@ -201,7 +201,11 @@ export function TextInput({
 }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
+<<<<<<< HEAD
       className={`h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-outline bg-terminal-surface px-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+=======
+      className={`h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface px-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {...rest}
     />
   );
@@ -215,7 +219,11 @@ export function Select({
 }: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
+<<<<<<< HEAD
       className={`h-[1.875rem] max-w-full rounded-control border border-terminal-outline bg-terminal-surface px-2 text-[0.75rem] font-medium text-terminal-text-secondary focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+=======
+      className={`h-[1.875rem] max-w-full rounded-control border border-terminal-border bg-terminal-surface px-2 text-[0.75rem] font-medium text-terminal-text-secondary focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {...rest}
     >
       {children}
@@ -280,7 +288,11 @@ export function SearchInput({
               }
             : undefined
         }
+<<<<<<< HEAD
         className="h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-outline bg-terminal-surface pl-8 pr-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none"
+=======
+        className="h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface pl-8 pr-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none"
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       />
     </div>
   );

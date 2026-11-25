@@ -168,6 +168,7 @@ export default async function LoginPage({
           {/*
             The demo accounts.
 
+<<<<<<< HEAD
             These are visible unconditionally. That is a deliberate decision the
             requester made after being shown the exposure: anyone who can open
             this page can sign in as an administrator. It is recorded, with the
@@ -179,6 +180,17 @@ export default async function LoginPage({
             wrong password produces, which is honest rather than confusing.
           */}
           <DemoAccountsPanel next={next || undefined} />
+=======
+            Gated behind NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true so they never
+            appear on a production deployment unless explicitly enabled. The
+            exposure was P0: anyone who can open the login page could sign in
+            as an administrator and mutate the live database. The panel only
+            renders when the operator has deliberately opted in.
+          */}
+          {process.env.NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS === 'true' ? (
+            <DemoAccountsPanel next={next || undefined} />
+          ) : null}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
           {/*
             Access, stated plainly.

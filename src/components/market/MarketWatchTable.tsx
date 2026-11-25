@@ -45,10 +45,14 @@ export interface MarketWatchRow {
   unitLabel: string | null;
   priceTypeLabel: string | null;
   gradeName: string | null;
+<<<<<<< HEAD
   /** The daily movement, or `null` when it cannot be calculated. */
   changePercent: number | null;
   /** The weekly movement, or `null` when it cannot be calculated. */
   weeklyChangePercent?: number | null;
+=======
+  changePercent: number | null;
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   observedAt: string | null;
   verificationStatus: string;
   href?: string;
@@ -69,7 +73,10 @@ export function MarketWatchTable({
   caption,
   emptyState,
   footer,
+<<<<<<< HEAD
   showWeekly = true,
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }: {
   rows: MarketWatchRow[];
   /** When supplied with `onSort`, the sortable column heads become links. */
@@ -80,12 +87,15 @@ export function MarketWatchTable({
   /** Rendered instead of the table when there is nothing to show. */
   emptyState?: ReactNode;
   footer?: ReactNode;
+<<<<<<< HEAD
   /**
    * Whether the weekly-movement column is rendered. A page that cannot compute
    * a weekly movement passes `false`, so the column is absent rather than a
    * column of unexplained dashes.
    */
   showWeekly?: boolean;
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }) {
   if (rows.length === 0) {
     return <>{emptyState}</>;
@@ -111,14 +121,20 @@ export function MarketWatchTable({
               sort={sort}
               onSort={onSort}
             />
+<<<<<<< HEAD
             <th scope="col">Price type</th>
             <SortableHead
               label="Daily"
+=======
+            <SortableHead
+              label="Movement"
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               column="movement"
               align="right"
               sort={sort}
               onSort={onSort}
             />
+<<<<<<< HEAD
             {showWeekly ? (
               <SortableHead
                 label="Weekly"
@@ -128,6 +144,8 @@ export function MarketWatchTable({
                 onSort={onSort}
               />
             ) : null}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             <SortableHead
               label="Last observed"
               column="observed"
@@ -181,6 +199,7 @@ export function MarketWatchTable({
                   </>
                 )}
               </td>
+<<<<<<< HEAD
               <td className="text-terminal-text-secondary">{row.priceTypeLabel ?? '—'}</td>
               <td className="num">
                 <PriceChangeBadge changePercent={row.changePercent} />
@@ -190,6 +209,11 @@ export function MarketWatchTable({
                   <PriceChangeBadge changePercent={row.weeklyChangePercent ?? null} />
                 </td>
               ) : null}
+=======
+              <td className="num">
+                <PriceChangeBadge changePercent={row.changePercent} />
+              </td>
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               <td className="figure-num whitespace-nowrap text-terminal-text-secondary">
                 {row.observedAt ? formatObserved(row.observedAt) : '—'}
               </td>
@@ -221,6 +245,7 @@ export function MarketWatchTable({
  * rest to the commodity page. Rendered by the page rather than by a media
  * query, so it can be tested.
  */
+<<<<<<< HEAD
 export function MarketWatchCards({
   rows,
   showWeekly = true,
@@ -228,6 +253,9 @@ export function MarketWatchCards({
   rows: MarketWatchRow[];
   showWeekly?: boolean;
 }) {
+=======
+export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return (
     <ul className="divide-y divide-terminal-border">
       {rows.map((row) => (
@@ -248,7 +276,10 @@ export function MarketWatchCards({
               <p className="truncate text-[0.6875rem] text-terminal-text-muted">
                 {row.marketName ?? 'Market not recorded'} ·{' '}
                 {row.observedAt ? formatObserved(row.observedAt) : 'not observed'}
+<<<<<<< HEAD
                 {row.priceTypeLabel ? ` · ${row.priceTypeLabel}` : ''}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               </p>
             </div>
             <div className="shrink-0 text-right">
@@ -259,6 +290,7 @@ export function MarketWatchCards({
                       row.unitLabel ? ` / ${row.unitLabel}` : ''
                     }`}
               </p>
+<<<<<<< HEAD
               <div className="flex items-center justify-end gap-1.5">
                 <span className="figure-label">D</span>
                 <PriceChangeBadge changePercent={row.changePercent} />
@@ -269,6 +301,9 @@ export function MarketWatchCards({
                   </>
                 ) : null}
               </div>
+=======
+              <PriceChangeBadge changePercent={row.changePercent} />
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             </div>
           </Link>
         </li>

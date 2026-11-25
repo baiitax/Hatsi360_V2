@@ -7,7 +7,10 @@ import {
   submitFieldDraft,
   removeFieldDraft,
   closeFieldSession,
+<<<<<<< HEAD
   markDailyReportingItem,
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   type FieldActionState,
 } from '@/lib/operations/field-actions';
 import {
@@ -17,6 +20,10 @@ import {
   readLocalDraft,
   writeLocalDraft,
   clearLocalDraft,
+<<<<<<< HEAD
+=======
+  isOnline,
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   type QueuedPrice,
 } from '@/lib/agent/offline-queue';
 import { useFieldQueue, type SendOutcome } from '@/lib/agent/use-field-queue';
@@ -153,7 +160,10 @@ export function CollectionSession({
   units,
   grades,
   evidenceRequired,
+<<<<<<< HEAD
   dailyReporting,
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }: {
   batchId: number;
   marketId: number;
@@ -166,6 +176,7 @@ export function CollectionSession({
   units: UnitOption[];
   grades: GradeOption[];
   evidenceRequired: boolean;
+<<<<<<< HEAD
   dailyReporting: {
     sessionId: string;
     sessionKind: 'opening' | 'closing';
@@ -190,11 +201,17 @@ export function CollectionSession({
       displayOrder: number;
     }[];
   } | null;
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }) {
   const router = useRouter();
   const [state, setState] = useState<FieldActionState>({ ok: false, message: '' });
   const [pending, startTransition] = useTransition();
   const [step, setStep] = useState<'commodity' | 'price' | 'context'>('commodity');
+<<<<<<< HEAD
+=======
+  const [online, setOnline] = useState(true);
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   const [commodityId, setCommodityId] = useState('');
   const [priceType, setPriceType] = useState('wholesale_transaction');
@@ -211,9 +228,12 @@ export function CollectionSession({
   const [sentiment, setSentiment] = useState('');
   const [developments, setDevelopments] = useState('');
   const [idempotencyKey, setIdempotencyKey] = useState(() => newIdempotencyKey());
+<<<<<<< HEAD
   const [dailyValues, setDailyValues] = useState<Record<string, { amount: string; collectedAt: string; notes: string }>>({});
   const [dailyMessage, setDailyMessage] = useState('');
   const [pendingOutcomeIds, setPendingOutcomeIds] = useState<string[]>([]);
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   /**
    * Send one queued price.
@@ -227,6 +247,7 @@ export function CollectionSession({
    */
   const sendQueuedPrice = useCallback(
     async (item: QueuedPrice): Promise<SendOutcome> => {
+<<<<<<< HEAD
       if (item.dailySessionId && item.dailyItemId) {
         const response = await fetch('/api/agent/daily-report', {
           method: 'POST',
@@ -245,6 +266,8 @@ export function CollectionSession({
         router.refresh();
         return { ok: true, message: 'Submitted for verification.', observationId: result.observationId };
       }
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       const formData = new FormData();
       formData.set('batchId', String(batchId));
       formData.set('marketId', String(item.marketId));
@@ -282,6 +305,7 @@ export function CollectionSession({
   // still waiting, and still has the idempotency key it was typed with.
   const queue = useFieldQueue(sendQueuedPrice);
   const pendingQueue = queue.pending;
+<<<<<<< HEAD
   const online = queue.online;
 
   useEffect(() => {
@@ -321,11 +345,25 @@ export function CollectionSession({
     }
     return () => { cancelled = true; };
   }, [dailyReporting, online, router]);
+=======
+  useEffect(() => {
+    setOnline(isOnline());
+    const onOnline = () => setOnline(true);
+    const onOffline = () => setOnline(false);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, []);
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   // Restore the form the agent was in the middle of.
   useEffect(() => {
     const draft = readLocalDraft(batchId);
     if (!draft) return;
+<<<<<<< HEAD
     let cancelled = false;
     queueMicrotask(() => {
       if (cancelled) return;
@@ -347,6 +385,24 @@ export function CollectionSession({
       if (draft.commodityId) setStep('price');
     });
     return () => { cancelled = true; };
+=======
+    setCommodityId(draft.commodityId);
+    setPriceType(draft.priceType);
+    setAmount(draft.amount);
+    setUnitId(draft.unitId);
+    setGradeId(draft.gradeId);
+    setCollectedAt(draft.collectedAt);
+    setNotes(draft.notes);
+    setAvailability(draft.availability);
+    setSupplyLevel(draft.supplyLevel);
+    setDemandLevel(draft.demandLevel);
+    setPriceDirection(draft.priceDirection);
+    setMarketActivity(draft.marketActivity);
+    setSentiment(draft.sentiment);
+    setDevelopments(draft.developments);
+    setIdempotencyKey(draft.idempotencyKey);
+    if (draft.commodityId) setStep('price');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   }, [batchId]);
 
   // Keep the form on the device as it changes.
@@ -548,6 +604,7 @@ export function CollectionSession({
     });
   };
 
+<<<<<<< HEAD
   const updateDailyValue = (itemId: string, field: 'amount' | 'collectedAt' | 'notes', value: string) => {
     setDailyValues((current) => ({
       ...current,
@@ -628,6 +685,8 @@ export function CollectionSession({
     });
   };
 
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const amountError = state.fieldErrors?.amount;
   const unitError = state.fieldErrors?.unitId;
 
@@ -710,6 +769,7 @@ export function CollectionSession({
         </div>
       ) : null}
 
+<<<<<<< HEAD
       {dailyReporting ? (
         <section className="space-y-3 rounded-xl border border-brand-200 bg-brand-50/40 p-3 sm:p-4" aria-labelledby="daily-report-title">
           <div>
@@ -785,6 +845,10 @@ export function CollectionSession({
 
       {/* Legacy/manual recorder remains available only on non-daily batches. */}
       {!completed && !dailyReporting ? (
+=======
+      {/* ------------------------------------------------------- the recorder */}
+      {!completed ? (
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         <section className="rounded-xl border border-ink-200 bg-white p-4">
           <h2 className="text-base font-bold text-ink-900">
             {step === 'commodity'

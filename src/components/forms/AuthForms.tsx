@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useActionState } from 'react';
+<<<<<<< HEAD
 import {
   requestPasswordReset,
   signIn,
@@ -9,6 +10,9 @@ import {
   updatePassword,
   type AuthActionState,
 } from '@/lib/auth/actions';
+=======
+import { signIn, signUp, requestPasswordReset, type AuthActionState } from '@/lib/auth/actions';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { HatsiSpinner } from '@/components/loading/HatsiActionLoader';
 
 const fieldClass =

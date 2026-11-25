@@ -23,7 +23,11 @@
 
 'use client';
 
+<<<<<<< HEAD
 import { useEffect, useRef, useState } from 'react';
+=======
+import { useEffect, useState } from 'react';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ACCOUNT_NAV, BRAND, MARKET_NAV, SECONDARY_NAV } from '@/lib/brand';
@@ -60,6 +64,7 @@ export function MobileNavigation({
   // second render — and a drawer can never survive navigation to the page whose
   // destination was just tapped.
   const [openedAt, setOpenedAt] = useState<string | null>(null);
+<<<<<<< HEAD
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const open = openedAt !== null && openedAt === pathname;
@@ -108,17 +113,39 @@ export function MobileNavigation({
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
+=======
+  const open = openedAt !== null && openedAt === pathname;
+
+  // Escape closes the drawer, and the body stops scrolling while it is open.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenedAt(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previous;
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     };
   }, [open]);
 
   return (
     <>
       <button
+<<<<<<< HEAD
         ref={triggerRef}
         type="button"
         onClick={() => setOpenedAt(pathname)}
         aria-expanded={open}
         aria-controls="terminal-mobile-dialog"
+=======
+        type="button"
+        onClick={() => setOpenedAt(pathname)}
+        aria-expanded={open}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         aria-haspopup="dialog"
         aria-label="Open the market menu"
         className="terminal-control lg:hidden"
@@ -132,19 +159,28 @@ export function MobileNavigation({
           <button
             type="button"
             aria-label="Close the market menu"
+<<<<<<< HEAD
             tabIndex={-1}
             aria-hidden="true"
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             onClick={() => setOpenedAt(null)}
             className="absolute inset-0 cursor-default bg-brand-950/70"
           />
 
           <div
+<<<<<<< HEAD
             ref={dialogRef}
             id="terminal-mobile-dialog"
             role="dialog"
             aria-modal="true"
             aria-label="Market menu"
             tabIndex={-1}
+=======
+            role="dialog"
+            aria-modal="true"
+            aria-label="Market menu"
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             className="terminal absolute inset-y-0 right-0 flex w-[min(20rem,88vw)] flex-col border-l border-terminal-border bg-terminal-surface shadow-terminal-lift"
           >
             <header className="flex items-center justify-between gap-2 border-b border-terminal-border px-3 py-2.5">
@@ -172,7 +208,11 @@ export function MobileNavigation({
               <ul className="flex flex-col gap-0.5">
                 {MARKET_NAV.map((module) => (
                   <li key={module.id}>
+<<<<<<< HEAD
                     <ModuleGroup module={module} onNavigate={() => setOpenedAt(null)} />
+=======
+                    <ModuleGroup module={module} />
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   </li>
                 ))}
               </ul>
@@ -183,7 +223,10 @@ export function MobileNavigation({
                   <li key={link.href}>
                     <Link
                       href={link.href}
+<<<<<<< HEAD
                       onClick={() => setOpenedAt(null)}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                       className="flex min-h-[2.25rem] items-center rounded-control px-2 text-[0.8125rem] text-terminal-text-secondary transition-colors hover:bg-terminal-interactive hover:text-terminal-text"
                     >
                       {link.label}
@@ -195,12 +238,20 @@ export function MobileNavigation({
 
             <footer className="border-t border-terminal-border p-3">
               {signedIn ? (
+<<<<<<< HEAD
                 <Link href={workspaceHref} onClick={() => setOpenedAt(null)} className="terminal-action w-full">
+=======
+                <Link href={workspaceHref} className="terminal-action w-full">
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   <IconUser className="size-3.5" />
                   {userEmail ?? 'Your workspace'}
                 </Link>
               ) : (
+<<<<<<< HEAD
                 <Link href="/login" onClick={() => setOpenedAt(null)} className="terminal-action w-full">
+=======
+                <Link href="/login" className="terminal-action w-full">
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   <IconSignIn className="size-3.5" />
                   Sign in
                 </Link>
@@ -232,6 +283,7 @@ export function MobileNavigation({
 }
 
 /** One module in the drawer, with its destinations always expanded. */
+<<<<<<< HEAD
 function ModuleGroup({
   module,
   onNavigate,
@@ -239,6 +291,9 @@ function ModuleGroup({
   module: (typeof MARKET_NAV)[number];
   onNavigate: () => void;
 }) {
+=======
+function ModuleGroup({ module }: { module: (typeof MARKET_NAV)[number] }) {
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const pathname = usePathname();
   const active = pathname === module.href || pathname.startsWith(`${module.href}/`);
 
@@ -246,7 +301,10 @@ function ModuleGroup({
     <div className="rounded-control">
       <Link
         href={module.href}
+<<<<<<< HEAD
         onClick={onNavigate}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         aria-current={active ? 'page' : undefined}
         className={`flex min-h-[2.25rem] items-center justify-between gap-2 rounded-control px-2 text-[0.8125rem] font-semibold transition-colors ${
           active
@@ -263,7 +321,10 @@ function ModuleGroup({
             <li key={`${module.id}-${item.label}`}>
               <Link
                 href={item.href}
+<<<<<<< HEAD
                 onClick={onNavigate}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 className="flex min-h-[2rem] items-center rounded-control px-2 text-[0.75rem] text-terminal-text-secondary transition-colors hover:bg-terminal-interactive/60 hover:text-terminal-text"
               >
                 {item.label}

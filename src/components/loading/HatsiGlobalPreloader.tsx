@@ -130,6 +130,7 @@ export function HatsiGlobalPreloader() {
       >
         <div className="hatsi-boot__inner">
           <div className="hatsi-boot__mark">
+<<<<<<< HEAD
             {/* The official mark, reversed for the deep green surface. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -137,6 +138,15 @@ export function HatsiGlobalPreloader() {
               alt=""
               width={56}
               height={54}
+=======
+            {/* The full brand lockup — emblem, HATSI360, subtitle, underline, and "Powered by Pluck Agro". */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/hatsi360-lockup-full.png"
+              alt="Hatsi360 — Agricultural Market Intelligence. Powered by Pluck Agro."
+              width={220}
+              height={80}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               className="hatsi-boot__logo"
               decoding="async"
             />
@@ -167,11 +177,14 @@ export function HatsiGlobalPreloader() {
               />
             </svg>
           </div>
+<<<<<<< HEAD
 
           <p className="hatsi-boot__title">{BRAND.name}</p>
           <p className="hatsi-boot__message" data-boot-message>
             Connecting to agricultural intelligence&hellip;
           </p>
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           <div className="hatsi-boot__bar" aria-hidden="true">
             <span className="hatsi-boot__bar-fill" />
           </div>

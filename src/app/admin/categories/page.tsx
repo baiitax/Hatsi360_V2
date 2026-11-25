@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
+=======
+import { requireStaff } from '@/lib/auth/guards';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { getDataSource } from '@/lib/data';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader } from '@/components/ops/Primitives';
@@ -13,7 +17,11 @@ export const metadata: Metadata = {
 
 /** The commodity taxonomy, with the number of commodities each category holds. */
 export default async function AdminCategoriesPage() {
+<<<<<<< HEAD
   await requirePathAccess('/admin/categories');
+=======
+  await requireStaff('/admin/categories');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const source = await getDataSource();
   const [categories, commodities] = await Promise.all([
     source.listCategories(),

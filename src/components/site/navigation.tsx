@@ -68,14 +68,28 @@ export function MainNavigation({ className = '' }: { className?: string }) {
         </Link>
       ))}
 
+<<<<<<< HEAD
       <details className="relative">
         <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-brand-50 hover:text-brand-800 focus-visible:bg-brand-50 focus-visible:text-brand-800 [&::-webkit-details-marker]:hidden">
+=======
+      <div className="group relative">
+        <button
+          type="button"
+          className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-ink-700 transition-colors hover:bg-brand-50 hover:text-brand-800 group-focus-within:bg-brand-50 group-focus-within:text-brand-800"
+          aria-haspopup="true"
+        >
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           More
           <span aria-hidden="true" className="text-[0.6rem]">
             &#9662;
           </span>
+<<<<<<< HEAD
         </summary>
         <div className="absolute right-0 top-full z-50 w-64 rounded-xl border border-ink-200 bg-white py-2 shadow-lift">
+=======
+        </button>
+        <div className="invisible absolute right-0 top-full w-64 translate-y-1 rounded-xl border border-ink-200 bg-white py-2 opacity-0 shadow-lift transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           {SECONDARY_NAV.map((link) => (
             <Link
               key={link.href}
@@ -86,7 +100,11 @@ export function MainNavigation({ className = '' }: { className?: string }) {
             </Link>
           ))}
         </div>
+<<<<<<< HEAD
       </details>
+=======
+      </div>
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     </nav>
   );
 }

@@ -91,7 +91,10 @@ export default async function CollectionSessionPage({
           commodityId: grade.commodity_id,
         }))}
         evidenceRequired={evidenceRequired}
+<<<<<<< HEAD
         dailyReporting={session.dailyReporting}
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       />
     </div>
   );

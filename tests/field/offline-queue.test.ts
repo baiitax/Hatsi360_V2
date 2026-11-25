@@ -331,11 +331,19 @@ describe('the queue hook', () => {
     expect(hook.startsWith("'use client'")).toBe(true);
   });
 
+<<<<<<< HEAD
   it('subscribes to persistent storage rather than starting with an empty queue', () => {
     expect(hook).toContain('useSyncExternalStore(subscribeQueue, getQueueSnapshot');
     expect(hook).toContain('function getQueueSnapshot()');
     expect(hook).toContain('JSON.stringify(readQueue())');
     expect(hook).toContain("window.addEventListener('storage', onChange)");
+=======
+  it('rehydrates from storage on mount rather than starting empty', () => {
+    expect(hook).toContain('refresh()');
+    expect(hook).toContain('useState<QueuedPrice[]>([])');
+    // The rehydration is what makes the queue real after a reload.
+    expect(hook.indexOf('setOnline(isOnline())')).toBeLessThan(hook.indexOf('window.addEventListener(QUEUE_CHANGED_EVENT'));
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('takes the sender from the caller, so it holds no server import', () => {
@@ -345,12 +353,20 @@ describe('the queue hook', () => {
 
   it('sends one item at a time, in order', () => {
     expect(hook).toContain('nextQueuedItem()');
+<<<<<<< HEAD
     expect(hook).toContain('while (!cancelled && isOnline())');
+=======
+    expect(hook).toContain('while (!cancelled)');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('stops when the browser is offline and leaves everything queued', () => {
     expect(hook).toContain('if (!online) return;');
+<<<<<<< HEAD
     expect(hook).toContain('while (!cancelled && isOnline())');
+=======
+    expect(hook).toContain('if (!isOnline()) break;');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('clears an item only on a confirmed success', () => {

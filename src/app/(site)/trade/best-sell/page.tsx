@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { buildShareMetadata } from '@/lib/metadata';
 import Link from 'next/link';
 import { getDataSource } from '@/lib/data';
@@ -36,11 +39,14 @@ export const dynamic = 'force-dynamic';
  * rule, rendered.
  */
 export default async function TradeBestSellPage() {
+<<<<<<< HEAD
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/trade/best-sell" product="Trade Intelligence" />;
   }
 
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const configured = isSupabaseConfigured();
   const commodities = configured ? await (await getDataSource()).listCommodities() : [];
 

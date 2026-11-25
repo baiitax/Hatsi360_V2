@@ -160,6 +160,7 @@ export function AdminShell({
             className="absolute inset-0 bg-ink-950/40"
             onClick={() => setOpenedAt(null)}
           />
+<<<<<<< HEAD
           <div
             ref={mobileDialogRef}
             id="admin-mobile-navigation"
@@ -169,13 +170,20 @@ export function AdminShell({
             tabIndex={-1}
             className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto bg-brand-800 shadow-xl"
           >
+=======
+          <div className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto bg-brand-800 shadow-xl">
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             <div className="flex items-center justify-between border-b border-brand-700 px-4 py-3">
               <span className="text-sm font-bold text-white">
                 {BRAND.name} Control Centre
               </span>
               <button
                 type="button"
+<<<<<<< HEAD
                 onClick={() => setOpenedAt(null)}
+=======
+                onClick={() => setMobileOpen(false)}
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 className="rounded-md p-1 text-brand-100 hover:bg-brand-700"
                 aria-label="Close navigation"
               >

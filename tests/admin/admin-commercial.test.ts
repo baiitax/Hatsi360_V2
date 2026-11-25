@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+<<<<<<< HEAD
 import { canRoleVisitPath } from '@/lib/auth/routing';
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 const ROOT = process.cwd();
 
@@ -74,12 +77,17 @@ describe('the commercial read model', () => {
 describe('the customers screen', () => {
   const page = read('src/app/admin/customers/page.tsx');
 
+<<<<<<< HEAD
   it('guards the route with role-specific access before reading customer data', () => {
     expect(page).toContain("await requirePathAccess('/admin/customers')");
     expect(canRoleVisitPath('admin', '/admin/customers')).toBe(true);
     expect(canRoleVisitPath('super_admin', '/admin/customers')).toBe(true);
     expect(canRoleVisitPath('analyst', '/admin/customers')).toBe(false);
     expect(canRoleVisitPath('market_supervisor', '/admin/customers')).toBe(false);
+=======
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/customers')");
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('shows a free account as free, not as missing data', () => {
@@ -96,12 +104,17 @@ describe('the customers screen', () => {
 describe('the subscriptions screen', () => {
   const page = read('src/app/admin/subscriptions/page.tsx');
 
+<<<<<<< HEAD
   it('guards the route with role-specific access before reading subscription data', () => {
     expect(page).toContain("await requirePathAccess('/admin/subscriptions')");
     expect(canRoleVisitPath('admin', '/admin/subscriptions')).toBe(true);
     expect(canRoleVisitPath('super_admin', '/admin/subscriptions')).toBe(true);
     expect(canRoleVisitPath('analyst', '/admin/subscriptions')).toBe(false);
     expect(canRoleVisitPath('market_supervisor', '/admin/subscriptions')).toBe(false);
+=======
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/subscriptions')");
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('labels a paid tier as proposed rather than purchasable', () => {
@@ -121,12 +134,17 @@ describe('the subscriptions screen', () => {
 describe('the API management screen', () => {
   const page = read('src/app/admin/api-management/page.tsx');
 
+<<<<<<< HEAD
   it('guards the route with role-specific access before reading API usage', () => {
     expect(page).toContain("await requirePathAccess('/admin/api-management')");
     expect(canRoleVisitPath('admin', '/admin/api-management')).toBe(true);
     expect(canRoleVisitPath('super_admin', '/admin/api-management')).toBe(true);
     expect(canRoleVisitPath('analyst', '/admin/api-management')).toBe(false);
     expect(canRoleVisitPath('market_supervisor', '/admin/api-management')).toBe(false);
+=======
+  it('guards the route on the server', () => {
+    expect(page).toContain("await requireStaff('/admin/api-management')");
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('shows only the key prefix and explains why', () => {
@@ -160,6 +178,7 @@ describe('the agent detail screen', () => {
   const page = read('src/app/admin/agents/[id]/page.tsx');
   const source = read('src/lib/operations/admin.ts');
 
+<<<<<<< HEAD
   it('guards the route with role-specific access and 404s an unknown agent', () => {
     expect(page).toContain("await requirePathAccess('/admin/agents')");
     expect(page).toContain('notFound()');
@@ -167,6 +186,11 @@ describe('the agent detail screen', () => {
     expect(canRoleVisitPath('super_admin', '/admin/agents')).toBe(true);
     expect(canRoleVisitPath('analyst', '/admin/agents')).toBe(false);
     expect(canRoleVisitPath('market_supervisor', '/admin/agents')).toBe(true);
+=======
+  it('guards the route on the server and 404s an unknown agent', () => {
+    expect(page).toContain("await requireStaff('/admin/agents')");
+    expect(page).toContain('notFound()');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('computes no composite performance score', () => {

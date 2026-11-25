@@ -4,9 +4,14 @@ import { PRICE_TYPE_META } from '@/types/domain';
 /**
  * Price freshness.
  *
+<<<<<<< HEAD
  * Brief §6.2 defines the core price states and insists that a latest observation
  * is never simply labelled "live". This module also explicitly flags invalid
  * or future timestamps so they cannot be mistaken for fresh data.
+=======
+ * Brief §6.2 lists seven price states and insists that a latest observation
+ * is never simply labelled "live". This module implements them.
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  *
  * Two thresholds, because freshness and verification are different questions:
  *
@@ -27,8 +32,12 @@ export type PriceState =
   | 'indicative'
   | 'latest_verified'
   | 'recently_updated'
+<<<<<<< HEAD
   | 'live_feed'
   | 'future_timestamp';
+=======
+  | 'live_feed';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 export const PRICE_STATE_LABELS: Record<PriceState, string> = {
   no_data: 'No data',
@@ -38,7 +47,10 @@ export const PRICE_STATE_LABELS: Record<PriceState, string> = {
   latest_verified: 'Latest verified',
   recently_updated: 'Recently updated',
   live_feed: 'Live feed',
+<<<<<<< HEAD
   future_timestamp: 'Timestamp needs review',
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -53,8 +65,11 @@ export const PRICE_STATE_EXPLANATIONS: Record<PriceState, string> = {
   latest_verified: 'Verified, but no longer current. This is the most recent checked price available.',
   recently_updated: 'Within the expected update window for this source.',
   live_feed: 'Connected to a genuine real-time source.',
+<<<<<<< HEAD
   future_timestamp:
     'The recorded observation time is later than the platform clock. Its age cannot be established, so it must not be presented as current until the timestamp is checked.',
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /** How a state should be coloured. Restrained: only problems are loud. */
@@ -66,7 +81,10 @@ export const PRICE_STATE_TONES: Record<PriceState, 'neutral' | 'info' | 'success
   latest_verified: 'info',
   recently_updated: 'success',
   live_feed: 'success',
+<<<<<<< HEAD
   future_timestamp: 'danger',
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -147,12 +165,20 @@ function isVerified(status: VerificationStatus | undefined): boolean {
  * is explicit and testable:
  *
  *   1. no observation at all        -> no_data
+<<<<<<< HEAD
  *   2. invalid or future timestamp  -> no_data / future_timestamp
  *   3. older than the horizon       -> stale
  *   4. non-binding price type       -> indicative
  *   5. past the fresh window        -> latest_verified (verified)
  *                                     delayed (not verified)
  *   6. within the fresh window      -> live_feed (realtime source)
+=======
+ *   2. older than the horizon       -> stale
+ *   3. non-binding price type       -> indicative
+ *   4. past the fresh window        -> latest_verified (verified)
+ *                                     delayed (not verified)
+ *   5. within the fresh window      -> live_feed (realtime source)
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  *                                     recently_updated
  *
  * Stale outranks indicative: an old indicative price must not be presented as
@@ -202,6 +228,7 @@ export function classifyFreshness(input: FreshnessInput): FreshnessAssessment {
     };
   }
 
+<<<<<<< HEAD
   if (observed.getTime() > now.getTime()) {
     return {
       ...base,
@@ -214,6 +241,9 @@ export function classifyFreshness(input: FreshnessInput): FreshnessAssessment {
   }
 
   const ageMinutes = Math.round((now.getTime() - observed.getTime()) / MINUTE);
+=======
+  const ageMinutes = Math.max(0, Math.round((now.getTime() - observed.getTime()) / MINUTE));
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   if (ageMinutes > thresholds.verifiedHorizonMinutes) {
     return {
@@ -267,7 +297,10 @@ export function classifyFreshness(input: FreshnessInput): FreshnessAssessment {
  * only the calendar day was recorded. The string says so.
  */
 export function formatAge(assessment: FreshnessAssessment): string {
+<<<<<<< HEAD
   if (assessment.state === 'future_timestamp') return 'timestamp needs review';
+=======
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   if (assessment.ageMinutes === null) return 'no observation';
   const minutes = assessment.ageMinutes;
   if (assessment.isDayPrecisionOnly) {
@@ -296,7 +329,11 @@ export function isPresentableAsCurrent(state: PriceState): boolean {
 
 /** Whether the state must be accompanied by a visible warning. */
 export function requiresFreshnessWarning(state: PriceState): boolean {
+<<<<<<< HEAD
   return state === 'stale' || state === 'delayed' || state === 'indicative' || state === 'future_timestamp';
+=======
+  return state === 'stale' || state === 'delayed' || state === 'indicative';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }
 
 /**

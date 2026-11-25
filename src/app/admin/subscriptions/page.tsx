@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
+=======
+import { requireStaff } from '@/lib/auth/guards';
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { listEntitlementTiers, listSubscriptions } from '@/lib/operations/commercial';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { DataTable, type Column } from '@/components/ops/DataTable';
@@ -33,7 +37,11 @@ function formatDate(value: string | null): string {
  * each tier is shown verbatim for exactly that reason.
  */
 export default async function AdminSubscriptionsPage() {
+<<<<<<< HEAD
   await requirePathAccess('/admin/subscriptions');
+=======
+  await requireStaff('/admin/subscriptions');
+>>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   if (!isSupabaseConfigured()) {
     return (
