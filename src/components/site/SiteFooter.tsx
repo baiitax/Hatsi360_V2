@@ -47,14 +47,12 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-ink-200 bg-white">
       <div className="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
-          <BrandLockup width={300} />
+          {/* The supplied lockup, at the size the footer has room for. */}
+          <BrandLockup width={320} />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-600">
             {BRAND.name} collects, verifies and publishes agricultural commodity prices from
             the markets of {BRAND.operatingMarket}. Every published figure carries the market,
             the unit, the collection time and the verification behind it.
-          </p>
-          <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-brand-900/75">
-            Powered by Pluck Agro
           </p>
           <div className="mt-5 flex flex-col gap-2 text-sm text-ink-600">
             <a href={CONTACT.phoneHref} className="hover:text-brand-700">

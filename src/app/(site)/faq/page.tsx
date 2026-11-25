@@ -111,7 +111,7 @@ export default function FaqPage() {
         image={getPageImage('faq.hero')}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page grid gap-12 lg:grid-cols-[16rem_1fr]">
           <nav aria-label="FAQ sections" className="lg:sticky lg:top-28 lg:self-start">
             <h2 className="text-xs font-bold uppercase tracking-widest text-ink-500">Sections</h2>
@@ -127,7 +127,7 @@ export default function FaqPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 rounded-xl border border-ink-200 bg-white p-4">
+            <div className="on-paper mt-6 rounded-xl border border-ink-200 bg-white p-4">
               <p className="text-sm text-ink-600">
                 Still stuck?{' '}
                 <Link href="/contact" className="font-semibold text-brand-700 hover:text-brand-800">

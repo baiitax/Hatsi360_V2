@@ -29,10 +29,10 @@
  */
 
 import Link from 'next/link';
-import { BRAND, MARKET_NAV } from '@/lib/brand';
-import { BrandLogo } from '@/components/brand/Logo';
+import { BRAND, CONTACT, MARKET_NAV } from '@/lib/brand';
+import { BrandLockup } from '@/components/brand/Logo';
 import { SearchInput } from '../ui/primitives';
-import { IconBell, IconChevronDown, IconMenu, IconSearch, IconUser } from '../ui/icons';
+import { IconBell, IconChevronDown, IconMenu, IconPin, IconSearch, IconUser } from '../ui/icons';
 import { MobileNavigation } from './MobileNavigation';
 
 /* ---------------------------------------------------------------- the bar */
@@ -62,13 +62,20 @@ export function TerminalHeader({
     <header className="terminal-rail sticky top-0 z-[var(--z-header)]">
       {/* ---------------------------------------------------- the module bar */}
       <div className="flex h-[3.25rem] items-center gap-3 px-3 lg:px-4">
-        {/* One supplied lockup keeps the mark and wordmark optically aligned. */}
+        {/* The supplied lockup, whole: mark, wordmark, category line and the
+            endorsement. It is the artwork the owner drew, reversed for the
+            deep-green rail — not a recomposed stand-in. */}
         <Link
           href="/"
           className="flex shrink-0 items-center rounded-control focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-harvest-300"
           aria-label={`${BRAND.productName} home`}
         >
-          <BrandLogo tone="dark" priority />
+          <BrandLockup
+            tone="dark"
+            priority
+            heightClassName="h-[2.25rem] sm:h-[2.75rem]"
+            className="[image-rendering:auto]"
+          />
         </Link>
 
         {/* The six modules. The lockup is 180 px wide at its documented height,
@@ -127,7 +134,22 @@ export function TerminalHeader({
         ) : null}
 
         <span aria-hidden="true" className="ml-auto h-3.5 w-px bg-terminal-border" />
-        <p className="text-[0.625rem] uppercase tracking-wider text-terminal-text-muted">
+        {/* The office address, from the same record the footer prints. It is in
+            the strip rather than the module bar so it never competes with the
+            navigation for space. */}
+        <a
+          href={CONTACT.mapHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex min-w-0 items-center gap-1.5 text-[0.625rem] uppercase tracking-wider text-terminal-text-muted transition-colors hover:text-terminal-text"
+        >
+          <IconPin className="size-3 shrink-0" />
+          <span className="truncate">
+            {CONTACT.address.line1}, {CONTACT.address.city}
+          </span>
+        </a>
+        <span aria-hidden="true" className="h-3.5 w-px bg-terminal-border" />
+        <p className="shrink-0 text-[0.625rem] uppercase tracking-wider text-terminal-text-muted">
           {BRAND.endorsement}
         </p>
       </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { INTELLIGENCE_TIERS } from '@/lib/brand';
+import { BrandLockup } from '@/components/brand/Logo';
 import { getTradeAccess, type TradeAccess } from '@/lib/trade/access';
 
 const PAID_TIERS = INTELLIGENCE_TIERS.filter((tier) => tier.id !== 'public');
@@ -20,6 +21,10 @@ export function PaidIntelligenceNotice({
     <div id="main-content" className="editorial min-h-[70vh]">
       <div className="container-page py-10 sm:py-14">
         <div className="mx-auto max-w-4xl">
+          {/* The trade portal carries the lockup itself: this is the first
+              screen a buyer sees of the paid product, and it should wear the
+              brand rather than a line of type that says the brand's name. */}
+          <BrandLockup width={260} className="mb-8" />
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
             Hatsi360 · Plans
           </p>

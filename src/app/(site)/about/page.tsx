@@ -75,7 +75,9 @@ export default async function AboutPage() {
         image={getPageImage('about.hero')}
       />
 
-      <div className="section">
+      {/* The prose column sits on the terminal canvas, so it asks for the
+          terminal's text scale rather than paper ink. */}
+      <div className="section on-terminal">
         <div className="container-page grid gap-12 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold tracking-tight">How a price reaches this site</h2>
@@ -118,7 +120,7 @@ export default async function AboutPage() {
                     sizes="(min-width: 640px) 18rem, 92vw"
                     ratio="landscape"
                   />
-                  <figcaption className="bg-white px-4 py-3 text-xs font-semibold text-ink-700">
+                  <figcaption className="on-paper bg-white px-4 py-3 text-xs font-semibold text-ink-700">
                     {item.title}
                   </figcaption>
                 </figure>

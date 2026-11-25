@@ -58,7 +58,7 @@ export const BRAND_ARTWORK = {
  */
 const COMPACT_RATIO = 415 / 1971;
 const MARK_RATIO = 1024 / 997;
-const HORIZONTAL_RATIO = 724 / 2016;
+const HORIZONTAL_RATIO = 410 / 1954;
 
 /**
  * The height of the header lockup, from `docs/BRAND_GUIDE.md` §2.3.
@@ -182,26 +182,50 @@ export function BrandLogo({
 export function BrandLockup({
   className = '',
   tone = 'light',
-  width = 280,
+  width,
+  height,
+  heightClassName,
   priority = false,
 }: {
   className?: string;
   tone?: 'light' | 'dark';
+  /** The rendered width. Give a width or a height, never both. */
   width?: number;
+  /** The rendered height; the width follows the artwork's own ratio. */
+  height?: number;
+  /**
+   * A responsive height, e.g. `h-9 sm:h-12`. The intrinsic width/height keep
+   * the proportions, so a class can resize it without distorting it.
+   */
+  heightClassName?: string;
   priority?: boolean;
 }) {
   const source =
     tone === 'dark' ? BRAND_ARTWORK.horizontalLight : BRAND_ARTWORK.horizontal;
+
+  const renderedWidth = height ? Math.round(height / HORIZONTAL_RATIO) : (width ?? 280);
+  const renderedHeight = height ?? Math.round(renderedWidth * HORIZONTAL_RATIO);
+
   return (
     <Image
       src={source}
       alt={`${BRAND.name} — ${BRAND.descriptor}. ${BRAND.endorsement}.`}
-      width={width}
-      height={Math.round(width * HORIZONTAL_RATIO)}
+      width={renderedWidth}
+      height={renderedHeight}
       quality={ARTWORK_QUALITY}
-      className={`h-auto w-auto ${className}`}
       priority={priority}
-      sizes={`(min-width: 1024px) ${width}px, ${Math.round(width * 0.8)}px`}
+      // Without `heightClassName` the artwork renders at its intrinsic size;
+      // with it, CSS drives the height and the width follows.
+      className={
+        heightClassName
+          ? `w-auto ${heightClassName} ${className}`
+          : `h-auto w-auto ${className}`
+      }
+      sizes={
+        heightClassName
+          ? `(min-width: 1024px) ${Math.round(56 / HORIZONTAL_RATIO)}px, ${Math.round(44 / HORIZONTAL_RATIO)}px`
+          : `(min-width: 1024px) ${renderedWidth}px, ${Math.round(renderedWidth * 0.8)}px`
+      }
     />
   );
 }

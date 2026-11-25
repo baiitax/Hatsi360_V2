@@ -150,7 +150,7 @@ describe('the global preloader', () => {
       join(ROOT, 'src/components/loading/HatsiGlobalPreloader.tsx'),
       'utf8',
     );
-    expect(source).toContain('/brand/hatsi360-mark-light.png');
+    expect(source).toContain('/brand/hatsi360-logo-horizontal-light.png');
     expect(source).toContain('Connecting to agricultural intelligence');
     const css = readFileSync(join(ROOT, 'src/app/globals.css'), 'utf8');
     expect(css).toContain('--color-brand-800');

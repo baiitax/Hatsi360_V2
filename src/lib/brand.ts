@@ -98,6 +98,13 @@ export const CONTACT = {
     city: 'Kano',
     country: 'Nigeria',
   },
+  /**
+   * The address as a destination. A published address that cannot be opened in
+   * a map is a dead end, so the header and the contact page both link here.
+   */
+  mapHref:
+    'https://www.google.com/maps/search/?api=1&query=' +
+    encodeURIComponent('No 7 Kwanar Zainawa, Tokarawa Industrial Estate, Kano, Nigeria'),
 } as const;
 
 /* ------------------------------------------------------------ navigation -- */

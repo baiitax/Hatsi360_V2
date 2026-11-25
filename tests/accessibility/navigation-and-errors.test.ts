@@ -7,14 +7,22 @@ function source(path: string): string {
 }
 
 describe('keyboard-accessible navigation disclosures', () => {
-  it('uses the supplied compact logo lockup in the terminal header for optical alignment', () => {
+  it('uses the supplied logo lockup in the terminal header', () => {
     const header = source('src/components/terminal/TerminalShell.tsx');
-    // The lockup, reversed for the deep-green rail, at the height the brand
-    // guide declares — and not at a number invented in the header.
-    expect(header).toMatch(/<BrandLogo tone="dark" priority \/>/);
-    expect(header).not.toMatch(/<BrandLogo[^>]*size=\{\d+\}/);
+    // The whole supplied lockup — mark, wordmark, category line and the
+    // endorsement — reversed for the deep-green rail. Not a recomposed
+    // stand-in, and not at a height invented in the header.
+    expect(header).toMatch(/<BrandLockup/);
+    expect(header).toMatch(/tone="dark"/);
+    expect(header).not.toMatch(/<BrandLockup[^>]*height=\{\d+\}/);
     expect(header).not.toContain('<BrandMark size={26} tone="dark" />');
     expect(header).toContain('focus-visible:outline-offset-2');
+  });
+
+  it('publishes the office address in the header, from the same record as the footer', () => {
+    const header = source('src/components/terminal/TerminalShell.tsx');
+    expect(header).toContain('CONTACT.address.line1');
+    expect(header).toContain('CONTACT.mapHref');
   });
 
   it('uses native disclosure controls for public and terminal desktop menus', () => {

@@ -285,6 +285,15 @@ export function IconBell(props: IconProps) {
   );
 }
 
+export function IconPin(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M12 21s-6.5-6.1-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 14.9 12 21 12 21Z" />
+      <circle cx="12" cy="10.5" r="2.4" />
+    </IconShape>
+  );
+}
+
 export function IconShare(props: IconProps) {
   return (
     <IconShape {...props}>

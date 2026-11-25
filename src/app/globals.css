@@ -625,58 +625,33 @@
     text-align: center;
   }
 
+  /* The lockup is a wide band, not a round mark: the curtain centres it at the
+     width a reader can take in before the page arrives. */
   .hatsi-boot__mark {
     position: relative;
-    display: grid;
-    place-items: center;
-    width: 5.5rem;
-    height: 5.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(16rem, 62vw);
   }
 
   .hatsi-boot__logo {
-    width: 3.5rem;
-    height: auto;
-    opacity: 0.96;
-  }
-
-  /*
-   * The ring. A single gold arc travels around a faint track — a slow 360
-   * sweep, the way a dial reads a level. It never spins quickly and it never
-   * bounces.
-   */
-  .hatsi-boot__ring {
-    position: absolute;
-    inset: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
+    opacity: 0.98;
   }
 
-  .hatsi-boot__arc {
-    transform-origin: 60px 60px;
-    animation: hatsi-boot-sweep 1.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
-  }
-
-  @keyframes hatsi-boot-sweep {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .hatsi-boot__title {
-    margin-top: 0.25rem;
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #ffffff;
+  .hatsi-boot__message {
+    margin-top: 0.5rem;
   }
 
   .hatsi-boot__message {
     font-size: 0.8125rem;
     color: var(--color-brand-200);
+  }
+
+  .hatsi-boot__bar {
+    margin-top: 0.5rem;
   }
 
   .hatsi-boot__bar {
@@ -1163,6 +1138,54 @@
    ========================================================================== */
 
 @layer components {
+  /*
+   * A region of prose on the dark canvas.
+   *
+   * `ink` is paper ink: #465149 on white reads at 8.6:1 and the same token on
+   * the terminal canvas reads at 2.19:1. A dark region that uses the ink
+   * utilities opts in here and gets the terminal's own text scale. It is opt-in
+   * rather than global — a global remap also repainted the footer, which is
+   * paper — and any paper surface inside the region restores the paper values.
+   */
+  .on-terminal {
+    --color-ink-950: var(--color-terminal-text);
+    --color-ink-900: var(--color-terminal-text);
+    --color-ink-800: var(--color-terminal-text);
+    --color-ink-700: var(--color-terminal-text-secondary);
+    --color-ink-600: var(--color-terminal-text-secondary);
+    --color-ink-500: var(--color-terminal-text-muted);
+    --color-ink-450: var(--color-terminal-text-muted);
+    --color-ink-400: var(--color-terminal-text-muted);
+    --color-ink-300: var(--color-terminal-border);
+  }
+
+  /* A paper panel that is not a .card — an image caption, a notice box — inside
+     a dark region still carries paper ink. */
+  .on-paper {
+    --color-ink-950: #121815;
+    --color-ink-900: #202923;
+    --color-ink-800: #34423a;
+    --color-ink-700: #3a443d;
+    --color-ink-600: #465149;
+    --color-ink-500: #5a6760;
+    --color-ink-450: #718078;
+    --color-ink-400: #68756e;
+    --color-ink-300: #cbd5cd;
+  }
+
+  .on-terminal .card,
+  .on-terminal .editorial {
+    --color-ink-950: #121815;
+    --color-ink-900: #202923;
+    --color-ink-800: #34423a;
+    --color-ink-700: #3a443d;
+    --color-ink-600: #465149;
+    --color-ink-500: #5a6760;
+    --color-ink-450: #718078;
+    --color-ink-400: #68756e;
+    --color-ink-300: #cbd5cd;
+  }
+
   .editorial {
     --focus-ring-color: var(--color-focus-light);
     --color-move-up: var(--color-move-up-light);
