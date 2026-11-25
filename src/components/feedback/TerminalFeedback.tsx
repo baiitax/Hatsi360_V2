@@ -258,14 +258,22 @@ export function EmptyStatePanel({
   kind,
   action,
   className = '',
+  level = 3,
 }: {
   kind: EmptyStateKind;
   /** Overrides the default action, or `null` to suppress it. */
   action?: { href: string; label: string } | null;
   className?: string;
+  /**
+   * Heading level for the panel title. Panels sit under a section heading, so
+   * `h3` is the default; a page that renders one directly under its `h1` — the
+   * commodities directory does — passes 2 rather than skipping a level.
+   */
+  level?: 2 | 3;
 }) {
   const copy = EMPTY_STATE_COPY[kind];
   const link = action === undefined ? copy.action : action;
+  const Heading = level === 2 ? 'h2' : 'h3';
 
   return (
     <div
@@ -274,7 +282,9 @@ export function EmptyStatePanel({
       <span aria-hidden="true" className="text-terminal-text-muted">
         <IconInfo className="size-5" />
       </span>
-      <h3 className="font-display text-[0.875rem] font-bold text-terminal-text">{copy.title}</h3>
+      <Heading className="font-display text-[0.875rem] font-bold text-terminal-text">
+        {copy.title}
+      </Heading>
       <p className="max-w-md text-[0.75rem] leading-5 text-terminal-text-secondary">{copy.body}</p>
       {link ? (
         <Link

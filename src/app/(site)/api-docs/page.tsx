@@ -264,14 +264,14 @@ export default function ApiDocsPage() {
           </Link>
           <Link
             href="/contact"
-            className="rounded-full border border-ink-300 px-5 py-2.5 text-sm font-semibold text-ink-700 transition-colors hover:border-brand-400 hover:text-brand-800"
+            className="rounded-full border border-terminal-border px-5 py-2.5 text-sm font-semibold text-terminal-text-secondary transition-colors hover:border-brand-400 hover:text-brand-300"
           >
             Talk to us
           </Link>
         </div>
       </PageHero>
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page grid gap-12 lg:grid-cols-[16rem_1fr]">
           <nav aria-label="API endpoints" className="lg:sticky lg:top-28 lg:self-start">
             <h2 className="text-xs font-bold uppercase tracking-widest text-ink-500">Endpoints</h2>
@@ -290,7 +290,7 @@ export default function ApiDocsPage() {
             </ul>
           </nav>
 
-          <div className="space-y-10">
+          <div className="min-w-0 space-y-10">
             {/* ------------------------------------------------- basics -- */}
             <section className="card p-6">
               <h2 className="text-xl font-bold">Basics</h2>
@@ -298,7 +298,7 @@ export default function ApiDocsPage() {
               <h3 className="mt-5 text-sm font-bold uppercase tracking-wide text-ink-600">
                 Base URL
               </h3>
-              <pre className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
+              <pre tabIndex={0} className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
                 {baseUrl}/api/v1
               </pre>
 
@@ -310,7 +310,7 @@ export default function ApiDocsPage() {
                 one — it raises your rate limit and unlocks the premium endpoints. Provide it as
                 either header:
               </p>
-              <pre className="mt-3 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
+              <pre tabIndex={0} className="mt-3 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
 {`Authorization: Bearer pl_live_xxxxxxxxxxxxxxxxxxxx
 X-API-Key: pl_live_xxxxxxxxxxxxxxxxxxxx`}
               </pre>
@@ -327,7 +327,7 @@ X-API-Key: pl_live_xxxxxxxxxxxxxxxxxxxx`}
                 Every response — success or failure — uses the same shape, so your client needs one
                 code path:
               </p>
-              <pre className="mt-3 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
+              <pre tabIndex={0} className="mt-3 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
 {`{ "data": { ... }, "meta": { "requestId": "...", "generatedAt": "..." } }
 
 {
@@ -450,14 +450,14 @@ X-API-Key: pl_live_xxxxxxxxxxxxxxxxxxxx`}
                 )}
 
                 <h3 className="mt-5 text-sm font-bold uppercase tracking-wide text-ink-600">Example</h3>
-                <pre className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
+                <pre tabIndex={0} className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-sm text-brand-100">
                   {endpoint.example}
                 </pre>
 
                 <h3 className="mt-5 text-sm font-bold uppercase tracking-wide text-ink-600">
                   Response
                 </h3>
-                <pre className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-xs leading-relaxed text-brand-100">
+                <pre tabIndex={0} className="mt-2 overflow-x-auto rounded-lg bg-ink-950 p-4 text-xs leading-relaxed text-brand-100">
                   {endpoint.response}
                 </pre>
               </section>

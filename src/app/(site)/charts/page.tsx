@@ -250,9 +250,16 @@ export default async function ChartsWorkspacePage({
             <>
               <ChartSegment
                 label="Chart period"
-                options={PERIODS.map((entry) => ({ id: entry.id, label: entry.label }))}
+                options={PERIODS.map((entry) => ({
+                  id: entry.id,
+                  label: entry.label,
+                  href: `/charts?${new URLSearchParams({
+                    ...(commodity ? { commodity: commodity.slug } : {}),
+                    ...(option ? { series: option.key } : {}),
+                    period: entry.id,
+                  }).toString()}`,
+                }))}
                 selected={period}
-                onSelect={() => undefined}
               />
               <Link href={`/commodities/${commodity.slug}`} className="terminal-control">
                 Open commodity

@@ -384,13 +384,16 @@ export function DataFreshnessIndicator({
   className?: string;
 }) {
   const copy = FRESHNESS_COPY[state];
+  // Terminal-scale tones. The `-700` rungs of the success and warning ramps are
+  // paper colours — they sat at 2.9:1 on the panel they were printed on. These
+  // are the light rungs, which clear 4.5:1 on `terminal-elevated`.
   const tone =
     state === 'fresh' || state === 'today'
-      ? 'border-success-700/40 bg-success-700/15 text-success-700'
+      ? 'border-success-500/40 bg-success-500/15 text-success-300'
       : state === 'delayed'
-        ? 'border-warning-700/40 bg-warning-700/15 text-warning-700'
+        ? 'border-warning-500/40 bg-warning-500/15 text-warning-200'
         : state === 'stale' || state === 'timestamp_review'
-          ? 'border-warning-700/45 bg-warning-700/20 text-warning-700'
+          ? 'border-warning-500/45 bg-warning-500/20 text-warning-200'
           : 'border-terminal-border bg-terminal-elevated text-terminal-text-muted';
 
   return (
@@ -401,7 +404,7 @@ export function DataFreshnessIndicator({
       <IconClock className="size-3" aria-hidden="true" />
       {copy.label}
       {observedAt ? (
-        <span className="figure-num font-normal opacity-80">{formatObserved(observedAt)}</span>
+        <span className="figure-num font-normal">{formatObserved(observedAt)}</span>
       ) : null}
     </span>
   );

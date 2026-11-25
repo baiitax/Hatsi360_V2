@@ -82,7 +82,7 @@ export default async function ComparePage({ searchParams }: Params) {
         image={getPageImage('market-directory.hero')}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page">
         <BreadcrumbJsonLd items={[{ name: 'Compare' }]} />
 

@@ -25,6 +25,7 @@
  */
 
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import { IconArrowDown, IconArrowRight, IconArrowUp, IconInfo } from '../ui/icons';
 
 /* ------------------------------------------------------------------- kinds */
@@ -163,6 +164,13 @@ export interface ChartOption {
   id: string;
   label: string;
   short?: string;
+  /**
+   * Where choosing this option goes. A server-rendered page cannot hand a
+   * callback to a client control — and the /charts workspace reads its period
+   * from the query string anyway — so an option may carry a URL and render as a
+   * link instead of a button.
+   */
+  href?: string;
 }
 
 /**
@@ -182,7 +190,8 @@ export function ChartSegment({
   label: string;
   options: ChartOption[];
   selected: string;
-  onSelect: (id: string) => void;
+  /** Required only when an option has no `href` — see `ChartOption.href`. */
+  onSelect?: (id: string) => void;
   className?: string;
 }) {
   return (
@@ -193,18 +202,37 @@ export function ChartSegment({
     >
       {options.map((option) => {
         const active = option.id === selected;
+        const optionClass = `figure-num inline-flex h-[1.5rem] items-center rounded-[0.1875rem] px-1.5 text-[0.6875rem] font-semibold transition-colors duration-150 ${
+          active
+            ? 'bg-terminal-interactive text-terminal-text'
+            : 'text-terminal-text-muted hover:text-terminal-text'
+        }`;
+
+        // An option with an href is a link: it survives with JavaScript off and
+        // the reader can copy the URL of the period they are looking at.
+        if (option.href) {
+          return (
+            <Link
+              key={option.id}
+              href={option.href}
+              role="radio"
+              aria-checked={active}
+              aria-current={active ? 'true' : undefined}
+              className={optionClass}
+            >
+              {option.short ?? option.label}
+            </Link>
+          );
+        }
+
         return (
           <button
             key={option.id}
             type="button"
             role="radio"
             aria-checked={active}
-            onClick={() => onSelect(option.id)}
-            className={`figure-num h-[1.5rem] rounded-[0.1875rem] px-1.5 text-[0.6875rem] font-semibold transition-colors duration-150 ${
-              active
-                ? 'bg-terminal-interactive text-terminal-text'
-                : 'text-terminal-text-muted hover:text-terminal-text'
-            }`}
+            onClick={() => onSelect?.(option.id)}
+            className={optionClass}
           >
             {option.short ?? option.label}
           </button>

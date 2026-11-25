@@ -19,7 +19,7 @@ export default function DisclaimerPage() {
         breadcrumbs={[{ label: 'Disclaimer' }]}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page max-w-3xl">
           <div className="prose-hatsi">
             <h2>1. What a published price is</h2>

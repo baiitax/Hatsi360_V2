@@ -38,7 +38,7 @@ export default function PricingPage() {
         image={getPageImage('pricing.hero')}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page">
           {/* The tiers are a proposal, and the page says so. */}
           <div className="mb-10 rounded-2xl border border-amber-200 bg-amber-50 p-6">

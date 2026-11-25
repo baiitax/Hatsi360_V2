@@ -13,7 +13,7 @@ import { BRAND } from '@/lib/brand';
 export function BareFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-ink-50">
-      <div className="border-b border-ink-200 bg-white">
+      <header className="border-b border-ink-200 bg-white">
         <div className="container-page flex items-center gap-3 py-4">
           <Link href="/" className="flex items-center" aria-label={`${BRAND.name} home`}>
             <BrandLogo priority />
@@ -22,7 +22,7 @@ export function BareFrame({ children }: { children: React.ReactNode }) {
             {BRAND.endorsement}
           </span>
         </div>
-      </div>
+      </header>
       <main id="main" className="flex flex-1 items-center">
         <div className="container-page w-full py-12">{children}</div>
       </main>

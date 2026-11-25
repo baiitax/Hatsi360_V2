@@ -80,8 +80,8 @@ export default async function CoverageReportPage() {
               </dt>
               <dd className="mt-2 font-display text-3xl font-bold text-ink-950">
                 {reportingMarketIds.size}
+                <span className="mt-1 block text-xs font-normal text-ink-500">of {markets.length} in the catalogue</span>
               </dd>
-              <p className="mt-1 text-xs text-ink-500">of {markets.length} in the catalogue</p>
             </div>
             <div className="card p-5">
               <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
@@ -89,8 +89,8 @@ export default async function CoverageReportPage() {
               </dt>
               <dd className="mt-2 font-display text-3xl font-bold text-ink-950">
                 {new Set(observations.map((observation) => observation.commodityId)).size}
+                <span className="mt-1 block text-xs font-normal text-ink-500">of {commodities.length} in the catalogue</span>
               </dd>
-              <p className="mt-1 text-xs text-ink-500">of {commodities.length} in the catalogue</p>
             </div>
             <div className="card p-5">
               <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
@@ -98,10 +98,10 @@ export default async function CoverageReportPage() {
               </dt>
               <dd className="mt-2 font-display text-3xl font-bold text-ink-950">
                 {commodityMarketPairs.size}
+                <span className="mt-1 block text-xs font-normal text-ink-500">
+                  combinations with at least one published observation
+                </span>
               </dd>
-              <p className="mt-1 text-xs text-ink-500">
-                combinations with at least one published observation
-              </p>
             </div>
             <div className="card p-5">
               <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
@@ -109,8 +109,8 @@ export default async function CoverageReportPage() {
               </dt>
               <dd className="mt-2 font-display text-3xl font-bold text-ink-950">
                 {observations.length}
+                <span className="mt-1 block text-xs font-normal text-ink-500">eligible for public display</span>
               </dd>
-              <p className="mt-1 text-xs text-ink-500">eligible for public display</p>
             </div>
           </dl>
 

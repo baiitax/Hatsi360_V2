@@ -26,7 +26,7 @@ export default function TermsPage() {
         breadcrumbs={[{ label: 'Terms' }]}
       />
 
-      <div className="section">
+      <div className="section on-terminal">
         <div className="container-page max-w-3xl">
           <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4">
             <p className="text-sm font-semibold text-amber-950">Draft for legal review</p>

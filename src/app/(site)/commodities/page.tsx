@@ -214,11 +214,13 @@ export default async function CommodityDirectoryPage({
       {!configured ? (
         <EmptyStatePanel
           kind="no-market-data"
+          level={2}
           action={{ label: 'See collection coverage', href: '/coverage' }}
         />
       ) : items.length === 0 ? (
         <EmptyStatePanel
           kind="no-commodity-results"
+          level={2}
           action={
             activeCategory
               ? { label: 'Show all categories', href: '/commodities' }

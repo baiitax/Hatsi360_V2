@@ -52,7 +52,7 @@ export async function DataCoverageNotice({
 
   return (
     <aside
-      className="rounded-2xl border border-amber-200 bg-amber-50/70 p-5 sm:p-6"
+      className="on-paper rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-6"
       aria-label="Data freshness notice"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">

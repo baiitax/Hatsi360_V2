@@ -1159,9 +1159,15 @@
     --color-ink-300: var(--color-terminal-border);
   }
 
-  /* A paper panel that is not a .card — an image caption, a notice box — inside
-     a dark region still carries paper ink. */
-  .on-paper {
+  /*
+   * A paper surface inside that region takes the paper ink back: a `.card`, an
+   * editorial sheet, an explicit `.on-paper` panel, or any element that paints
+   * one of the light background utilities. Without this a white legend panel
+   * or an `bg-ink-50` band would inherit the terminal's text scale and render
+   * near-white on white.
+   */
+  .on-terminal :is(.card, .editorial, .on-paper),
+  .on-terminal :where(.bg-white, .bg-ink-50, .bg-ink-100, .bg-ink-200, .bg-brand-50, .bg-amber-50) {
     --color-ink-950: #121815;
     --color-ink-900: #202923;
     --color-ink-800: #34423a;
@@ -1173,8 +1179,8 @@
     --color-ink-300: #cbd5cd;
   }
 
-  .on-terminal .card,
-  .on-terminal .editorial {
+  /* A paper panel that carries only the marker — an image caption, a notice. */
+  .on-paper {
     --color-ink-950: #121815;
     --color-ink-900: #202923;
     --color-ink-800: #34423a;
@@ -1267,4 +1273,31 @@
   outline: 2px solid var(--focus-ring-color, var(--color-focus-light));
   outline-offset: 2px;
   border-radius: 0.25rem;
+}
+
+/* Brand green is a paper green: #174d35 on the terminal canvas reads at 1.5:1,
+   which is what a legal page's inline links and its monospace verbs were doing.
+   Text utilities inside a dark region take the light rungs of the same ramp;
+   a paper surface inside that region takes the paper greens back.
+
+   Unlayered intentionally, for the same reason as the focus ring below:
+   Tailwind's utilities live in @layer utilities, and a rule inside
+   @layer components can never beat them however specific it is. */
+.on-terminal .text-brand-700 {
+  color: var(--color-brand-300);
+}
+
+.on-terminal .text-brand-800,
+.on-terminal .text-brand-900 {
+  color: var(--color-brand-200);
+}
+
+.on-terminal :is(.card, .editorial, .on-paper, .bg-white, .bg-brand-50, .bg-amber-50) .text-brand-700 {
+  color: #174d35;
+}
+
+.on-terminal :is(.card, .editorial, .on-paper, .bg-white, .bg-brand-50, .bg-amber-50) .text-brand-800,
+.on-terminal :is(.card, .editorial, .on-paper, .bg-white, .bg-brand-50, .bg-amber-50) .text-brand-900,
+.on-terminal :is(.card, .editorial, .on-paper, .bg-white, .bg-brand-50, .bg-amber-50) .text-brand-950 {
+  color: #0e2c1f;
 }
