@@ -11,7 +11,6 @@ import {
   IconBriefcase,
   IconSettings,
   IconShieldCheck,
-  IconCode,
   IconUser
 } from '@/components/ui/icons';
 import type { SVGProps, ReactElement } from 'react';

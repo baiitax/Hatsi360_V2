@@ -4,7 +4,6 @@ import { formatDateTime, formatMoney } from '@/lib/money';
 import { relativeTime } from '@/lib/pricing';
 import {
   classifyFreshness,
-  formatAge,
   requiresFreshnessWarning,
 } from '@/lib/trade/freshness';
 import {

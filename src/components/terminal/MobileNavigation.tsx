@@ -23,7 +23,7 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -55,9 +55,15 @@ export function MobileNavigation({
 }) {
   const pathname = usePathname();
 
-  // The bottom bar is portalled, so it renders only once a body exists.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // The bottom bar is portalled, so it renders only once a body exists. The
+  // server snapshot is `false` and the client snapshot is `true`, which is the
+  // hydration-safe way to ask "is there a document yet?" without setting state
+  // from an effect.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   // The drawer's open state is *derived*, not stored. It holds the route it was
   // opened on, and it is open only while the person is still on that route. A
