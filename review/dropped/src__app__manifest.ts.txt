@@ -1,0 +1,12 @@
+
+--- hunk #1 (after kept line 1) ---
+
+--- hunk #2 (after kept line 13) ---
+    name: 'Hatsi360 Markets — African Agricultural Market Intelligence',
+    short_name: 'Hatsi360 Markets',
+    description:
+      'Agricultural commodity prices, market intelligence, price analytics, commodity research and trade insights across African agricultural markets.',
+
+--- hunk #3 (after kept line 21) ---
+    background_color: '#F7F9F7',
+    theme_color: '#103C2D',

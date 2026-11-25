@@ -19,7 +19,7 @@ vi.mock('@/lib/data', () => ({
 
 vi.mock('next/navigation', () => ({ notFound: mock.notFound }));
 
-import MarketDetailPage from '@/app/(market-detail)/markets/[slug]/page';
+import MarketDetailPage from '@/app/(site)/markets/[slug]/page';
 
 const market = {
   id: 4,

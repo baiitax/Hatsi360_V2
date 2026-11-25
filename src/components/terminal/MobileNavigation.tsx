@@ -23,11 +23,8 @@
 
 'use client';
 
-<<<<<<< HEAD
 import { useEffect, useRef, useState } from 'react';
-=======
-import { useEffect, useState } from 'react';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ACCOUNT_NAV, BRAND, MARKET_NAV, SECONDARY_NAV } from '@/lib/brand';
@@ -58,13 +55,16 @@ export function MobileNavigation({
 }) {
   const pathname = usePathname();
 
+  // The bottom bar is portalled, so it renders only once a body exists.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // The drawer's open state is *derived*, not stored. It holds the route it was
   // opened on, and it is open only while the person is still on that route. A
   // route change therefore closes it by construction, with no effect and no
   // second render — and a drawer can never survive navigation to the page whose
   // destination was just tapped.
   const [openedAt, setOpenedAt] = useState<string | null>(null);
-<<<<<<< HEAD
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const open = openedAt !== null && openedAt === pathname;
@@ -113,39 +113,17 @@ export function MobileNavigation({
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
-=======
-  const open = openedAt !== null && openedAt === pathname;
-
-  // Escape closes the drawer, and the body stops scrolling while it is open.
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpenedAt(null);
-    };
-    document.addEventListener('keydown', onKeyDown);
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = previous;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     };
   }, [open]);
 
   return (
     <>
       <button
-<<<<<<< HEAD
         ref={triggerRef}
         type="button"
         onClick={() => setOpenedAt(pathname)}
         aria-expanded={open}
         aria-controls="terminal-mobile-dialog"
-=======
-        type="button"
-        onClick={() => setOpenedAt(pathname)}
-        aria-expanded={open}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         aria-haspopup="dialog"
         aria-label="Open the market menu"
         className="terminal-control lg:hidden"
@@ -159,28 +137,19 @@ export function MobileNavigation({
           <button
             type="button"
             aria-label="Close the market menu"
-<<<<<<< HEAD
             tabIndex={-1}
             aria-hidden="true"
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             onClick={() => setOpenedAt(null)}
             className="absolute inset-0 cursor-default bg-brand-950/70"
           />
 
           <div
-<<<<<<< HEAD
             ref={dialogRef}
             id="terminal-mobile-dialog"
             role="dialog"
             aria-modal="true"
             aria-label="Market menu"
             tabIndex={-1}
-=======
-            role="dialog"
-            aria-modal="true"
-            aria-label="Market menu"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             className="terminal absolute inset-y-0 right-0 flex w-[min(20rem,88vw)] flex-col border-l border-terminal-border bg-terminal-surface shadow-terminal-lift"
           >
             <header className="flex items-center justify-between gap-2 border-b border-terminal-border px-3 py-2.5">
@@ -208,11 +177,7 @@ export function MobileNavigation({
               <ul className="flex flex-col gap-0.5">
                 {MARKET_NAV.map((module) => (
                   <li key={module.id}>
-<<<<<<< HEAD
                     <ModuleGroup module={module} onNavigate={() => setOpenedAt(null)} />
-=======
-                    <ModuleGroup module={module} />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   </li>
                 ))}
               </ul>
@@ -223,10 +188,7 @@ export function MobileNavigation({
                   <li key={link.href}>
                     <Link
                       href={link.href}
-<<<<<<< HEAD
                       onClick={() => setOpenedAt(null)}
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                       className="flex min-h-[2.25rem] items-center rounded-control px-2 text-[0.8125rem] text-terminal-text-secondary transition-colors hover:bg-terminal-interactive hover:text-terminal-text"
                     >
                       {link.label}
@@ -238,20 +200,12 @@ export function MobileNavigation({
 
             <footer className="border-t border-terminal-border p-3">
               {signedIn ? (
-<<<<<<< HEAD
                 <Link href={workspaceHref} onClick={() => setOpenedAt(null)} className="terminal-action w-full">
-=======
-                <Link href={workspaceHref} className="terminal-action w-full">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   <IconUser className="size-3.5" />
                   {userEmail ?? 'Your workspace'}
                 </Link>
               ) : (
-<<<<<<< HEAD
                 <Link href="/login" onClick={() => setOpenedAt(null)} className="terminal-action w-full">
-=======
-                <Link href="/login" className="terminal-action w-full">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   <IconSignIn className="size-3.5" />
                   Sign in
                 </Link>
@@ -264,11 +218,18 @@ export function MobileNavigation({
         </div>
       ) : null}
 
-      {/* The bottom bar. Four destinations, thumb-reachable, always visible. */}
-      <nav
-        aria-label="Primary market destinations"
-        className="fixed inset-x-0 bottom-0 z-[var(--z-sticky)] mx-auto flex max-w-lg items-stretch border-t border-terminal-border bg-terminal-bg/95 backdrop-blur lg:hidden"
-      >
+      {/* The bottom bar. Four destinations, thumb-reachable, always visible.
+          It is portalled to the document body: this component lives inside the
+          header, and the header sets `backdrop-filter`, which makes it the
+          containing block for fixed descendants — the bar was therefore pinned
+          to the *header* instead of the viewport and covered the logo, the
+          search and the sign-in control on every phone. */}
+      {mounted
+        ? createPortal(
+            <nav
+              aria-label="Primary market destinations"
+              className="fixed inset-x-0 bottom-0 z-[var(--z-sticky)] mx-auto flex max-w-lg items-stretch border-t border-terminal-border bg-terminal-bg/95 backdrop-blur lg:hidden"
+            >
         <BottomLink href="/markets" label="Markets" icon={<IconMarkets className="size-5" />} />
         <BottomLink href="/commodities" label="Commodities" icon={<IconHome className="size-5" />} />
         <BottomLink href="/trade" label="Trade" icon={<IconTrade className="size-5" />} />
@@ -277,13 +238,15 @@ export function MobileNavigation({
         ) : (
           <BottomLink href="/login" label="Account" icon={<IconUser className="size-5" />} />
         )}
-      </nav>
+            </nav>,
+            document.body,
+          )
+        : null}
     </>
   );
 }
 
 /** One module in the drawer, with its destinations always expanded. */
-<<<<<<< HEAD
 function ModuleGroup({
   module,
   onNavigate,
@@ -291,9 +254,6 @@ function ModuleGroup({
   module: (typeof MARKET_NAV)[number];
   onNavigate: () => void;
 }) {
-=======
-function ModuleGroup({ module }: { module: (typeof MARKET_NAV)[number] }) {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const pathname = usePathname();
   const active = pathname === module.href || pathname.startsWith(`${module.href}/`);
 
@@ -301,10 +261,7 @@ function ModuleGroup({ module }: { module: (typeof MARKET_NAV)[number] }) {
     <div className="rounded-control">
       <Link
         href={module.href}
-<<<<<<< HEAD
         onClick={onNavigate}
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         aria-current={active ? 'page' : undefined}
         className={`flex min-h-[2.25rem] items-center justify-between gap-2 rounded-control px-2 text-[0.8125rem] font-semibold transition-colors ${
           active
@@ -321,10 +278,7 @@ function ModuleGroup({ module }: { module: (typeof MARKET_NAV)[number] }) {
             <li key={`${module.id}-${item.label}`}>
               <Link
                 href={item.href}
-<<<<<<< HEAD
                 onClick={onNavigate}
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 className="flex min-h-[2rem] items-center rounded-control px-2 text-[0.75rem] text-terminal-text-secondary transition-colors hover:bg-terminal-interactive/60 hover:text-terminal-text"
               >
                 {item.label}

@@ -1,0 +1,26 @@
+
+--- hunk #1 (after kept line 47) ---
+  changePercent: number | null;
+
+--- hunk #2 (after kept line 71) ---
+
+--- hunk #3 (after kept line 82) ---
+
+--- hunk #4 (after kept line 113) ---
+            <SortableHead
+              label="Movement"
+
+--- hunk #5 (after kept line 121) ---
+
+--- hunk #6 (after kept line 183) ---
+              <td className="num">
+                <PriceChangeBadge changePercent={row.changePercent} />
+              </td>
+
+--- hunk #7 (after kept line 223) ---
+export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
+
+--- hunk #8 (after kept line 250) ---
+
+--- hunk #9 (after kept line 261) ---
+              <PriceChangeBadge changePercent={row.changePercent} />

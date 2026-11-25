@@ -1,9 +1,5 @@
 import type { Metadata } from 'next';
-<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
-=======
-import { requireStaff } from '@/lib/auth/guards';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { listReferenceData } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader } from '@/components/ops/Primitives';
@@ -21,11 +17,7 @@ export const metadata: Metadata = {
  * reference, not decoration.
  */
 export default async function AdminGradesPage() {
-<<<<<<< HEAD
   await requirePathAccess('/admin/grades');
-=======
-  await requireStaff('/admin/grades');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const { grades, commodities, varieties } = await listReferenceData();
   const commodityName = new Map(
     (commodities as { id: number; name: string }[]).map((c) => [c.id, c.name]),

@@ -7,11 +7,7 @@ import { getPageImage } from '@/lib/images/registry';
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions | Hatsi360 Markets',
   description:
-<<<<<<< HEAD
     'Answers about how Hatsi360 collects, verifies and publishes agricultural commodity prices in Nigeria.',
-=======
-    'Answers about how Hatsi360 Markets collects, verifies and publishes agricultural commodity prices across African markets.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/faq' },
   openGraph: {
     type: 'website',
@@ -20,13 +16,13 @@ export const metadata: Metadata = {
     title: 'Frequently Asked Questions | Hatsi360 Markets',
     description: 'Answers about how Hatsi360 Markets collects and publishes agricultural commodity prices.',
     url: '/faq',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+    images: [{ url: '/brand/hatsi360-social-1200x630.png', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Frequently Asked Questions | Hatsi360 Markets',
     description: 'Answers about Hatsi360 Markets agricultural intelligence.',
-    images: ['/brand/hatsi360-social-preview.png'],
+    images: ['/brand/hatsi360-social-1200x630.png'],
   },
 };
 

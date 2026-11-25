@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { buildShareMetadata } from '@/lib/metadata';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -14,10 +11,6 @@ import { createClient } from '@/lib/supabase/server';
 import { getCommoditySeries } from '@/lib/trade/queries';
 import { PRICE_STATE_TONES, formatAge } from '@/lib/trade/freshness';
 import { EmptyState, PageHeader, Panel, Pill, Price } from '@/components/trade/Primitives';
-<<<<<<< HEAD
-=======
-import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 export const metadata = buildShareMetadata({
   title: 'Watchlist',
@@ -40,7 +33,6 @@ export const dynamic = 'force-dynamic';
  * It requires an account, because a watchlist is personal data. A visitor is
  * sent to sign-in with a return path, not shown an empty state that looks like
  * a bug.
-<<<<<<< HEAD
  */
 export default async function TradeWatchlistPage() {
   const access = await getTradeAccess();
@@ -48,14 +40,6 @@ export default async function TradeWatchlistPage() {
     return <PaidIntelligenceNotice access={access} returnTo="/trade/watchlist" product="Trade Intelligence" />;
   }
 
-=======
- *
- * The 'watchlists' entitlement is enforced at both the database level (RLS)
- * and the application level. Users without the entitlement see a clear
- * upgrade prompt rather than an empty state that looks like a bug.
- */
-export default async function TradeWatchlistPage() {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const user = await getUser();
   if (!user) {
     redirect('/login?next=/trade/watchlist');
@@ -77,30 +61,6 @@ export default async function TradeWatchlistPage() {
     );
   }
 
-<<<<<<< HEAD
-=======
-  // Check watchlists entitlement
-  const entitlements = await getEntitlements();
-  const hasWatchlistEntitlement = hasEntitlement(entitlements, 'watchlists');
-
-  if (!hasWatchlistEntitlement) {
-    return (
-      <>
-        <PageHeader
-          title="Watchlist"
-          purpose="The commodities and markets you follow, with their latest verified price."
-          breadcrumbs={[{ label: 'Trade Intelligence', href: '/trade' }, { label: 'Watchlist' }]}
-        />
-        <EmptyState
-          title="Watchlists require a subscription"
-          description="Save commodities and markets to track their latest verified prices. Watchlists are available on Professional and Enterprise plans."
-          action={{ label: 'View plans', href: '/pricing' }}
-        />
-      </>
-    );
-  }
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const supabase = await createClient();
 
   const [savedCommodities, savedMarkets] = await Promise.all([

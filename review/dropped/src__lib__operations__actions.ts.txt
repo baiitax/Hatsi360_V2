@@ -1,0 +1,3 @@
+
+--- hunk #1 (after kept line 14) ---
+import { getEntitlements, hasEntitlement } from '@/lib/entitlements';

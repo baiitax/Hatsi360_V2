@@ -8,7 +8,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { getAllSources, getRecentSyncEvents } from '@/lib/intelligence/service';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import type { PillTone } from '@/components/ops/Primitives';
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function SourcesManagementPage() {
-  await requireStaff('/admin/intelligence/sources');
+  await requirePathAccess('/admin/intelligence/sources');
 
   const [sources, recentSyncs] = await Promise.all([
     getAllSources(),

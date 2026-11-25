@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
-=======
-import Link from 'next/link';
-import type { Metadata } from 'next';
-import { BRAND } from '@/lib/brand';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { insights } from '@/lib/content/insights';
 import { REPORTS } from '@/lib/content/reports';
 import { formatDate } from '@/lib/money';
@@ -23,34 +17,10 @@ import { EmptyStatePanel } from '@/components/feedback/TerminalFeedback';
 import { IconBook, IconResearch } from '@/components/ui/icons';
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
   title: 'Research',
   description:
     'Market briefs and published research from the Hatsi360 research desk on Nigerian agricultural markets — what the price data shows, and what it does not.',
   alternates: { canonical: '/insights' },
-=======
-  title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
-  description:
-    'Market briefs and published research from the Hatsi360 research desk on African agricultural markets — what the price data shows, and what it does not.',
-  alternates: { canonical: '/insights' },
-  openGraph: {
-    type: 'website',
-    siteName: 'Hatsi360 Markets',
-    locale: BRAND.locale,
-    title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
-    description:
-      'Market briefs and published research from the Hatsi360 research desk on African agricultural markets.',
-    url: '/insights',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Agricultural Market Research & Insights | Hatsi360 Markets',
-    description:
-      'Market briefs and published research on African agricultural markets.',
-    images: ['/brand/hatsi360-social-preview.png'],
-  },
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -66,15 +36,11 @@ export const metadata: Metadata = {
  * figure on every commodity page without explaining how it was produced; that
  * is removed, and this page says so.
  */
-<<<<<<< HEAD
 export default async function ResearchPage() {
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/insights" product="Research" />;
   }
-=======
-export default function ResearchPage() {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const undated = insights.filter((article) => !article.publishedAt).length;
 
   return (
@@ -205,16 +171,10 @@ export default function ResearchPage() {
                   className="mr-1.5 inline size-3.5 align-text-top text-terminal-text-muted"
                   aria-hidden="true"
                 />
-<<<<<<< HEAD
                 The previous Pluck Live site displayed a &ldquo;Price Forecast&rdquo; figure
                 on every commodity page without explaining how it was produced. It has been
                 removed. Hatsi360 publishes observations and analysis; it does not publish
                 predictions dressed up as data. See the{' '}
-=======
-                Some market data services display a &ldquo;Price Forecast&rdquo; figure without
-                explaining how it is produced. Hatsi360 publishes observations and analysis; it
-                does not publish predictions dressed up as data. See the{' '}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 <Link
                   href="/disclaimer"
                   className="font-semibold text-harvest-300 underline decoration-terminal-border underline-offset-2"
@@ -239,11 +199,7 @@ export default function ResearchPage() {
 }
 
 /** Research while its content loads. */
-<<<<<<< HEAD
 function ResearchLoading() {
-=======
-export function ResearchLoading() {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return (
     <PageContainer>
       <PageHeader

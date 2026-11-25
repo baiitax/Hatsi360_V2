@@ -1,0 +1,7 @@
+
+--- hunk #1 (after kept line 0) ---
+
+--- hunk #2 (after kept line 79) ---
+
+--- hunk #3 (after kept line 305) ---
+export function FundamentalsLoading() {

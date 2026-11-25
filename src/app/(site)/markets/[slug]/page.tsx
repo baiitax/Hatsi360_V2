@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       url: `/markets/${market.slug}`,
       images: [
         {
-          url: '/brand/hatsi360-social-preview.png',
+          url: '/brand/hatsi360-social-1200x630.png',
           width: 1200,
           height: 630,
           alt: `${market.name} — agricultural market prices on Hatsi360 Markets.`,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description:
         market.description ??
         `Agricultural commodity prices at ${market.name}${market.stateName ? `, ${market.stateName}` : ''}.`,
-      images: ['/brand/hatsi360-social-preview.png'],
+      images: ['/brand/hatsi360-social-1200x630.png'],
     },
   };
 }

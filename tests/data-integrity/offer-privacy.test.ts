@@ -25,15 +25,12 @@ import { Client } from 'pg';
  */
 
 type Row = Record<string, unknown>;
-<<<<<<< HEAD
 const LOCAL_TEST_DB_CONFIGURED = Boolean(
   process.env.SUPABASE_DB_HOST &&
     process.env.SUPABASE_DB_USER &&
     process.env.SUPABASE_DB_PASSWORD &&
     process.env.SUPABASE_DB_NAME,
 );
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 let db: { ok: true; client: Client } | { ok: false; reason: string } = {
   ok: false,
@@ -115,11 +112,7 @@ async function queryAsUser(role: string, uid: string, sql: string): Promise<Row[
 
 const FIXTURE = "reason like 'TEST FIXTURE%'";
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('offer privacy — the verification trail is not world-readable (local test DB only)', () => {
-=======
-describe('offer privacy — the verification trail is not world-readable', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('hides the trail of unpublished offers from an anonymous reader', async () => {
     if (!db.ok) return console.warn(`[offer-privacy] SKIPPED: ${db.reason}`);
     // The regression guard for migration 0031. `using (true)` here returned
@@ -225,11 +218,7 @@ describe('offer privacy — the verification trail is not world-readable', () =>
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('offer privacy — the offers themselves (local test DB only)', () => {
-=======
-describe('offer privacy — the offers themselves', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('exposes to anon only offers that are verified, disclosed and unexpired', async () => {
     if (!db.ok) return console.warn(`[offer-privacy] SKIPPED: ${db.reason}`);
     for (const table of ['buyer_offers', 'seller_offers']) {
@@ -288,11 +277,7 @@ describe('offer privacy — the offers themselves', () => {
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('offer privacy — watchlist and alerts are owner-scoped (local test DB only)', () => {
-=======
-describe('offer privacy — watchlist and alerts are owner-scoped', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('shows an anonymous reader no saved commodity and no alert', async () => {
     if (!db.ok) return console.warn(`[offer-privacy] SKIPPED: ${db.reason}`);
     for (const table of ['saved_commodities', 'saved_markets', 'price_alerts']) {
@@ -329,11 +314,7 @@ describe('offer privacy — watchlist and alerts are owner-scoped', () => {
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('demonstration offers are unmistakably labelled (local test DB only)', () => {
-=======
-describe('demonstration offers are unmistakably labelled', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('marks every fixture offer as a test fixture in its notes', async () => {
     if (!db.ok) return console.warn(`[offer-privacy] SKIPPED: ${db.reason}`);
     for (const table of ['buyer_offers', 'seller_offers']) {

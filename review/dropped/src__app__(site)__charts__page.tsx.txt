@@ -1,0 +1,29 @@
+
+--- hunk #1 (after kept line 54) ---
+  title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+  description:
+    'Analyse agricultural commodity price movements, historical observations and market comparisons using available Hatsi360 market intelligence data.',
+  alternates: { canonical: '/charts' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Hatsi360 Markets',
+    locale: BRAND.locale,
+    title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+    description:
+      'Analyse agricultural commodity price movements, historical observations and market comparisons.',
+    url: '/charts',
+    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Agricultural Price Analytics & Historical Trends | Hatsi360 Markets',
+    description:
+      'Analyse agricultural commodity price movements, historical observations and market comparisons.',
+    images: ['/brand/hatsi360-social-preview.png'],
+  },
+
+--- hunk #2 (after kept line 265) ---
+              ? 'This series may include records without a verification trail. They are shown with their original data and never presented as verified.'
+
+--- hunk #3 (after kept line 413) ---
+export function ChartsFallback() {

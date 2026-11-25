@@ -57,10 +57,6 @@ describe('the loading levels', () => {
       'prices',
       'prices/[commodity]',
       'commodities',
-<<<<<<< HEAD
-=======
-      'commodities/[slug]',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       'markets',
       'markets/[slug]',
       'insights',
@@ -76,7 +72,6 @@ describe('the loading levels', () => {
     }
   });
 
-<<<<<<< HEAD
   it('keeps commodity profile slug validation non-streamed so unknown slugs return HTTP 404', () => {
     const profileRoute = 'src/app/(commodity-profile)/commodities/[slug]';
     expect(existsSync(join(ROOT, profileRoute, 'page.tsx'))).toBe(true);
@@ -84,8 +79,6 @@ describe('the loading levels', () => {
     expect(existsSync(join(ROOT, 'src/app/(commodity-profile)/layout.tsx'))).toBe(true);
   });
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('has a loading boundary on the Control Centre and the Field App', () => {
     expect(existsSync(join(ROOT, 'src/app/admin/loading.tsx'))).toBe(true);
     expect(existsSync(join(ROOT, 'src/app/agent/loading.tsx'))).toBe(true);

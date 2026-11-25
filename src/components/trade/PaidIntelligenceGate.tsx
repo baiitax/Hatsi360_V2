@@ -17,7 +17,7 @@ export function PaidIntelligenceNotice({
   const accountBlocked = access === 'inactive';
 
   return (
-    <main id="main-content" className="min-h-[70vh] bg-soft">
+    <div id="main-content" className="editorial min-h-[70vh]">
       <div className="container-page py-10 sm:py-14">
         <div className="mx-auto max-w-4xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
@@ -109,7 +109,7 @@ export function PaidIntelligenceNotice({
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

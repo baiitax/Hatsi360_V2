@@ -5,12 +5,8 @@ import { getSiteUrl } from '@/lib/supabase/config';
 /**
  * Domain and canonical-host management.
  *
-<<<<<<< HEAD
  * Hatsi360 has to be able to run on more than one host during a migration:
  * the existing `liveprice.pluckagro.com`, a new Hatsi360 domain, or a
-=======
- * Hatsi360 can run on multiple hosts:
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  * preview deployment. Three things have to agree on which host is canonical:
  * the metadata, the sitemap, and the redirect behaviour.
  *

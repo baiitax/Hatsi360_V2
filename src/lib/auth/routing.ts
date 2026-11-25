@@ -71,6 +71,7 @@ const ROLE_PATHS: Record<UserRole, string[]> = {
     '/admin/reports',
     '/admin/notifications',
     '/admin/profile',
+    '/admin/intelligence',
   ],
   verification_officer: [
     '/admin/overview',
@@ -82,6 +83,7 @@ const ROLE_PATHS: Record<UserRole, string[]> = {
     '/admin/reports',
     '/admin/notifications',
     '/admin/profile',
+    '/admin/intelligence',
   ],
   analyst: [
     '/admin/overview',
@@ -97,14 +99,10 @@ const ROLE_PATHS: Record<UserRole, string[]> = {
     '/admin/categories',
     '/admin/grades',
     '/admin/units',
-<<<<<<< HEAD
-=======
-    '/admin/schedule',
-    '/admin/coverage',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     '/admin/reports',
     '/admin/notifications',
     '/admin/profile',
+    '/admin/intelligence',
   ],
   admin: ['/admin'],
   super_admin: ['/admin'],

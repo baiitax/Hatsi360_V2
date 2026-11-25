@@ -1,0 +1,447 @@
+[
+  {
+    "file": "src/app/globals.css",
+    "hunks": 16,
+    "lines_dropped": 185
+  },
+  {
+    "file": "src/lib/operations/field.ts",
+    "hunks": 14,
+    "lines_dropped": 3
+  },
+  {
+    "file": "src/components/terminal/MobileNavigation.tsx",
+    "hunks": 12,
+    "lines_dropped": 25
+  },
+  {
+    "file": "src/app/agent/home/page.tsx",
+    "hunks": 11,
+    "lines_dropped": 117
+  },
+  {
+    "file": "src/components/agent/CollectionSession.tsx",
+    "hunks": 11,
+    "lines_dropped": 31
+  },
+  {
+    "file": "src/components/market/MarketOverview.tsx",
+    "hunks": 9,
+    "lines_dropped": 5
+  },
+  {
+    "file": "src/components/market/MarketWatchTable.tsx",
+    "hunks": 9,
+    "lines_dropped": 8
+  },
+  {
+    "file": "src/lib/trade/freshness.ts",
+    "hunks": 9,
+    "lines_dropped": 10
+  },
+  {
+    "file": "src/lib/trade/queries.ts",
+    "hunks": 9,
+    "lines_dropped": 69
+  },
+  {
+    "file": "src/app/(site)/trade/page.tsx",
+    "hunks": 8,
+    "lines_dropped": 52
+  },
+  {
+    "file": "src/components/terminal/TerminalShell.tsx",
+    "hunks": 7,
+    "lines_dropped": 61
+  },
+  {
+    "file": "src/components/ui/data-display.tsx",
+    "hunks": 7,
+    "lines_dropped": 38
+  },
+  {
+    "file": "src/lib/agent/use-field-queue.ts",
+    "hunks": 7,
+    "lines_dropped": 205
+  },
+  {
+    "file": "src/app/(site)/trade/alerts/page.tsx",
+    "hunks": 6,
+    "lines_dropped": 29
+  },
+  {
+    "file": "src/app/(site)/trade/terminal/page.tsx",
+    "hunks": 6,
+    "lines_dropped": 28
+  },
+  {
+    "file": "src/app/(site)/commodities/page.tsx",
+    "hunks": 5,
+    "lines_dropped": 78
+  },
+  {
+    "file": "src/app/(site)/insights/page.tsx",
+    "hunks": 5,
+    "lines_dropped": 29
+  },
+  {
+    "file": "src/app/layout.tsx",
+    "hunks": 5,
+    "lines_dropped": 29
+  },
+  {
+    "file": "src/lib/brand.ts",
+    "hunks": 5,
+    "lines_dropped": 13
+  },
+  {
+    "file": "tests/admin/admin-commercial.test.ts",
+    "hunks": 5,
+    "lines_dropped": 9
+  },
+  {
+    "file": "tests/auth/demo-access.test.ts",
+    "hunks": 5,
+    "lines_dropped": 10
+  },
+  {
+    "file": "tests/data-integrity/fixture-isolation.test.ts",
+    "hunks": 5,
+    "lines_dropped": 4
+  },
+  {
+    "file": "tests/data-integrity/offer-privacy.test.ts",
+    "hunks": 5,
+    "lines_dropped": 4
+  },
+  {
+    "file": "src/app/(site)/page.tsx",
+    "hunks": 4,
+    "lines_dropped": 687
+  },
+  {
+    "file": "src/app/(site)/trade/watchlist/page.tsx",
+    "hunks": 4,
+    "lines_dropped": 28
+  },
+  {
+    "file": "src/app/admin/zones/page.tsx",
+    "hunks": 4,
+    "lines_dropped": 8
+  },
+  {
+    "file": "src/components/agent/FieldUi.tsx",
+    "hunks": 4,
+    "lines_dropped": 4
+  },
+  {
+    "file": "src/components/brand/Logo.tsx",
+    "hunks": 4,
+    "lines_dropped": 10
+  },
+  {
+    "file": "src/lib/operations/field-actions.ts",
+    "hunks": 4,
+    "lines_dropped": 8
+  },
+  {
+    "file": "tests/trade/freshness.test.ts",
+    "hunks": 4,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/(site)/charts/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 23
+  },
+  {
+    "file": "src/app/(site)/coverage-report/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 51
+  },
+  {
+    "file": "src/app/(site)/markets/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 79
+  },
+  {
+    "file": "src/app/(site)/prices/[commodity]/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 77
+  },
+  {
+    "file": "src/app/(site)/prices/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 102
+  },
+  {
+    "file": "src/app/(site)/trade/fundamentals/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/app/admin/commodities/page.tsx",
+    "hunks": 3,
+    "lines_dropped": 3
+  },
+  {
+    "file": "src/app/manifest.ts",
+    "hunks": 3,
+    "lines_dropped": 6
+  },
+  {
+    "file": "src/components/agent/AgentShell.tsx",
+    "hunks": 3,
+    "lines_dropped": 10
+  },
+  {
+    "file": "src/components/site/navigation.tsx",
+    "hunks": 3,
+    "lines_dropped": 9
+  },
+  {
+    "file": "src/components/ui/icons.tsx",
+    "hunks": 3,
+    "lines_dropped": 277
+  },
+  {
+    "file": "src/components/ui/primitives.tsx",
+    "hunks": 3,
+    "lines_dropped": 3
+  },
+  {
+    "file": "tests/field/offline-queue.test.ts",
+    "hunks": 3,
+    "lines_dropped": 7
+  },
+  {
+    "file": "src/app/(portal)/reset-password/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 10
+  },
+  {
+    "file": "src/app/(site)/compare/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 55
+  },
+  {
+    "file": "src/app/(site)/layout.tsx",
+    "hunks": 2,
+    "lines_dropped": 36
+  },
+  {
+    "file": "src/app/(site)/reports/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 11
+  },
+  {
+    "file": "src/app/(site)/trade/best-buy/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 0
+  },
+  {
+    "file": "src/app/(site)/trade/best-sell/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 0
+  },
+  {
+    "file": "src/app/(site)/trade/layout.tsx",
+    "hunks": 2,
+    "lines_dropped": 37
+  },
+  {
+    "file": "src/app/admin/agents/[id]/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/api-management/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/assignments/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/categories/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/customers/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/exports/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/grades/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/operations/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/profile/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/subscriptions/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/app/admin/units/page.tsx",
+    "hunks": 2,
+    "lines_dropped": 6
+  },
+  {
+    "file": "src/components/admin/AdminShell.tsx",
+    "hunks": 2,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/components/data/DataCoverageNotice.tsx",
+    "hunks": 2,
+    "lines_dropped": 34
+  },
+  {
+    "file": "src/components/loading/HatsiGlobalPreloader.tsx",
+    "hunks": 2,
+    "lines_dropped": 7
+  },
+  {
+    "file": "src/lib/metadata.ts",
+    "hunks": 2,
+    "lines_dropped": 9
+  },
+  {
+    "file": "src/lib/operations/navigation.ts",
+    "hunks": 2,
+    "lines_dropped": 6
+  },
+  {
+    "file": "tests/brand/brand.test.ts",
+    "hunks": 2,
+    "lines_dropped": 0
+  },
+  {
+    "file": "tests/data-integrity/schema-drift.test.ts",
+    "hunks": 2,
+    "lines_dropped": 1
+  },
+  {
+    "file": "tests/loading/loading.test.tsx",
+    "hunks": 2,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/app/(portal)/login/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 9
+  },
+  {
+    "file": "src/app/(site)/about/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 3
+  },
+  {
+    "file": "src/app/(site)/contact/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/app/(site)/dashboard/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 14
+  },
+  {
+    "file": "src/app/(site)/faq/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/app/(site)/solutions/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 21
+  },
+  {
+    "file": "src/app/agent/collection/[id]/page.tsx",
+    "hunks": 1,
+    "lines_dropped": 0
+  },
+  {
+    "file": "src/components/forms/AuthForms.tsx",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/components/marketing/home-sections.tsx",
+    "hunks": 1,
+    "lines_dropped": 3
+  },
+  {
+    "file": "src/data/seed/reference-data.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/agent/offline-queue.ts",
+    "hunks": 1,
+    "lines_dropped": 0
+  },
+  {
+    "file": "src/lib/auth/routing.ts",
+    "hunks": 1,
+    "lines_dropped": 2
+  },
+  {
+    "file": "src/lib/domains.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/operations/actions.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/operations/commercial.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/terminal/summary.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/trade/candles.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "src/lib/trade/index.ts",
+    "hunks": 1,
+    "lines_dropped": 103
+  },
+  {
+    "file": "src/types/domain.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  },
+  {
+    "file": "tests/routing/demo-landing.test.ts",
+    "hunks": 1,
+    "lines_dropped": 1
+  }
+]

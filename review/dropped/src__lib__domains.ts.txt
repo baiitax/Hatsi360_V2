@@ -1,0 +1,3 @@
+
+--- hunk #1 (after kept line 7) ---
+ * Hatsi360 can run on multiple hosts:

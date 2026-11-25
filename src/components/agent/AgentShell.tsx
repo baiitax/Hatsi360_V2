@@ -86,23 +86,13 @@ export function AgentShell({
             className="flex items-center gap-2.5"
             aria-label={`${BRAND.name} ${BRAND.surfaces.fieldApp}`}
           >
-<<<<<<< HEAD
             <BrandMark size={36} />
-            <span className="text-sm font-bold leading-tight text-brand-900">
-              {BRAND.name}
-              <span className="block text-[11px] font-medium uppercase tracking-wide text-brand-600">
-                Field
-=======
-            <BrandMark size={40} tone="light" />
-            <div className="flex flex-col">
-              <span className="text-sm font-bold leading-tight text-brand-900">
-                {BRAND.name}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
-              </span>
+            <span className="flex flex-col leading-tight">
+              <span className="text-sm font-bold text-brand-900">{BRAND.name}</span>
               <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">
                 Field Operations
               </span>
-            </div>
+            </span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -111,16 +101,7 @@ export function AgentShell({
                 <span className="size-1.5 rounded-full bg-warning-500" />
                 Offline
               </span>
-<<<<<<< HEAD
             ) : null}
-=======
-            ) : (
-              <span className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700">
-                <span className="size-1.5 rounded-full bg-brand-500" />
-                Online
-              </span>
-            )}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             <NotificationCenter
               href="/agent/notifications"
               unreadCount={unreadCount}
@@ -176,7 +157,6 @@ export function AgentShell({
           })}
         </ul>
       </nav>
-<<<<<<< HEAD
 
       <footer className="mx-auto w-full max-w-lg px-4 pb-6 text-center text-[11px] text-ink-400">
         Signed in as {userName}
@@ -186,8 +166,6 @@ export function AgentShell({
           </span>
         ) : null}
       </footer>
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     </div>
   );
 }

@@ -10,6 +10,13 @@ import type { ImageAsset } from '@/lib/images/registry';
  * Keeps the eyebrow / title / lede rhythm consistent on every page, and
  * carries the breadcrumb trail where one exists.
  *
+ * The hero is part of the market terminal, so by default it is toned to the
+ * terminal environment: the page reads as one surface from the freshness strip
+ * down. A page that is deliberately a light document can ask for
+ * `tone="editorial"` and gets the paper band instead. Mixing the two by
+ * accident is what produced pages that opened as a white sheet on a dark
+ * terminal and then turned dark again halfway down.
+ *
  * A page may also give it a photograph. The photograph never displaces the
  * heading — the text stays in the leading column and the image supports it —
  * and it is resolved through the image registry rather than by a URL, so a
@@ -22,6 +29,7 @@ export function PageHero({
   breadcrumbs,
   image,
   imageRatio = 'landscape',
+  tone = 'terminal',
   children,
 }: {
   eyebrow?: string;
@@ -32,10 +40,18 @@ export function PageHero({
   image?: ImageAsset;
   /** The ratio of the photograph. */
   imageRatio?: ImageRatio;
+  /** Which environment the band belongs to. The terminal is the default. */
+  tone?: 'terminal' | 'editorial';
   children?: ReactNode;
 }) {
   return (
-    <section className="editorial border-b border-ink-200 bg-white">
+    <section
+      className={
+        tone === 'terminal'
+          ? 'hero-terminal border-b border-terminal-border bg-terminal-bg'
+          : 'editorial border-b border-ink-200 bg-white'
+      }
+    >
       {breadcrumbs && breadcrumbs.length > 0 ? (
         <BreadcrumbJsonLd
           items={breadcrumbs.map((crumb) => ({
@@ -48,7 +64,7 @@ export function PageHero({
       ) : null}
 
       <div className="container-page py-10 sm:py-14">
-        {breadcrumbs ? <Breadcrumbs items={breadcrumbs} /> : null}
+        {breadcrumbs ? <Breadcrumbs items={breadcrumbs} tone={tone} /> : null}
         <div
           className={
             image
@@ -58,15 +74,33 @@ export function PageHero({
         >
           <div className="max-w-3xl">
             {eyebrow ? (
-              <p className="text-sm font-semibold uppercase tracking-widest text-brand-700">
+              <p
+                className={
+                  tone === 'terminal'
+                    ? 'text-sm font-semibold uppercase tracking-widest text-terminal-accent'
+                    : 'text-sm font-semibold uppercase tracking-widest text-brand-700'
+                }
+              >
                 {eyebrow}
               </p>
             ) : null}
-            <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            <h1
+              className={`mt-2 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl ${
+                tone === 'terminal' ? 'text-terminal-text' : ''
+              }`}
+            >
               {title}
             </h1>
             {lede ? (
-              <div className="mt-4 text-base leading-relaxed text-ink-600 sm:text-lg">{lede}</div>
+              <div
+                className={
+                  tone === 'terminal'
+                    ? 'mt-4 text-base leading-relaxed text-terminal-text-secondary sm:text-lg'
+                    : 'mt-4 text-base leading-relaxed text-ink-600 sm:text-lg'
+                }
+              >
+                {lede}
+              </div>
             ) : null}
             {children ? <div className="mt-6">{children}</div> : null}
           </div>

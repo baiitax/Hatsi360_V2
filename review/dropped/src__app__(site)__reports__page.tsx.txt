@@ -1,0 +1,15 @@
+
+--- hunk #1 (after kept line 13) ---
+    'Access agricultural market research, commodity reports, regional insights and published intelligence from Hatsi360 Markets.',
+
+--- hunk #2 (after kept line 21) ---
+      'Access agricultural market research, commodity reports, regional insights and published intelligence from Hatsi360 Markets.',
+    url: '/reports',
+    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Agricultural Market Research & Reports | Hatsi360 Markets',
+    description:
+      'Access agricultural market research, commodity reports, regional insights and published intelligence.',
+    images: ['/brand/hatsi360-social-preview.png'],

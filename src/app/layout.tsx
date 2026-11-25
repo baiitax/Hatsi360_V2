@@ -2,10 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import { BRAND, CONTACT } from '@/lib/brand';
 import { getSiteUrl } from '@/lib/supabase/config';
-<<<<<<< HEAD
 import { PLATFORM_DESCRIPTION } from '@/lib/metadata';
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { HatsiGlobalPreloader } from '@/components/loading/HatsiGlobalPreloader';
 import { HatsiBootSignal } from '@/components/loading/HatsiBootSignal';
 import { HatsiLoadingIndicator } from '@/components/loading/HatsiLoadingIndicator';
@@ -68,7 +65,7 @@ const OG_HOMEPAGE_DESCRIPTION =
   'agricultural research and trade intelligence. Discover the information you need to make more ' +
   'informed agricultural business decisions.';
 
-const SOCIAL_CARD = '/brand/hatsi360-social-preview.png';
+const SOCIAL_CARD = '/brand/hatsi360-social-1200x630.png';
 
 const defaultTitle = `${BRAND_TITLE} | ${BRAND_DESCRIPTOR} & Trade`;
 
@@ -78,13 +75,8 @@ export const metadata: Metadata = {
     default: defaultTitle,
     template: `%s | ${BRAND_TITLE}`,
   },
-<<<<<<< HEAD
   description: PLATFORM_DESCRIPTION,
   applicationName: BRAND.name,
-=======
-  description: HOMEPAGE_DESCRIPTION,
-  applicationName: BRAND_TITLE,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   keywords: [
     'African agricultural market intelligence',
     'agricultural commodity prices Africa',
@@ -98,7 +90,6 @@ export const metadata: Metadata = {
     'sesame prices Nigeria',
     'agricultural price comparison',
     'Nigeria commodity market reports',
-<<<<<<< HEAD
     'farmer price information',
     'agricultural market intelligence',
     'Hatsi360',
@@ -107,24 +98,12 @@ export const metadata: Metadata = {
   creator: 'Pluck Agro',
   publisher: 'Pluck Agro',
   category: BRAND.category,
-=======
-    'agricultural trade intelligence',
-    'commodity price analytics',
-    'Hatsi360 Markets',
-    'Hatsi360',
-  ],
-  authors: [{ name: BRAND_TITLE }],
-  creator: BRAND_TITLE,
-  publisher: BRAND_TITLE,
-  category: BRAND_DESCRIPTOR,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: BRAND_TITLE,
     locale: BRAND.locale,
     url: siteUrl,
-<<<<<<< HEAD
     title: `${BRAND.name} | Agricultural Commodity Prices & Market Intelligence`,
     description: PLATFORM_DESCRIPTION,
     images: [
@@ -133,37 +112,14 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: `${BRAND.name} — ${BRAND.descriptor}`,
-=======
-    title: `${BRAND_TITLE} — ${BRAND_TAGLINE}`,
-    description: OG_HOMEPAGE_DESCRIPTION,
-    images: [
-      {
-        url: SOCIAL_CARD,
-        width: 1200,
-        height: 630,
-        alt: `${BRAND_TITLE} — ${BRAND_DESCRIPTOR}. ${BRAND_TAGLINE}`,
-        type: 'image/png',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-<<<<<<< HEAD
     title: `${BRAND.name} | Agricultural Commodity Prices & Market Intelligence`,
     description: PLATFORM_DESCRIPTION,
     images: ['/brand/hatsi360-social-1200x630.png'],
-=======
-    site: '@Hatsi360',
-    title: `${BRAND_TITLE} — ${BRAND_TAGLINE}`,
-    description: OG_HOMEPAGE_DESCRIPTION,
-    images: [
-      {
-        url: SOCIAL_CARD,
-        alt: `${BRAND_TITLE} — ${BRAND_DESCRIPTOR}. ${BRAND_TAGLINE}`,
-      },
-    ],
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   robots: {
     index: true,

@@ -22,6 +22,7 @@ export async function DataCoverageNotice({
   observationCount?: number;
 }) {
   const source = await getDataSource();
+  const provenance = await source.getProvenance();
 
   const parsedLatestTimestamp = latestCollectedAt ? new Date(latestCollectedAt).getTime() : null;
   const timestampIsInvalid =
@@ -39,7 +40,6 @@ export async function DataCoverageNotice({
   const timestampNeedsReview = timestampIsInvalid || freshness?.state === 'future_timestamp';
   const freshnessNeedsNotice = freshness ? requiresFreshnessWarning(freshness.state) : false;
 
-<<<<<<< HEAD
   if (!source.isMigrated && !freshnessNeedsNotice && !timestampNeedsReview) return null;
 
   const latest = latestCollectedAt
@@ -49,11 +49,6 @@ export async function DataCoverageNotice({
     : provenance
       ? formatDate(provenance.dateRange[1])
       : null;
-=======
-  if (!stale) return null;
-
-  const latest = latestCollectedAt ? formatDate(latestCollectedAt) : null;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   return (
     <aside
@@ -68,7 +63,6 @@ export async function DataCoverageNotice({
           ⚑
         </span>
         <div className="min-w-0 flex-1">
-<<<<<<< HEAD
           <h2 className="text-base font-bold text-amber-950">
             {source.isMigrated
               ? 'Migrated price records — read this first'
@@ -155,39 +149,6 @@ export async function DataCoverageNotice({
               published; this status describes the newest timestamp, not every historical row.
             </p>
           )}
-=======
-          <h2 className="text-base font-bold text-amber-950">Price coverage notice</h2>
-
-          <p className="mt-2 text-sm leading-relaxed text-amber-900">
-            The most recent published observation is dated {latest ?? '—'}
-            {latestCollectedAt ? (
-              <span className="ml-1">({relativeTime(latestCollectedAt)})</span>
-            ) : null}.
-            Prices older than the commodity&rsquo;s freshness window are still shown,
-            but they are marked as stale.{' '}
-            {observationCount ?? 0} observation{observationCount === 1 ? '' : 's'} are currently
-            published.
-          </p>
-          <p className="mt-3 text-sm leading-relaxed text-amber-900">
-            The collection network is active market by market. New observations are captured
-            in the field by market agents, verified by a verification officer, and published
-            with their unit, price type and timestamps attached.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link
-              href="/about"
-              className="rounded-full bg-amber-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-950"
-            >
-              How we collect prices
-            </Link>
-            <Link
-              href="/disclaimer"
-              className="rounded-full border border-amber-300 px-4 py-2 text-sm font-semibold text-amber-900 transition-colors hover:bg-amber-100"
-            >
-              Price data disclaimer
-            </Link>
-          </div>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         </div>
       </div>
     </aside>

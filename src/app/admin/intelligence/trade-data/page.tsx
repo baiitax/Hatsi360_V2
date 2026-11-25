@@ -3,8 +3,10 @@ import { createClient } from '@/lib/supabase/server';
 import { PageHeader } from '@/components/ui';
 import { getTradeDataStats } from '@/lib/trade/flows';
 import { getTradeDataSources, getRecentSyncLogs } from '@/lib/trade/ingestion/pipeline';
+import { requirePathAccess } from '@/lib/auth/guards';
 
 export default async function TradeDataAdminPage() {
+  await requirePathAccess('/admin/intelligence/trade-data');
   const supabase = await createClient();
 
   // Get data sources and recent sync logs

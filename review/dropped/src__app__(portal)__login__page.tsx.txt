@@ -1,0 +1,11 @@
+
+--- hunk #1 (after kept line 170) ---
+            Gated behind NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS=true so they never
+            appear on a production deployment unless explicitly enabled. The
+            exposure was P0: anyone who can open the login page could sign in
+            as an administrator and mutate the live database. The panel only
+            renders when the operator has deliberately opted in.
+          */}
+          {process.env.NEXT_PUBLIC_SHOW_DEMO_ACCOUNTS === 'true' ? (
+            <DemoAccountsPanel next={next || undefined} />
+          ) : null}

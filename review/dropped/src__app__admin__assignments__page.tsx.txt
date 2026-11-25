@@ -1,0 +1,6 @@
+
+--- hunk #1 (after kept line 1) ---
+import { requireStaff } from '@/lib/auth/guards';
+
+--- hunk #2 (after kept line 18) ---
+  await requireStaff('/admin/assignments');

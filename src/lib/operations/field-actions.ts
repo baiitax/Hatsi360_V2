@@ -1,20 +1,13 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-<<<<<<< HEAD
 import { redirect } from 'next/navigation';
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { requireAgent } from '@/lib/auth/guards';
 import { markRead } from '@/lib/notifications';
-<<<<<<< HEAD
 import { isDailyMarketReportingEnabled } from '@/lib/reporting/feature';
-=======
-import { runQualityEngine } from '@/lib/operations/quality-integration';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 /**
  * Hatsi360 Field — the agent's own actions.
@@ -247,16 +240,6 @@ export async function submitFieldPrice(
 
   if (error) return fail(error.message);
 
-<<<<<<< HEAD
-=======
-  // Run the quality engine against the submitted observation.
-  // This is a best-effort integration: failures do not block the submission.
-  const observationIdStr = String(observationId);
-  runQualityEngine(observationIdStr).catch(() => {
-    // Quality engine failures are logged but do not block submission
-  });
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   revalidatePath('/agent/home');
   revalidatePath('/agent/assignments');
   revalidatePath('/agent/observations');
@@ -546,7 +529,6 @@ export async function updateFieldProfile(
  * storing it, so a spoofed or nonsense coordinate cannot become a record of
  * where the agent was.
  */
-<<<<<<< HEAD
 /** Open an assigned daily session and reuse its single persistent batch on retries. */
 export async function markDailyReportingItem(
   _prev: FieldActionState,
@@ -594,8 +576,6 @@ export async function openDailyReportingSession(formData: FormData): Promise<voi
   redirect(`/agent/collection/${batchId}`);
 }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 export async function openFieldSession(
   _prev: FieldActionState,
   formData: FormData,

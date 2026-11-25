@@ -282,11 +282,7 @@ export const VERIFICATION_STATUS_META: Record<VerificationStatus, VerificationSt
     code: 'legacy_unverified',
     label: 'Historical record — unverified',
     description:
-<<<<<<< HEAD
       'Migrated from the previous Pluck Live system. It carries no verification trail, so it is published with an explicit unverified label rather than being retroactively marked verified.',
-=======
-      'A historical record without a verification trail. It is published with an explicit unverified label rather than being retroactively marked verified.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     publiclyReadable: true,
     tone: 'warning',
   },

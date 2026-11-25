@@ -1,0 +1,11 @@
+
+--- hunk #1 (after kept line 132) ---
+            {/* The full brand lockup — emblem, HATSI360, subtitle, underline, and "Powered by Pluck Agro". */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/hatsi360-lockup-full.png"
+              alt="Hatsi360 — Agricultural Market Intelligence. Powered by Pluck Agro."
+              width={220}
+              height={80}
+
+--- hunk #2 (after kept line 169) ---

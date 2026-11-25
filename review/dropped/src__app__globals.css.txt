@@ -1,0 +1,217 @@
+
+--- hunk #1 (after kept line 135) ---
+  --color-terminal-text-muted: #748278;
+
+--- hunk #2 (after kept line 148) ---
+
+--- hunk #3 (after kept line 159) ---
+  --color-move-up: #2f8f57;
+  --color-move-up-soft: #14301f;
+  --color-move-down: #d0584f;
+  --color-move-down-soft: #331a18;
+  --color-move-flat: #748278;
+
+  /* ------------------------------------------ semantic colour aliases --
+
+     High-level semantic tokens that map to the appropriate palette based
+     on context. These provide a consistent API for components regardless
+     of whether they're on a light or dark surface. */
+
+  --color-surface: #ffffff;
+  --color-background: #f7f8f5;
+  --color-text-primary: #202923;
+  --color-text-secondary: #59665e;
+  --color-text-muted: #68756e;
+  --color-border: #e3e9e2;
+  --color-border-strong: #cbd5cd;
+
+  /* Terminal semantic equivalents */
+
+  --color-terminal-surface-primary: #17211b;
+  --color-terminal-background: #101713;
+  --color-terminal-text-primary: #f3f6f2;
+  --color-terminal-text-secondary: #a8b5aa;
+  --color-terminal-text-muted: #748278;
+  --color-terminal-border: #2c3a31;
+  --color-terminal-border-strong: #3d4f42;
+
+--- hunk #4 (after kept line 186) ---
+  --text-metadata: 0.6875rem;
+  --text-metadata--line-height: 1rem;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.125rem;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.25rem;
+  --text-figure: 0.9375rem;
+  --text-figure--line-height: 1.375rem;
+
+--- hunk #5 (after kept line 208) ---
+
+  /* --------------------------------------------------------------- radius */
+
+  --radius-panel: 0.625rem;
+  --radius-control: 0.375rem;
+
+--- hunk #6 (after kept line 286) ---
+  }
+
+  /* A single, visible focus treatment across the whole application. */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand-700);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+
+--- hunk #7 (after kept line 601) ---
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14rem;
+    height: 6rem;
+  }
+
+  .hatsi-boot__logo {
+    width: auto;
+    height: 5rem;
+    max-width: 14rem;
+
+--- hunk #8 (after kept line 902) ---
+
+--- hunk #9 (after kept line 914) ---
+
+--- hunk #10 (after kept line 961) ---
+    font-size: var(--text-micro);
+    line-height: var(--text-micro--line-height);
+    letter-spacing: var(--text-micro--letter-spacing);
+
+--- hunk #11 (after kept line 1016) ---
+    border: 1px solid var(--color-terminal-border);
+
+--- hunk #12 (after kept line 1093) ---
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: var(--text-micro--letter-spacing);
+
+--- hunk #13 (after kept line 1137) ---
+
+--- hunk #14 (after kept line 1148) ---
+
+--- hunk #15 (after kept line 1202) ---
+   Hatsi360 Markets — card variants
+
+   Standardised card patterns for consistent use across all surfaces.
+   Each variant is appropriate for a specific interaction model.
+   ========================================================================== */
+
+@layer components {
+  /* Base card — the foundation for all card variants. */
+  .card {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+  }
+
+  /* Interactive card — hoverable, suggests clickability. */
+  .card-hover {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+    transition:
+      border-color 140ms cubic-bezier(0.2, 0, 0.1, 1),
+      box-shadow 140ms cubic-bezier(0.2, 0, 0.1, 1),
+      transform 140ms cubic-bezier(0.2, 0, 0.1, 1);
+  }
+
+  .card-hover:hover {
+    border-color: var(--color-harvest-400);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-1px);
+  }
+
+  /* Metric card — for KPIs and statistics. */
+  .card-metric {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+    padding: 1.25rem;
+  }
+
+  /* Status card — for displaying verification or freshness state. */
+  .card-status {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+    padding: 1rem;
+  }
+
+  /* Elevated card — for modals and overlays. */
+  .card-elevated {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Flush card — no padding, for tables and lists. */
+  .card-flush {
+    background-color: var(--color-editorial-surface);
+    border: 1px solid var(--color-editorial-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+}
+
+/* ==========================================================================
+   Hatsi360 Markets — focus and transition utilities
+
+   Consistent focus rings and transition patterns across all interactive
+   elements.
+   ========================================================================== */
+
+@layer utilities {
+  /* Standard focus ring — visible, accessible, consistent. */
+  .focus-ring {
+    outline: 2px solid var(--color-brand-700);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* Focus ring for dark surfaces. */
+  .focus-ring-dark {
+    outline: 2px solid var(--color-harvest-400);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* Standard transitions. */
+  .transition-fast {
+    transition-property: color, background-color, border-color, opacity;
+    transition-duration: 140ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
+  }
+
+  .transition-panel {
+    transition-property: transform, opacity, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
+  }
+
+  .transition-all-fast {
+    transition-property: all;
+    transition-duration: 140ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0.1, 1);
+  }
+}
+
+/* ==========================================================================
+
+--- hunk #16 (after kept line 1210) ---
+/* ─── Market ticker scroll animation ─── */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes ticker {
+    0%, 100% { transform: translateX(0); }
+  }

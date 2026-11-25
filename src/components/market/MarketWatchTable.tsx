@@ -26,7 +26,7 @@
 
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { formatMoney } from '@/lib/money';
+import { splitUnitName, formatMoney } from '@/lib/money';
 import { VerificationBadge } from '@/components/ui/data-display';
 import { PriceChangeBadge } from './PriceDisplay';
 import { IconArrowDown, IconArrowUp, IconChevronLeft, IconChevronRight, IconMinus } from '@/components/ui/icons';
@@ -44,15 +44,17 @@ export interface MarketWatchRow {
   currencyCode: string;
   unitLabel: string | null;
   priceTypeLabel: string | null;
+  /**
+   * The raw price-type code. Movement is keyed on this, not on the label: a
+   * comparison between `wholesale_transaction` and "wholesale transaction"
+   * never matches, which is why the movement columns used to be empty.
+   */
+  priceType?: string | null;
   gradeName: string | null;
-<<<<<<< HEAD
   /** The daily movement, or `null` when it cannot be calculated. */
   changePercent: number | null;
   /** The weekly movement, or `null` when it cannot be calculated. */
   weeklyChangePercent?: number | null;
-=======
-  changePercent: number | null;
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   observedAt: string | null;
   verificationStatus: string;
   href?: string;
@@ -73,10 +75,7 @@ export function MarketWatchTable({
   caption,
   emptyState,
   footer,
-<<<<<<< HEAD
   showWeekly = true,
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }: {
   rows: MarketWatchRow[];
   /** When supplied with `onSort`, the sortable column heads become links. */
@@ -87,19 +86,19 @@ export function MarketWatchTable({
   /** Rendered instead of the table when there is nothing to show. */
   emptyState?: ReactNode;
   footer?: ReactNode;
-<<<<<<< HEAD
   /**
    * Whether the weekly-movement column is rendered. A page that cannot compute
    * a weekly movement passes `false`, so the column is absent rather than a
    * column of unexplained dashes.
    */
   showWeekly?: boolean;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 }) {
   if (rows.length === 0) {
     return <>{emptyState}</>;
   }
+
+  // The `*` on a unit only means something if a row actually carries one.
+  const withUnitQualifier = rows.some((row) => splitUnitName(row.unitLabel).qualifier !== null);
 
   return (
     <div className="overflow-x-auto">
@@ -121,20 +120,14 @@ export function MarketWatchTable({
               sort={sort}
               onSort={onSort}
             />
-<<<<<<< HEAD
             <th scope="col">Price type</th>
             <SortableHead
               label="Daily"
-=======
-            <SortableHead
-              label="Movement"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               column="movement"
               align="right"
               sort={sort}
               onSort={onSort}
             />
-<<<<<<< HEAD
             {showWeekly ? (
               <SortableHead
                 label="Weekly"
@@ -144,8 +137,6 @@ export function MarketWatchTable({
                 onSort={onSort}
               />
             ) : null}
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             <SortableHead
               label="Last observed"
               column="observed"
@@ -192,14 +183,21 @@ export function MarketWatchTable({
                       {formatMoney(row.amount, { currency: row.currencyCode })}
                     </span>
                     {row.unitLabel ? (
-                      <span className="ml-1 font-normal text-terminal-text-muted">
-                        / {row.unitLabel}
+                      <span
+                        className="ml-1 font-normal text-terminal-text-muted"
+                        title={splitUnitName(row.unitLabel).qualifier ?? undefined}
+                      >
+                        / {splitUnitName(row.unitLabel).short}
+                        {splitUnitName(row.unitLabel).qualifier ? (
+                          <abbr aria-hidden="true" className="ml-0.5 no-underline">
+                            *
+                          </abbr>
+                        ) : null}
                       </span>
                     ) : null}
                   </>
                 )}
               </td>
-<<<<<<< HEAD
               <td className="text-terminal-text-secondary">{row.priceTypeLabel ?? '—'}</td>
               <td className="num">
                 <PriceChangeBadge changePercent={row.changePercent} />
@@ -209,11 +207,6 @@ export function MarketWatchTable({
                   <PriceChangeBadge changePercent={row.weeklyChangePercent ?? null} />
                 </td>
               ) : null}
-=======
-              <td className="num">
-                <PriceChangeBadge changePercent={row.changePercent} />
-              </td>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               <td className="figure-num whitespace-nowrap text-terminal-text-secondary">
                 {row.observedAt ? formatObserved(row.observedAt) : '—'}
               </td>
@@ -227,11 +220,23 @@ export function MarketWatchTable({
           ))}
         </tbody>
       </table>
-      {footer ? (
-        <div className="border-t border-terminal-border px-3 py-2 text-[0.6875rem] text-terminal-text-muted">
-          {footer}
-        </div>
-      ) : null}
+      <div className="border-t border-terminal-border px-3 py-2 text-[0.6875rem] text-terminal-text-muted">
+        {footer ? <span>{footer} </span> : null}
+        {/* Two columns of em dashes explain nothing. If no row has a movement
+            figure, say why, once, under the table. */}
+        {rows.some((row) => row.changePercent !== null || (row.weeklyChangePercent ?? null) !== null)
+          ? null
+          : (
+            <span className="block">
+              No comparable observation pair falls inside the 24-hour or 7-day window, so no
+              daily or weekly movement is shown. Movement needs two observations of the same
+              commodity, market, grade and price type.
+            </span>
+          )}
+        {withUnitQualifier ? (
+          <span>{`* Unit weight is commodity-specific: a bag of sesame and a bag of maize do not weigh the same, so the platform never quotes a single bag weight.`}</span>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -245,7 +250,6 @@ export function MarketWatchTable({
  * rest to the commodity page. Rendered by the page rather than by a media
  * query, so it can be tested.
  */
-<<<<<<< HEAD
 export function MarketWatchCards({
   rows,
   showWeekly = true,
@@ -253,9 +257,6 @@ export function MarketWatchCards({
   rows: MarketWatchRow[];
   showWeekly?: boolean;
 }) {
-=======
-export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return (
     <ul className="divide-y divide-terminal-border">
       {rows.map((row) => (
@@ -276,10 +277,7 @@ export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
               <p className="truncate text-[0.6875rem] text-terminal-text-muted">
                 {row.marketName ?? 'Market not recorded'} ·{' '}
                 {row.observedAt ? formatObserved(row.observedAt) : 'not observed'}
-<<<<<<< HEAD
                 {row.priceTypeLabel ? ` · ${row.priceTypeLabel}` : ''}
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               </p>
             </div>
             <div className="shrink-0 text-right">
@@ -290,7 +288,6 @@ export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
                       row.unitLabel ? ` / ${row.unitLabel}` : ''
                     }`}
               </p>
-<<<<<<< HEAD
               <div className="flex items-center justify-end gap-1.5">
                 <span className="figure-label">D</span>
                 <PriceChangeBadge changePercent={row.changePercent} />
@@ -301,9 +298,6 @@ export function MarketWatchCards({ rows }: { rows: MarketWatchRow[] }) {
                   </>
                 ) : null}
               </div>
-=======
-              <PriceChangeBadge changePercent={row.changePercent} />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
             </div>
           </Link>
         </li>

@@ -1,0 +1,5 @@
+
+--- hunk #1 (after kept line 59) ---
+      'commodities/[slug]',
+
+--- hunk #2 (after kept line 74) ---

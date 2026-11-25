@@ -1,0 +1,10 @@
+
+--- hunk #1 (after kept line 1) ---
+import { requireStaff } from '@/lib/auth/guards';
+
+--- hunk #2 (after kept line 15) ---
+ * historical records whose unit was never stated. Those records are never
+ * normalised and are always flagged as ambiguous.
+ */
+export default async function AdminUnitsPage() {
+  await requireStaff('/admin/units');

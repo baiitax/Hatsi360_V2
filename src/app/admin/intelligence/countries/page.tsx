@@ -7,7 +7,7 @@
  */
 
 import type { Metadata } from 'next';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import {
   getCountries,
   getContinentList,
@@ -34,7 +34,7 @@ interface PageProps {
 }
 
 export default async function CountriesManagementPage({ searchParams }: PageProps) {
-  await requireStaff('/admin/intelligence/countries');
+  await requirePathAccess('/admin/intelligence/countries');
 
   const params = await searchParams;
   const continent = params.continent;

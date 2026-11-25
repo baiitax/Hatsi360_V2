@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
-=======
-import { requireStaff } from '@/lib/auth/guards';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { getDataSource } from '@/lib/data';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader, Panel } from '@/components/ops/Primitives';
@@ -18,20 +14,12 @@ export const metadata: Metadata = {
  * The commodity catalogue in the Control Centre.
  *
  * The catalogue is reference data: it is public, read-only and versioned by
-<<<<<<< HEAD
  * migration. This screen exists so operations staff can see what the product
-=======
- * baseline. This screen exists so operations staff can see what the product
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  * actually sells — including the commodities that are active in the catalogue
  * but have never reported a price.
  */
 export default async function AdminCommoditiesPage() {
-<<<<<<< HEAD
   await requirePathAccess('/admin/commodities');
-=======
-  await requireStaff('/admin/commodities');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const source = await getDataSource();
   const commodities = await source.listCommodities();
   const categories = await source.listCategories();

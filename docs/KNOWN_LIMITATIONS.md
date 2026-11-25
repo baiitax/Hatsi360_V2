@@ -141,7 +141,13 @@ The markup includes a skip link, a visible focus ring, labelled form controls, s
 with `scope`, an `aria-current` state on the current filter, a reduced-motion guard, and a
 `DataCoverageNotice` exposed as a labelled landmark.
 
-**Limitation.** There is no automated axe/Lighthouse gate in CI and no screen-reader test suite.
+**Verified.** As of the November 2026 UI pass, axe-core reports **zero violations** on `/`,
+`/markets`, `/prices`, `/commodities/[slug]`, `/trade` and `/login` at 1440×900, with no console
+errors, and no horizontal overflow at 360/390/414 px. The pass fixed the contrast failures that
+the first machine run found (light cards inheriting the terminal's foreground, the `-300` status
+tints on dark, the footer at 2.86:1, the trade paywall at 1.01:1) and removed a nested `<main>`.
+
+**Limitation.** There is still no automated axe gate in CI and no screen-reader test suite.
 The charts are SVG from Recharts; a screen-reader user gets the same figures from the per-market
 table and the full observation list on `/prices`, but the chart itself has no textual equivalent.
 
@@ -242,4 +248,38 @@ is explainable, but the console does not yet read one source for everything.
 | 16 | No geographic coverage map | Low | Product | Build it when the coverage data is worth a map |
 | 17 | No evidence upload in the field app | Medium | Operations | Build the Storage bucket and the capture screen |
 | 18 | The analytics snapshot is bounded and the console does not read the stored aggregate everywhere | Low | Engineering | Read `analytics_snapshots` for the trend metrics |
+| 19 | Light `.card` panels still sit on the terminal canvas on the directory routes | Medium | Design | Port the table and the filter forms to terminal panels (§16.1) |
+| 20 | The directory routes ship ~950 KB of script | High | Engineering | Audit the shared client graph on `/prices` and `/markets` (§16.2) |
+| 21 | A 17-record verification backlog is not surfaced to operators | **High** | Operations | Show a pending queue with its age (§16.3) |
+| 22 | The signed-in and entitlement suites cannot run without the service-role key | Medium | Engineering | Run them once in CI (§16.4) |
 
+## 16. What the November 2026 UI review left open
+
+The review that produced `docs/HATSI360_UI_REMEDIATION.md` closed every defect it could fix
+inside the repository. These are the things it could not close, and why.
+
+1. **Two visual environments still meet in the middle of a page.** The terminal is the product's
+   surface, and the editorial pages (the price directory's filter panel and table, the market
+   directory's cards) still render light `.card` panels on the dark canvas. Making the hero band
+   part of the terminal removed the worst of it — pages no longer open as a white sheet and turn
+   dark halfway down — but porting `PriceTable`, the market grid and the filter forms to
+   terminal panels is a separate change with its own regression surface.
+2. **The price-directory and market-directory routes ship ~950 KB of script.** Measured with the
+   production build: `/prices` 1800 KB, `/markets` 1784 KB, `/commodities/groundnut` 1756 KB,
+   home 1464 KB (uncompressed, all resource types). Home is dominated by images and the document;
+   the other three are dominated by script. The next step is to find what the shared client
+   graph is carrying on those routes — the filter form and the table are the candidates — rather
+   than to add a bundler setting.
+3. **Seventeen submissions from 22 November are collected but neither published nor visible to
+   the people who verify them.** `price_observations` holds 321 rows, 259 published, 17 with
+   `verification_status` in the pending band. The public site is honest about this (it says the
+   last observation is 14 November), but an operations queue that does not surface a six-day-old
+   backlog is a process gap, not a UI gap.
+4. **The signed-in journeys are still unverified in this environment.** Both the entitlement
+   suites and the watchlist suite need `SUPABASE_SERVICE_ROLE_KEY`, which is deliberately absent
+   here. `npx vitest run` therefore reports 22 failures across 4 files, all of them
+   `Supabase admin access is not configured`. With the key present the same command should be
+   green; that has to be confirmed once, in CI or on a developer machine.
+5. **`/client/api` does not exist.** The customer sidebar shipped a link to it. The link has been
+   removed rather than the page invented, and this entry records that API key issuance (limit 8)
+   still has no screen.

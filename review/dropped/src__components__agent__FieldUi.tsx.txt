@@ -1,0 +1,12 @@
+
+--- hunk #1 (after kept line 55) ---
+  icon,
+
+--- hunk #2 (after kept line 60) ---
+  icon?: string;
+
+--- hunk #3 (after kept line 70) ---
+      {icon && <p className="mb-1 text-base leading-none">{icon}</p>}
+
+--- hunk #4 (after kept line 79) ---
+        className="block rounded-xl border border-ink-200 bg-white px-3 py-3 text-center transition-all hover:border-brand-300 hover:shadow-md"

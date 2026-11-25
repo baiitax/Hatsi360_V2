@@ -1,0 +1,3 @@
+
+--- hunk #1 (after kept line 284) ---
+      'A historical record without a verification trail. It is published with an explicit unverified label rather than being retroactively marked verified.',

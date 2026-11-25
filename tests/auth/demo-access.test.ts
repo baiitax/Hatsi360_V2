@@ -14,15 +14,9 @@ const read = (path: string) => readFileSync(join(ROOT, path), 'utf8');
  *
  *  1. **The demo credentials must be genuinely usable.** An account that is
  *     listed on the login page but cannot authenticate is worse than no demo:
-<<<<<<< HEAD
  *     it looks like the platform is broken. Optional integration checks run
  *     only against an explicitly configured loopback test instance — never a
  *     remote project.
-=======
- *     it looks like the platform is broken. So the accounts are checked against
- *     the live database — they exist, they are active, they carry the role the
- *     panel claims, and they sign in.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  *
  *  2. **Operational access must stay invitation-only.** `signUp` hard-codes
  *     `public_user`. Nothing a browser sends can reach an operational role
@@ -31,13 +25,8 @@ const read = (path: string) => readFileSync(join(ROOT, path), 'utf8');
  *
  * The demo accounts are also deliberately constrained: an agent cannot write
  * at a market it is not assigned to, and nobody can promote themselves. Those
-<<<<<<< HEAD
  * are RLS policies, not hidden buttons, so they can be asserted against a
  * local Supabase test instance with a real session rather than read out of the source.
-=======
- * are RLS policies, not hidden buttons, so they are asserted against the
- * database with a real session rather than read out of the source.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  */
 
 const DEMO_ACCOUNTS = [
@@ -201,15 +190,9 @@ describe('invitation-only account creation', () => {
   });
 
   it('resolves the post-login destination from the role on the server', () => {
-<<<<<<< HEAD
     expect(source).toContain('const target = safeRedirectPathForRole(parsed.data.next, role)');
     expect(source).toContain('redirect(target)');
     expect(source).not.toContain('safeRedirectPath(parsed.data.next');
-=======
-    expect(source).toContain('const landing = landingPathForRole(role)');
-    expect(source).toContain('const target = safeRedirectPath(parsed.data.next, landing)');
-    expect(source).toContain('redirect(target)');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   });
 
   it('signs a suspended account straight back out', () => {
@@ -263,7 +246,6 @@ beforeAll(async () => {
   }
 });
 
-<<<<<<< HEAD
 const LOCAL_TEST_DB_CONFIGURED = Boolean(
   process.env.SUPABASE_DB_HOST &&
     process.env.SUPABASE_DB_USER &&
@@ -272,9 +254,6 @@ const LOCAL_TEST_DB_CONFIGURED = Boolean(
 );
 
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('the demo accounts, against a local test database', () => {
-=======
-describe('the demo accounts, against the live database', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('exists for every account the panel lists', () => {
     if (!db.ok) return console.warn(`[demo-access] SKIPPED: ${db.reason}`);
     expect(db.rows).toHaveLength(DEMO_ACCOUNTS.length);
@@ -304,13 +283,9 @@ describe('the demo accounts, against the live database', () => {
 
 /* ------------------------------------------------- the permission boundary -- */
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED || !supabasePublicEnv())(
   'the demo accounts are constrained by policy, not by hidden buttons (local Supabase only)',
   () => {
-=======
-describe('the demo accounts are constrained by policy, not by hidden buttons', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   let agentToken: string | null = null;
   let agentId: string | null = null;
 

@@ -269,7 +269,7 @@ async function CommodityProfileContent({
       ) : (
         <>
           <section aria-label="The published record">
-            <dl className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
               <MarketOverviewCard
                 label="Observations"
                 value={String(observations.length)}
@@ -292,7 +292,7 @@ async function CommodityProfileContent({
                 detail={grades.length === 0 ? 'No grade recorded' : grades.slice(0, 3).join(', ')}
                 unavailableReason={grades.length === 0 ? 'No grade is recorded on any published observation.' : undefined}
               />
-            </dl>
+            </div>
           </section>
 
           {/* ------------------------------------------------------ movement -- */}

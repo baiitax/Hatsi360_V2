@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/server';
 import { KpiCard } from '@/components/ops/KpiCard';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import type { PillTone } from '@/components/ops/Primitives';
+import { requirePathAccess } from '@/lib/auth/guards';
 
 export const metadata: Metadata = {
   title: 'Global Trade Intelligence — Nigeria',
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function TradeIntelligenceDashboardPage() {
+  await requirePathAccess('/admin/intelligence/trade-intelligence');
   const supabase = await createClient();
 
   // Fetch aggregated trade data

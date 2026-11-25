@@ -1,0 +1,14 @@
+
+--- hunk #1 (after kept line 27) ---
+
+--- hunk #2 (after kept line 114) ---
+describe('offer privacy — the verification trail is not world-readable', () => {
+
+--- hunk #3 (after kept line 220) ---
+describe('offer privacy — the offers themselves', () => {
+
+--- hunk #4 (after kept line 279) ---
+describe('offer privacy — watchlist and alerts are owner-scoped', () => {
+
+--- hunk #5 (after kept line 316) ---
+describe('demonstration offers are unmistakably labelled', () => {

@@ -1,0 +1,41 @@
+
+--- hunk #1 (after kept line 0) ---
+import { buildShareMetadata } from '@/lib/metadata';
+import Link from 'next/link';
+
+--- hunk #2 (after kept line 9) ---
+import { EmptyState, PageHeader, Panel, Pill, Price } from '@/components/trade/Primitives';
+import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
+
+--- hunk #3 (after kept line 47) ---
+
+--- hunk #4 (after kept line 73) ---
+  // Check alerts entitlement
+  const entitlements = await getEntitlements();
+  const hasAlertsEntitlement = hasEntitlement(entitlements, 'alerts');
+
+
+--- hunk #5 (after kept line 99) ---
+      {!hasAlertsEntitlement && (
+        <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-amber-900">
+                Alerts are paused
+              </h3>
+              <p className="mt-1 text-sm text-amber-800">
+                Your subscription doesn&apos;t include price alerts. Your existing alerts are preserved but won&apos;t trigger notifications.{' '}
+                <Link href="/pricing" className="font-medium text-amber-900 underline hover:text-amber-950">
+                  Upgrade your plan
+                </Link>{' '}
+                to create new alerts and reactivate existing ones.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+--- hunk #6 (after kept line 227) ---
+/** Kept so the import is used when the panel is extended. */
+export const __priceComponent = Price;

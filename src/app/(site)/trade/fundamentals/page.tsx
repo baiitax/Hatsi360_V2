@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import Link from 'next/link';
 import { getDataSource } from '@/lib/data';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
@@ -80,14 +77,11 @@ const prettify = (value: string | null) =>
   value ? value.replace(/_/g, ' ') : 'not recorded';
 
 export default async function TradeFundamentalsPage() {
-<<<<<<< HEAD
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/trade/fundamentals" product="Trade Intelligence" />;
   }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const configured = isSupabaseConfigured();
   const signals = configured ? await getFundamentalSignals(undefined, 60) : [];
   const commodities = configured ? await (await getDataSource()).listCommodities() : [];
@@ -309,11 +303,7 @@ export default async function TradeFundamentalsPage() {
 }
 
 /** Fundamental intelligence while its data loads. */
-<<<<<<< HEAD
 function FundamentalsLoading() {
-=======
-export function FundamentalsLoading() {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return (
     <PageContainer>
       <PageHeader

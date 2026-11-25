@@ -386,7 +386,9 @@ describe('Phase 02 terminal catalogue', () => {
     // The watch table carries the unit inside the price cell.
     const table = readFileSync(join(ROOT, 'components', 'market', 'MarketWatchTable.tsx'), 'utf8');
     expect(table).toContain('row.unitLabel');
-    expect(table).toContain('/ {row.unitLabel}');
+    // The unit is still rendered with the price on the same line; it is only
+    // compacted (the qualifier moves to a tooltip and a footnote).
+    expect(table).toContain('splitUnitName(row.unitLabel).short');
     // And it never renders a bare currency figure.
     expect(table).not.toMatch(/formatMoney\([^)]*\)\s*<\/span>/);
   });

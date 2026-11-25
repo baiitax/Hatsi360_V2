@@ -1,0 +1,9 @@
+
+--- hunk #1 (after kept line 2) ---
+import { requireStaff } from '@/lib/auth/guards';
+
+--- hunk #2 (after kept line 16) ---
+ * baseline. This screen exists so operations staff can see what the product
+
+--- hunk #3 (after kept line 21) ---
+  await requireStaff('/admin/commodities');

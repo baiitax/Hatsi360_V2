@@ -1,0 +1,87 @@
+
+--- hunk #1 (after kept line 2) ---
+
+--- hunk #2 (after kept line 20) ---
+import type { PriceObservation } from '@/types/domain';
+
+--- hunk #3 (after kept line 160) ---
+        cadence: 'daily',
+
+--- hunk #4 (after kept line 315) ---
+export async function getMarketMovements(limit = 40): Promise<MovementRow[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  const source = await getDataSource();
+  const commodities = await source.listCommodities();
+  const rows: MovementRow[] = [];
+
+  for (const commodity of commodities) {
+    const observations = await source.listObservationsForAnalysis({ commodityId: commodity.id });
+
+--- hunk #5 (after kept line 376) ---
+    const latest = sorted[0];
+    const previous = sorted[1] ?? null;
+
+
+--- hunk #6 (after kept line 410) ---
+
+--- hunk #7 (after kept line 488) ---
+
+  const source = await getDataSource();
+  const commodities = await source.listCommodities();
+  const results: CommodityFreshness[] = [];
+
+  for (const commodity of commodities) {
+    const observations = await source.listObservationsForAnalysis({ commodityId: commodity.id });
+    if (observations.length === 0) continue;
+    const latest = observations[observations.length - 1];
+    const assessment = classifyFreshness({
+      collectedAt: latest.collectedAt,
+      collectedAtPrecision: latest.collectedAtPrecision,
+      verificationStatus: latest.verificationStatus,
+      priceType: latest.priceType,
+      cadence: 'daily',
+    });
+    results.push({
+      commodityId: commodity.id,
+      commodityName: commodity.name,
+      state: assessment.state,
+      label: assessment.label,
+      explanation: assessment.explanation,
+      collectedAt: latest.collectedAt,
+      observationCount: observations.length,
+    });
+  }
+
+  return results;
+
+--- hunk #8 (after kept line 513) ---
+): Promise<SeriesOption[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  const source = await getDataSource();
+  const rows = await source.listObservationsForAnalysis({ commodityId });
+
+--- hunk #9 (after kept line 531) ---
+    .map(({ key, items }) => {
+      // Use human-readable names from the first observation in this series
+      const sample = items[0];
+      const gradeLabel = sample?.gradeName ?? (key.gradeId ? `grade ${key.gradeId}` : 'no grade recorded');
+      const unitLabel = sample?.unitCode ?? sample?.unitName ?? (key.unitId ? `unit ${key.unitId}` : 'no unit recorded');
+
+      return {
+        key: seriesKeyId(key),
+        label: [
+          key.priceType.replace(/_/g, ' '),
+          gradeLabel,
+          unitLabel,
+          key.currencyCode,
+        ].join(' · '),
+        priceType: key.priceType,
+        gradeId: key.gradeId,
+        unitId: key.unitId,
+        currencyCode: key.currencyCode,
+        observationCount: items.length,
+        marketCount: new Set(items.map((i) => i.marketId)).size,
+      };
+    })

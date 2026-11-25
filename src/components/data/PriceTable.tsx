@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { formatDate, formatDateTime, formatMoney } from '@/lib/money';
+import { formatDate, formatDateTime, formatMoney, splitUnitName } from '@/lib/money';
 import { PRICE_STATE_LABELS, PRICE_STATE_TONES } from '@/lib/trade/freshness';
 import { PRICE_TYPE_META } from '@/types/domain';
 import type { MarketPriceFreshnessState, PriceObservation } from '@/types/domain';
@@ -86,7 +86,17 @@ export function PriceTable({
                       {observation.unitIsSpecific === false ? (
                         <UnitUnknownBadge />
                       ) : observation.unitName ? (
-                        <span className="text-xs text-ink-500">per {observation.unitName}</span>
+                        <span
+                          className="text-xs text-ink-500"
+                          title={splitUnitName(observation.unitName).qualifier ?? undefined}
+                        >
+                          per {splitUnitName(observation.unitName).short}
+                          {splitUnitName(observation.unitName).qualifier ? (
+                            <abbr aria-hidden="true" className="ml-0.5 no-underline">
+                              *
+                            </abbr>
+                          ) : null}
+                        </span>
                       ) : null}
                       {observation.packageWeightKg ? (
                         <span className="text-xs text-ink-500">

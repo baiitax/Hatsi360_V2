@@ -201,11 +201,7 @@ export function TextInput({
 }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-<<<<<<< HEAD
       className={`h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-outline bg-terminal-surface px-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
-=======
-      className={`h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface px-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {...rest}
     />
   );
@@ -219,11 +215,7 @@ export function Select({
 }: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
-<<<<<<< HEAD
       className={`h-[1.875rem] max-w-full rounded-control border border-terminal-outline bg-terminal-surface px-2 text-[0.75rem] font-medium text-terminal-text-secondary focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
-=======
-      className={`h-[1.875rem] max-w-full rounded-control border border-terminal-border bg-terminal-surface px-2 text-[0.75rem] font-medium text-terminal-text-secondary focus-visible:border-harvest-500/70 focus-visible:outline-none ${className}`}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {...rest}
     >
       {children}
@@ -288,11 +280,7 @@ export function SearchInput({
               }
             : undefined
         }
-<<<<<<< HEAD
         className="h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-outline bg-terminal-surface pl-8 pr-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none"
-=======
-        className="h-[1.875rem] w-full min-w-0 rounded-control border border-terminal-border bg-terminal-surface pl-8 pr-2.5 text-[0.8125rem] text-terminal-text placeholder:text-terminal-text-muted focus-visible:border-harvest-500/70 focus-visible:outline-none"
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       />
     </div>
   );
@@ -401,7 +389,7 @@ export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info' | 
 
 const BADGE_TONES: Record<BadgeTone, string> = {
   neutral: 'border-terminal-border bg-terminal-elevated text-terminal-text-secondary',
-  success: 'border-success-700/40 bg-success-700/15 text-success-700',
+  success: 'border-success-500/40 bg-success-500/15 text-success-300',
   warning: 'border-warning-700/40 bg-warning-700/15 text-warning-700',
   danger: 'border-error-700/40 bg-error-700/15 text-error-700',
   info: 'border-info-700/40 bg-info-700/15 text-info-700',
