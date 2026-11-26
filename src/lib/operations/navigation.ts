@@ -102,29 +102,17 @@ export const ADMIN_NAV: NavGroup[] = [
         roles: ['market_supervisor', 'admin', 'super_admin'],
       },
       {
-<<<<<<< HEAD
-=======
-        href: '/admin/coverage',
-        label: 'Market data operations',
-        icon: '◉',
-        roles: ['market_supervisor', 'analyst', 'admin', 'super_admin'],
-      },
-      {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         href: '/admin/assignments',
         label: 'Agent assignments',
         icon: '⇄',
         roles: ['market_supervisor', 'analyst', 'admin', 'super_admin'],
       },
-<<<<<<< HEAD
       {
         href: '/admin/daily-reporting',
         label: 'Daily reporting setup',
         icon: '▦',
         roles: ['admin', 'super_admin'],
       },
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     ],
   },
   {

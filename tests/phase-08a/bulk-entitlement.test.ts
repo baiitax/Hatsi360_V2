@@ -26,6 +26,12 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
+// These suites talk to a live Supabase project through the service role. Without
+// those credentials they cannot mean anything, so they skip rather than fail —
+// the same rule the rest of the database-backed suites follow.
+const DB_CREDENTIALS = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+
 // Test configuration
 const SUPABASE_URL = process.env.SUPABASE_URL || 'http://localhost:54321';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -36,7 +42,7 @@ const testUsers = {
   professional: { email: 'pro-bulk@example.com', password: 'testpass123' },
 };
 
-describe('Phase 08A Stage 5: Bulk Entitlement Enforcement', () => {
+describe.skipIf(!DB_CREDENTIALS)('Phase 08A Stage 5: Bulk Entitlement Enforcement', () => {
   let adminClient: SupabaseClient;
 
   beforeAll(() => {

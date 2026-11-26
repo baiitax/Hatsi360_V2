@@ -86,10 +86,6 @@ export async function getTerminalSummary(): Promise<TerminalSummary> {
       collectedAtPrecision: newest.collectedAtPrecision,
       verificationStatus: newest.verificationStatus,
       priceType: newest.priceType,
-<<<<<<< HEAD
-=======
-      cadence: 'daily',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     });
     publishedFreshness = {
       state: assessment.state,

@@ -10,7 +10,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/auth/guards';
+import { requirePathAccess } from '@/lib/auth/guards';
 import { getIntelligenceStats, getRecentSyncEvents, getActiveSources } from '@/lib/intelligence/service';
 import { KpiCard } from '@/components/ops/KpiCard';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function IntelligenceDashboardPage() {
-  await requireStaff('/admin/intelligence');
+  await requirePathAccess('/admin/intelligence');
 
   const [stats, syncEvents, sources] = await Promise.all([
     getIntelligenceStats(),

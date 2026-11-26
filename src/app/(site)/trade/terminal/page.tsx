@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { buildShareMetadata } from '@/lib/metadata';
 import Link from 'next/link';
 import { getDataSource } from '@/lib/data';
@@ -12,10 +9,6 @@ import {
   getCommodityOpportunities,
   getCommoditySeries,
   getCommoditySeriesOptions,
-<<<<<<< HEAD
-=======
-  getCommodityFreshness,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 } from '@/lib/trade/queries';
 import {
   PRICE_STATE_TONES,
@@ -77,37 +70,20 @@ export default async function TradeTerminalPage({
 }: {
   searchParams: Promise<{ commodity?: string; timeframe?: string; market?: string }>;
 }) {
-<<<<<<< HEAD
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/trade/terminal" product="Trade Intelligence" />;
   }
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const params = await searchParams;
   const configured = isSupabaseConfigured();
 
   const commodities = configured ? await (await getDataSource()).listCommodities() : [];
   const markets = configured ? await (await getDataSource()).listMarkets() : [];
 
-<<<<<<< HEAD
   const selected =
     commodities.find((c) => c.slug === params.commodity) ??
     commodities.find((c) => String(c.id) === params.commodity) ??
-=======
-  // Get commodity freshness to know which have observations (efficient batch query)
-  const freshness = configured ? await getCommodityFreshness() : [];
-  const commoditiesWithObservations = new Set(
-    freshness.filter((f) => f.observationCount > 0).map((f) => f.commodityId)
-  );
-
-  const selected =
-    commodities.find((c) => c.slug === params.commodity) ??
-    commodities.find((c) => String(c.id) === params.commodity) ??
-    // Prefer first commodity with observations, else first commodity
-    commodities.find((c) => commoditiesWithObservations.has(c.id)) ??
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     commodities[0] ??
     null;
 
@@ -184,15 +160,10 @@ export default async function TradeTerminalPage({
             <ul className="space-y-0.5">
               {commodities.map((commodity) => {
                 const active = commodity.id === selected.id;
-<<<<<<< HEAD
-=======
-                const hasData = commoditiesWithObservations.has(commodity.id);
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 return (
                   <li key={commodity.id}>
                     <Link
                       href={`/trade/terminal?commodity=${commodity.slug}&timeframe=${timeframe}`}
-<<<<<<< HEAD
                       className={`block rounded-lg px-2.5 py-2 text-xs font-medium transition-colors ${
                         active
                           ? 'bg-brand-50 text-brand-800'
@@ -201,23 +172,6 @@ export default async function TradeTerminalPage({
                       aria-current={active ? 'page' : undefined}
                     >
                       {commodity.name}
-=======
-                      className={`flex items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors ${
-                        active
-                          ? 'bg-brand-50 text-brand-800'
-                          : hasData
-                          ? 'text-ink-700 hover:bg-ink-50'
-                          : 'text-ink-400 hover:bg-ink-50'
-                      }`}
-                      aria-current={active ? 'page' : undefined}
-                    >
-                      <span>{commodity.name}</span>
-                      {!hasData && (
-                        <span className="text-[10px] text-ink-400" title="No data available">
-                          —
-                        </span>
-                      )}
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                     </Link>
                   </li>
                 );

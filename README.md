@@ -1,15 +1,9 @@
 # Hatsi360
 
-<<<<<<< HEAD
 **Hatsi360** is the agricultural commodity price transparency and market intelligence platform
 for **Pluck Agro**. It is the successor to the PHP site at `https://liveprice.pluckagro.com`,
 rebuilt on Next.js (App Router) + TypeScript + Supabase, with an emphasis on three things the old
 site never had: **honest data**, **real permissions**, and a **collection → verification →
-=======
-**Hatsi360** is an agricultural commodity price transparency and market intelligence platform
-operated by **Pluck Agro**. Built on Next.js (App Router) + TypeScript + Supabase, with an emphasis
-on three principles: **honest data**, **real permissions**, and a **collection → verification →
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 publication** workflow that produces fresh, traceable prices.
 
 > The platform never invents a price. Every published figure comes from an observation with a real
@@ -24,9 +18,9 @@ publication** workflow that produces fresh, traceable prices.
 | --- | --- |
 | Migrations | **15 files**, apply cleanly to PostgreSQL 18.4 — **51 tables, all with RLS, 97 policies, 2 views** |
 | Tests | **296 Vitest tests** + **169 RLS statements** + **221 workflow statements**, all against a real database |
-| Build | Next.js 16.4.2 — **99 route entries** (51 pages, 11 API routes, 19 agent routes, 30 admin routes, 4 auth routes, 2 intelligence routes), production build clean |
+| Build | Next.js 16.4.2 — **62 route entries** (51 pages, 11 API routes), production build clean |
 | Interfaces | One central login · a **Super Admin Control Centre** (16 modules) · a **phone-first Market Agent App** (7 screens) |
-| Data | Field-collected observations with verification trails, plus a historical archive |
+| Data | 28 migrated legacy observations (the live site's entire public price history) + a live collection path |
 | Operations | 5 scheduled jobs, 12 reports with audited CSV exports, notifications, the quality engine, the audit trail |
 | Not built yet | Evidence upload, external notification delivery, billing, forecasting, a geographic map — see `docs/KNOWN_LIMITATIONS.md` |
 
@@ -36,9 +30,13 @@ publication** workflow that produces fresh, traceable prices.
 
 ```bash
 npm ci --legacy-peer-deps        # Node 22 LTS or newer
-cp .env.example .env.local        # Supabase credentials for the production backend
-npm run dev                       # http://localhost:3000
+cp .env.example .env.local        # optional: without Supabase the app runs on the migrated dataset
+npm run dev                      # http://localhost:3000
 ```
+
+Without Supabase credentials the application serves the **migrated legacy dataset** and labels it
+as such on every page that shows prices. That mode is read-only and exists so the whole product
+can be reviewed without a database.
 
 With Supabase configured:
 
@@ -63,9 +61,9 @@ npx supabase db push              # applies supabase/migrations/0001..0015
 ## Folder structure
 
 ```
-hatsi360/
-├── audit/                        # historical capture — proof of data provenance
-│   ├── legacy-pages/             #   raw HTML captures of the earlier site
+pluck-live/
+├── audit/                        # the legacy capture — the proof of what was migrated
+│   ├── legacy-pages/             #   46 raw HTML captures of the live site
 │   └── source/                   #   extracted catalogue, price history and pair index
 ├── docs/
 │   ├── AUDIT_REPORT.md           # every finding, classified by how it was verified
@@ -74,10 +72,9 @@ hatsi360/
 │   ├── DEPLOYMENT.md             # deploy, back up, restore, roll back
 │   └── KNOWN_LIMITATIONS.md      # what this build cannot do, and why
 ├── public/
-│   ├── brand/                    #   logo lockup, mark, favicon and social card
-│   └── img/                      #   representative market imagery
+│   └── img/                      # brand imagery fetched from the live site
 ├── scripts/
-│   ├── build_legacy_dataset.py   # deterministic reconstruction of the historical dataset
+│   ├── build_legacy_dataset.py   # deterministic reconstruction of the legacy dataset
 │   ├── gen_seed_migration.py     # generates 0007_seed_reference_data.sql from the catalogue
 │   ├── validate_migrations.sh    # runs the migration + permission suite on a real database
 │   └── validate-migrations.mjs   # the runner behind it
@@ -85,12 +82,11 @@ hatsi360/
 │   ├── app/                      # App Router — every route is a file
 │   │   ├── api/v1/               #   the versioned read-only JSON API
 │   │   ├── auth/callback/        #   Supabase auth callback
-│   │   ├── (site)/               #   public pages: /, /prices, /markets, /commodities, …
-│   │   ├── intelligence/         #   commodity intelligence with FAOSTAT data
-│   │   ├── agent/                #   the field-collection console (19 routes)
-│   │   ├── admin/                #   the verification and operations console (30 routes)
-│   │   ├── (portal)/             #   authentication: login, register, password reset
-│   │   ├── globals.css           #   Tailwind v4 design system (@theme tokens)
+│   │   ├── (public pages)        #   /, /prices, /prices/[commodity], /commodities, …
+│   │   ├── agent/                #   the field-collection console
+│   │   ├── admin/                #   the verification and operations console
+│   │   ├── dashboard/            #   the customer workspace
+│   │   ├── globals.css           #   the Tailwind v4 design system (@theme tokens)
 │   │   ├── layout.tsx            #   the site shell: topbar, header, footer, skip link
 │   │   ├── not-found.tsx         #   a real 404
 │   │   ├── robots.ts / sitemap.ts
@@ -98,51 +94,47 @@ hatsi360/
 │   │   ├── ui/                   #   design system: SectionHeading, EmptyState, PriceFigure, …
 │   │   ├── site/                 #   SiteHeader, SiteFooter, SignOutButton
 │   │   ├── data/                 #   PriceTable, PriceChart, Cards, DataCoverageNotice, …
-│   │   ├── intelligence/         #   CommodityIntelligence, ProductionChart, EvidenceBadge
 │   │   ├── forms/                #   CentralSignInForm, ContactForm
-│   │   ├── ops/                  #   the console primitives: DataTable, KpiCard, Charts
+│   │   ├── ops/                  #   the console primitives: DataTable, KpiCard, Charts, Primitives
 │   │   ├── agent/                #   AgentShell, CollectionFlow, TaskControls
-│   │   └── admin/                #   AdminShell, VerificationActions, AgentManagement
+│   │   └── admin/                #   AdminShell, VerificationActions, AgentManagement, …
 │   ├── lib/
 │   │   ├── api/                  #   request envelope, auth, rate limiting
-│   │   ├── analytics/            #   metric registry, snapshot, computation, comparison
+│   │   ├── analytics/            #   the metric registry, the snapshot, the computation, the comparison
 │   │   ├── auth/                 #   session helpers, server actions, route guards, throttling
-│   │   ├── content/              #   editorial content
-│   │   ├── intelligence/         #   commodity intelligence queries (FAOSTAT, USDA)
+│   │   ├── content/              #   the migrated articles
 │   │   ├── data/                 #   the DataSource interface: supabase | fixture
 │   │   ├── forms/                #   server actions for the contact form
 │   │   ├── jobs/                 #   the scheduled job runner and its definitions
-│   │   ├── notifications/        #   notification service and external channel adapters
-│   │   ├── operations/           #   agent and admin read models, server actions, navigation
+│   │   ├── notifications/        #   the notification service and the external channel adapters
+│   │   ├── operations/           #   the agent and admin read models, the server actions, the navigation
 │   │   ├── quality/              #   the versioned quality rule engine
-│   │   ├── reports/              #   report registry, role scoping, CSV writer
+│   │   ├── reports/              #   the report registry, the role scoping, the CSV writer
 │   │   ├── supabase/             #   browser / server / admin clients
-│   │   ├── trade/                #   candle engine, freshness, movements, opportunities
 │   │   ├── money.ts              #   NGN formatting
-│   │   ├── pricing.ts            #   aggregation, comparability, freshness
-│   │   └── brand.ts              #   brand constants and navigation
+│   │   └── pricing.ts            #   aggregation, comparability, freshness
 │   ├── data/
-│   │   ├── legacy/               #   historical observations archive
+│   │   ├── legacy/               #   the reconstructed legacy observations
 │   │   └── seed/                 #   the reference-data catalogue
 │   └── types/domain.ts           #   the domain types
 ├── supabase/migrations/          # 0001 … 0015, applied in order
 ├── tests/
 │   ├── pricing.test.ts           #   aggregation and comparability rules
 │   ├── observations-validation.test.ts
-│   ├── data-integrity.test.ts    #   the archive against the raw capture
+│   ├── data-integrity.test.ts    #   the migration against the raw capture
 │   ├── api-auth.test.ts
 │   ├── api-routes.test.ts
-│   ├── analytics/                #   metric computation, comparison, day boundaries
+│   ├── analytics/                #   the metric computation, the comparison, the day boundaries
 │   ├── quality/rules.test.ts     #   every quality rule and its severity
 │   ├── auth/routing.test.ts      #   role routing and the redirect allowlist
 │   ├── operations/navigation.test.ts
-│   ├── reports/reports.test.ts   #   report builders and CSV writer
+│   ├── reports/reports.test.ts   #   the report builders and the CSV writer
 │   ├── security/client-bundle.test.ts
-│   ├── ux/experience.test.tsx    #   field app under dropped connection, a11y of controls
+│   ├── ux/experience.test.tsx    #   the field app under a dropped connection, the a11y of the controls
 │   ├── rls/permission-tests.sql  #   169 statements against a real PostgreSQL instance
 │   └── operations/workflow-tests.sql  #   221 statements: the whole operating chain
 ├── .env.example
-└── next.config.ts                # security headers + URL redirects
+└── next.config.ts                # security headers + the legacy URL redirects
 ```
 
 ---
@@ -155,10 +147,12 @@ Every page, API route and server action talks to a `DataSource` interface
 (`src/lib/data/source.ts`) with two implementations:
 
 * `supabase` — the production backend: PostgreSQL with Row Level Security.
-* `fixture` — the historical dataset, read from
+* `fixture` — the migrated legacy dataset, read from
   `src/data/legacy/production-observations.json`, used when no database is configured.
 
-Both return the same shapes, so the interface cannot tell them apart.
+Both return the same shapes, so the interface cannot tell them apart — and the question "is this
+live or migrated?" is answered by an explicit `source` flag that the UI surfaces, not by a
+divergence in behaviour.
 
 ### The money and the units
 
@@ -203,20 +197,17 @@ Three layers, and the database is the authority:
 
 ## Routes
 
-### Public site
+### Public
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Homepage: hero, price ticker, price trends, market watch, analytics, insights, features, CTA |
-| `/prices` | Interactive price directory with search, filters, heatmap and insights |
-| `/prices/[commodity]` | Price view for one commodity with chart and intelligence panels |
-| `/commodities` · `/commodities/[slug]` | Interactive commodity directory and profile with intelligence |
-| `/markets` · `/markets/[slug]` | Interactive market directory and market detail |
-| `/compare` | Interactive cross-market comparison with bar chart and table views |
-| `/intelligence` · `/intelligence/[slug]` | Commodity intelligence with FAOSTAT and USDA data |
-| `/charts` | Candlestick chart workspace |
-| `/trade` · `/trade/*` | Trading workspace: terminal, watchlist, alerts, fundamentals |
-| `/insights` · `/insights/[slug]` | Market intelligence articles |
+| `/` | Homepage: carousel, market comparison, about, services, latest prices, features, benefits, commodities, markets, insights, FAQ |
+| `/prices` | Price directory with filters and pagination |
+| `/prices/[commodity]` | The price view for one commodity (accepts the legacy numeric id too) |
+| `/commodities` · `/commodities/[slug]` | Catalogue and catalogue entry |
+| `/markets` · `/markets/[slug]` | Market directory and market detail |
+| `/compare` | Cross-market comparison |
+| `/insights` · `/insights/[slug]` | The migrated articles |
 | `/pricing` · `/contact` · `/about` · `/faq` · `/privacy` · `/terms` · `/disclaimer` | Commercial and legal pages |
 | `/api-docs` | The API reference, with examples taken from live responses |
 | `/login` · `/register` · `/forgot-password` · `/reset-password` | Authentication |
@@ -286,9 +277,8 @@ curl 'https://<host>/api/v1/prices/latest?commodity=paddy-rice' \
 3. **Hide nothing by omission.** Errors are logged with context, never secrets.
 4. **The database decides.** Hiding a button is not authorization.
 5. **Append, never overwrite.** Corrections are new rows with a history.
-6. **Every figure has provenance.** The commodity, the market, the unit, the price type, the
-   collection time and the verification status travel with every number from the database to the
-   screen.
+6. **The legacy site's history is preserved.** Even where it is wrong, it is kept, flagged and
+   labelled — never quietly rewritten.
 
 ---
 
@@ -296,7 +286,7 @@ curl 'https://<host>/api/v1/prices/latest?commodity=paddy-rice' \
 
 | Document | What it answers |
 | --- | --- |
-| [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) | What was found in the earlier site and in this rebuild, and how each finding was verified |
+| [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) | What was found in the legacy site and in this rebuild, and how each finding was verified |
 | [`docs/MIGRATION_PLAN.md`](docs/MIGRATION_PLAN.md) | How every legacy page maps to a new page, and the go-live sequence |
 | [`docs/RLS_AUTHORIZATION.md`](docs/RLS_AUTHORIZATION.md) | Who may see and change what, and why |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | How to deploy, back up, restore and roll back |

@@ -9,11 +9,17 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 import { createAdminClient } from '@/lib/supabase/admin';
 
+// These suites talk to a live Supabase project through the service role. Without
+// those credentials they cannot mean anything, so they skip rather than fail —
+// the same rule the rest of the database-backed suites follow.
+const DB_CREDENTIALS = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+
 // Test configuration
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321';
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'test-anon-key';
 
-describe('Watchlist Entitlement Enforcement', () => {
+describe.skipIf(!DB_CREDENTIALS)('Watchlist Entitlement Enforcement', () => {
   let serviceClient: ReturnType<typeof createAdminClient>;
   let testUser1Id: string;
   let testUser2Id: string;

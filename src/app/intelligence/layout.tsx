@@ -35,7 +35,7 @@ export default function IntelligenceLayout({
           </Link>
 
           {/* Breadcrumb */}
-          <nav className="ml-4 flex items-center gap-2 text-[0.8125rem] text-terminal-muted">
+          <nav className="ml-4 flex items-center gap-2 text-[0.8125rem] text-terminal-text-muted">
             <Link href="/" className="hover:text-terminal-text transition-colors">
               Terminal
             </Link>
@@ -53,7 +53,7 @@ export default function IntelligenceLayout({
       {/* Minimal terminal footer */}
       <footer className="terminal-rail border-t border-terminal-border px-3 py-6 lg:px-4">
         <div className="container-page">
-          <p className="text-[0.6875rem] text-terminal-muted">
+          <p className="text-[0.6875rem] text-terminal-text-muted">
             Intelligence data sourced from FAOSTAT and USDA FAS with full provenance tracking.
           </p>
         </div>

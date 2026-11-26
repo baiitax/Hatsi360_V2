@@ -204,15 +204,9 @@ const SOURCE_LABELS: {
     tone: 'indicative',
   },
   {
-<<<<<<< HEAD
     label: 'Legacy system import',
     meaning:
       'Records migrated from the previous platform. Retained for provenance and registered as not eligible for public price intelligence, because they carry no unit, price type or verification trail.',
-=======
-    label: 'Historical record',
-    meaning:
-      'A historical record retained for provenance. It carries no unit, price type or verification trail and is not eligible for comparative price intelligence.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
     tone: 'excluded',
   },
 ];

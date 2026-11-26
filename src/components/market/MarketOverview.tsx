@@ -41,10 +41,7 @@ export function MarketOverviewCard({
   source,
   freshness,
   unavailableReason,
-<<<<<<< HEAD
   definition,
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   className = '',
 }: {
   label: string;
@@ -60,7 +57,6 @@ export function MarketOverviewCard({
   freshness?: string;
   /** Why the value is unavailable, when it is. */
   unavailableReason?: string;
-<<<<<<< HEAD
   /**
    * What the figure actually counts, in a sentence.
    *
@@ -71,8 +67,6 @@ export function MarketOverviewCard({
    * `<details>`, so it works without JavaScript and with a keyboard.
    */
   definition?: string;
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   className?: string;
 }) {
   const body = (
@@ -105,7 +99,6 @@ export function MarketOverviewCard({
         <p className="mt-1 text-[0.6875rem] leading-4 text-terminal-text-secondary">{detail}</p>
       ) : null}
 
-<<<<<<< HEAD
       {definition ? (
         <details className="group mt-2 border-t border-terminal-border pt-2">
           <summary className="figure-label cursor-pointer text-terminal-text-muted transition-colors hover:text-terminal-text-secondary">
@@ -115,8 +108,6 @@ export function MarketOverviewCard({
         </details>
       ) : null}
 
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
       {source || freshness ? (
         <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 border-t border-terminal-border pt-2 text-[0.625rem] leading-4 text-terminal-text-muted">
           {source ? (
@@ -320,7 +311,6 @@ export function MarketCoverageSummary({
 
 /* ------------------------------------------------------------ freshness --- */
 
-<<<<<<< HEAD
 export type FreshnessState =
   | 'fresh'
   | 'today'
@@ -328,18 +318,11 @@ export type FreshnessState =
   | 'stale'
   | 'unavailable'
   | 'timestamp_review';
-=======
-export type FreshnessState = 'fresh' | 'today' | 'delayed' | 'stale' | 'unavailable';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 const FRESHNESS_COPY: Record<FreshnessState, { label: string; explanation: string }> = {
   fresh: {
     label: 'Recently observed',
-<<<<<<< HEAD
     explanation: 'The most recent observation is inside the freshness window for its declared collection cadence.'
-=======
-    explanation: 'The most recent observation is inside the configured freshness window.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   today: {
     label: 'Updated today',
@@ -348,33 +331,22 @@ const FRESHNESS_COPY: Record<FreshnessState, { label: string; explanation: strin
   delayed: {
     label: 'Delayed',
     explanation:
-<<<<<<< HEAD
       'The most recent observation is past its fresh window but remains inside its verification horizon.'
-=======
-      'The most recent observation is older than the configured window but not yet stale.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   stale: {
     label: 'Stale',
     explanation:
-<<<<<<< HEAD
       'The most recent observation is beyond its verification horizon. Treat it as historical, not as current market information.',
-=======
-      'The most recent observation is older than the freshness window configured for the commodity. Treat it as an indication, not a current price.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   },
   unavailable: {
     label: 'No observation',
     explanation: 'The platform holds no observation for this series.',
   },
-<<<<<<< HEAD
   timestamp_review: {
     label: 'Timestamp needs review',
     explanation:
       'The recorded observation time is invalid or later than the platform clock, so its age cannot be established.',
   },
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -400,11 +372,7 @@ export function DataFreshnessIndicator({
       ? 'border-success-700/40 bg-success-700/15 text-success-700'
       : state === 'delayed'
         ? 'border-warning-700/40 bg-warning-700/15 text-warning-700'
-<<<<<<< HEAD
         : state === 'stale' || state === 'timestamp_review'
-=======
-        : state === 'stale'
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
           ? 'border-warning-700/45 bg-warning-700/20 text-warning-700'
           : 'border-terminal-border bg-terminal-elevated text-terminal-text-muted';
 

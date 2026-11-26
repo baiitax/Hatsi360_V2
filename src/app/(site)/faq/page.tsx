@@ -1,33 +1,13 @@
 import type { Metadata } from 'next';
-import { BRAND } from '@/lib/brand';
 import Link from 'next/link';
 import { PageHero } from '@/components/ui/PageHero';
 import { getPageImage } from '@/lib/images/registry';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions | Hatsi360 Markets',
+  title: 'Frequently Asked Questions',
   description:
-<<<<<<< HEAD
     'Answers about how Hatsi360 collects, verifies and publishes agricultural commodity prices in Nigeria.',
-=======
-    'Answers about how Hatsi360 Markets collects, verifies and publishes agricultural commodity prices across African markets.',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   alternates: { canonical: '/faq' },
-  openGraph: {
-    type: 'website',
-    siteName: 'Hatsi360 Markets',
-    locale: BRAND.locale,
-    title: 'Frequently Asked Questions | Hatsi360 Markets',
-    description: 'Answers about how Hatsi360 Markets collects and publishes agricultural commodity prices.',
-    url: '/faq',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Frequently Asked Questions | Hatsi360 Markets',
-    description: 'Answers about Hatsi360 Markets agricultural intelligence.',
-    images: ['/brand/hatsi360-social-preview.png'],
-  },
 };
 
 const GROUPS = [
@@ -41,6 +21,10 @@ const GROUPS = [
       {
         q: 'Which markets do you cover?',
         a: 'We currently list markets across Lagos, Kano, Jigawa, Kaduna, Katsina, Zamfara, Nasarawa, Borno, Bauchi, Benue and Sokoto, and we are adding more. A market only appears in price results once it has published observations — the full directory is on the Markets page.',
+      },
+      {
+        q: 'Why do some prices show “Legacy record — unverified”?',
+        a: 'Those records were migrated from the previous version of the Pluck Live system, the platform&rsquo;s earlier name. They carry no verification trail, no measurement unit and no collection time of day, so we publish them clearly labelled rather than presenting them as verified current quotes.',
       },
       {
         q: 'Why is there no price for some commodities?',
@@ -90,7 +74,7 @@ const GROUPS = [
       },
       {
         q: 'Do you publish price forecasts?',
-        a: 'Not on this site. {BRAND.name} does not publish price forecasts. Any forecasting we offer in future will be labelled explicitly as a model-generated estimate, with its method and limitations stated, and evaluated against historical observations.',
+        a: 'Not on this site. The previous Pluck Live system displayed a “Price Forecast” figure without explaining how it was produced. Any forecasting we offer in future will be labelled explicitly as a model-generated estimate, with its method and limitations stated, and evaluated against historical observations.',
       },
       {
         q: 'How do I report a price that looks wrong?',

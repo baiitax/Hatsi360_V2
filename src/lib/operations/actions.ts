@@ -12,10 +12,6 @@ import { loadOperationalSnapshot } from '@/lib/analytics/snapshot';
 import { reportById, reportToCsv } from '@/lib/reports';
 import { operationalToday } from '@/lib/analytics/format';
 import { evaluateAndRecord, summariseForAgent } from '@/lib/quality/evaluate';
-<<<<<<< HEAD
-=======
-import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 export interface OperationState {
   ok: boolean;
@@ -582,9 +578,6 @@ export async function runReportExport(
     return fail('Your role may not run this report.');
   }
 
-  // Staff users can always export (requireStaff ensures only staff reach here)
-  // The exports entitlement is enforced at the database level via RLS policies
-
   const snapshot = await loadOperationalSnapshot(days);
   const rows = report.build(snapshot);
   const csv = reportToCsv(report, rows);
@@ -619,7 +612,7 @@ export async function runReportExport(
     ok: true,
     message: `${report.label}: ${rows.length} row(s) exported.`,
     csv,
-    filename: `hatsi360-${report.id}-${operationalToday()}.csv`,
+    filename: `pluck-live-${report.id}-${operationalToday()}.csv`,
   };
 }
 

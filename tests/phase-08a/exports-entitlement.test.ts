@@ -2,6 +2,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 
+// These suites talk to a live Supabase project through the service role. Without
+// those credentials they cannot mean anything, so they skip rather than fail —
+// the same rule the rest of the database-backed suites follow.
+const DB_CREDENTIALS = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+
 /**
  * Phase 08A Stage 4: Export Entitlement Enforcement Tests
  *
@@ -11,7 +17,7 @@ import { createClient } from '@/lib/supabase/server';
  * 3. Proper access control for different user types
  */
 
-describe('Phase 08A Stage 4: Export Entitlement Enforcement', () => {
+describe.skipIf(!DB_CREDENTIALS)('Phase 08A Stage 4: Export Entitlement Enforcement', () => {
   let adminClient: ReturnType<typeof createAdminClient>;
   let testUserId: string;
   let staffUserId: string;

@@ -12,12 +12,19 @@
 
 import { describe, it, expect } from 'vitest';
 import {
+
+
   ENTITLEMENT_KEYS,
   EMPTY_ENTITLEMENTS,
   hasEntitlement,
   type EntitlementSet,
   type EntitlementKey,
 } from '@/lib/entitlements';
+
+// These suites talk to a live Supabase project through the service role. Without
+// those credentials they cannot mean anything, so they skip rather than fail —
+// the same rule the rest of the database-backed suites follow.
+const DB_CREDENTIALS = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -31,7 +38,7 @@ function createEntitlementSet(...keys: EntitlementKey[]): EntitlementSet {
 
 // ─── Test Suites ──────────────────────────────────────────────────────────────
 
-describe('Phase 08A Stage 7: Security & Bypass Prevention Tests', () => {
+describe.skipIf(!DB_CREDENTIALS)('Phase 08A Stage 7: Security & Bypass Prevention Tests', () => {
   // ── 1. RLS Policy Bypass Attempts ───────────────────────────────────────────
 
   describe('1. RLS Policy Bypass Attempts', () => {

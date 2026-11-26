@@ -5,12 +5,8 @@
  * the product resolves through this file. Nothing else hard-codes the product
  * name, so a brand change is a change in one place.
  *
-<<<<<<< HEAD
  * The relationship with Pluck Agro is deliberate and subordinate: Hatsi360 is
  * the product; Pluck Agro is the endorsement.
-=======
- * Hatsi360 is the product; Pluck Agro is the operator and endorsement.
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
  */
 
 /* -------------------------------------------------------------- identity -- */
@@ -609,14 +605,10 @@ export const DESIGN_TOKENS: Record<string, string> = {
   'terminal-border': '#2C3A31',
   'terminal-text': '#F3F6F2',
   'terminal-text-secondary': '#A8B5AA',
-<<<<<<< HEAD
   'terminal-text-muted': '#85938A',
   'terminal-outline': '#637166',
   'focus-terminal': '#E9C97E',
   'focus-light': '#174D35',
-=======
-  'terminal-text-muted': '#748278',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   /* ------------------------------------------- light editorial layer ----- */
   'editorial-bg': '#F7F8F5',
   'editorial-surface': '#FFFFFF',
@@ -624,7 +616,6 @@ export const DESIGN_TOKENS: Record<string, string> = {
   'editorial-text': '#202923',
   'editorial-text-secondary': '#59665E',
   'editorial-border': '#E3E9E2',
-<<<<<<< HEAD
   'editorial-control-border': '#8B9790',
   /* ------------------------------------------- market movement semantics -- */
   'move-up-light': '#26734B',
@@ -642,14 +633,6 @@ export const DESIGN_TOKENS: Record<string, string> = {
   'move-down-terminal': '#EB7770',
   'move-down-soft-terminal': '#331A18',
   'move-flat-terminal': '#A8B5AA',
-=======
-  /* ------------------------------------------- market movement semantics -- */
-  'move-up': '#2F8F57',
-  'move-up-soft': '#14301F',
-  'move-down': '#D0584F',
-  'move-down-soft': '#331A18',
-  'move-flat': '#748278',
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 };
 
 /**
@@ -666,17 +649,10 @@ export const DESIGN_TOKENS: Record<string, string> = {
  */
 export const TYPE_SCALE = {
   micro: { size: '0.625rem', lineHeight: '0.875rem', tracking: '0.06em' },
-<<<<<<< HEAD
   metadata: { size: '0.75rem', lineHeight: '1rem', tracking: '0' },
   label: { size: '0.75rem', lineHeight: '1.125rem', tracking: '0' },
   'body-sm': { size: '0.875rem', lineHeight: '1.375rem', tracking: '0' },
   figure: { size: '1rem', lineHeight: '1.5rem', tracking: '-0.01em' },
-=======
-  metadata: { size: '0.6875rem', lineHeight: '1rem', tracking: '0' },
-  label: { size: '0.75rem', lineHeight: '1.125rem', tracking: '0' },
-  'body-sm': { size: '0.8125rem', lineHeight: '1.25rem', tracking: '0' },
-  figure: { size: '0.9375rem', lineHeight: '1.375rem', tracking: '-0.01em' },
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   'figure-lg': { size: '1.25rem', lineHeight: '1.5rem', tracking: '-0.015em' },
   'figure-xl': { size: '1.75rem', lineHeight: '2rem', tracking: '-0.02em' },
 } as const;
@@ -714,11 +690,7 @@ export const TYPE_ROLES: TypeRole[] = [
   { role: 'Label', usage: 'Filters and form labels', scale: 'label', family: 'sans', weight: '500', tabular: false },
   { role: 'Metadata', usage: 'Timestamps, sources, units', scale: 'metadata', family: 'sans', weight: '400', tabular: false },
   { role: 'Numeric', usage: 'Commodity prices and statistics', scale: 'figure', family: 'sans', weight: '600', tabular: true },
-<<<<<<< HEAD
   { role: 'Micro-label', usage: 'Decorative microcopy only; not for essential dates, states or control labels', scale: 'micro', family: 'sans', weight: '600', tabular: false },
-=======
-  { role: 'Micro-label', usage: 'Compact table metadata and column heads', scale: 'micro', family: 'sans', weight: '600', tabular: false },
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 ];
 
 /**

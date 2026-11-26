@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
-=======
-import { requireStaff } from '@/lib/auth/guards';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { getOverview } from '@/lib/analytics/queries';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import { formatDateTime } from '@/lib/money';
@@ -23,11 +19,7 @@ export const metadata: Metadata = {
  * the decision is made.
  */
 export default async function LiveOperationsPage() {
-<<<<<<< HEAD
   await requirePathAccess('/admin/operations');
-=======
-  await requireStaff('/admin/operations');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const { snapshot, feed } = await getOverview(1);
 
   const critical = feed.filter((event) => event.severity === 'critical');

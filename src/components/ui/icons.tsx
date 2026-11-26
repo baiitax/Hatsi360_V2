@@ -504,15 +504,15 @@ export function IconPlus(props: IconProps) {
   );
 }
 
-<<<<<<< HEAD
-=======
-/* ------------------------------------------------------------------ homepage -- */
+/* ------------------------------------------------------------------- client */
 
-export function IconLeaf(props: IconProps) {
+export function IconBriefcase(props: IconProps) {
   return (
     <IconShape {...props}>
-      <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20c4 0 8.68-3.32 9-12Z" />
-      <path d="M17 8c-3 0-5.5 1.5-7 4" />
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+      <path d="M12 12v3" />
+      <path d="M3 12h18" />
     </IconShape>
   );
 }
@@ -535,230 +535,6 @@ export function IconTrendingUp(props: IconProps) {
   );
 }
 
-export function IconTrendingDown(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M3 7l6 6 4-4 8 8" />
-      <path d="M14 17h7v-7" />
-    </IconShape>
-  );
-}
-
-export function IconActivity(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    </IconShape>
-  );
-}
-
-export function IconZap(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8Z" />
-    </IconShape>
-  );
-}
-
-export function IconUsers(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </IconShape>
-  );
-}
-
-export function IconDatabase(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <ellipse cx="12" cy="5" rx="8" ry="3" />
-      <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
-      <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
-    </IconShape>
-  );
-}
-
-export function IconTarget(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="12" cy="12" r="1.5" />
-    </IconShape>
-  );
-}
-
-export function IconBriefcase(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <rect x="3" y="7" width="18" height="13" rx="2" />
-      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
-      <path d="M12 12v3" />
-      <path d="M3 12h18" />
-    </IconShape>
-  );
-}
-
-export function IconBookOpen(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M2 4h8a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H2Z" />
-      <path d="M22 4h-8a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h8Z" />
-    </IconShape>
-  );
-}
-
-export function IconBarChart(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M4 20V10" />
-      <path d="M9 20V4" />
-      <path d="M14 20v-6" />
-      <path d="M19 20V8" />
-    </IconShape>
-  );
-}
-
-export function IconPieChart(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
-      <path d="M22 12A10 10 0 0 0 12 2v10Z" />
-    </IconShape>
-  );
-}
-
-export function IconAward(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <circle cx="12" cy="8" r="5" />
-      <path d="M9 13l-3 9 6-3 6 3-3-9" />
-    </IconShape>
-  );
-}
-
-export function IconSend(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M22 2 11 13" />
-      <path d="M22 2 15 22l-4-9-9-4Z" />
-    </IconShape>
-  );
-}
-
-export function IconCode(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M16 18l6-6-6-6" />
-      <path d="M8 6l-6 6 6 6" />
-    </IconShape>
-  );
-}
-
-/** Triangle warning icon. */
-export function IconAlertTriangle(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-      <line x1="12" y1="9" x2="12" y2="13" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </IconShape>
-  );
-}
-
-/** Single chart icon (alias for IconCharts). */
-export function IconChart(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <line x1="18" y1="20" x2="18" y2="10" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="14" />
-    </IconShape>
-  );
-}
-
-/** Grid layout icon. */
-export function IconGrid(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <rect x="3" y="3" width="7" height="7" />
-      <rect x="14" y="3" width="7" height="7" />
-      <rect x="14" y="14" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" />
-    </IconShape>
-  );
-}
-
-/** List layout icon. */
-export function IconList(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <line x1="8" y1="6" x2="21" y2="6" />
-      <line x1="8" y1="12" x2="21" y2="12" />
-      <line x1="8" y1="18" x2="21" y2="18" />
-      <line x1="3" y1="6" x2="3.01" y2="6" />
-      <line x1="3" y1="12" x2="3.01" y2="12" />
-      <line x1="3" y1="18" x2="3.01" y2="18" />
-    </IconShape>
-  );
-}
-
-/** Map pin marker icon. */
-export function IconMapPin(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </IconShape>
-  );
-}
-
-/** X close icon. */
-export function IconX(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </IconShape>
-  );
-}
-
-/** Chevron up icon. */
-export function IconChevronUp(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <polyline points="18 15 12 9 6 15" />
-    </IconShape>
-  );
-}
-
-/** Zoom in icon. */
-export function IconZoomIn(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      <line x1="11" y1="8" x2="11" y2="14" />
-      <line x1="8" y1="11" x2="14" y2="11" />
-    </IconShape>
-  );
-}
-
-/** Zoom out icon. */
-export function IconZoomOut(props: IconProps) {
-  return (
-    <IconShape {...props}>
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      <line x1="8" y1="11" x2="14" y2="11" />
-    </IconShape>
-  );
-}
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 /**
  * The registry, so a component can be handed an icon by name rather than by
  * import. Used by the terminal's navigation model, which carries an icon key
@@ -794,18 +570,6 @@ export const ICONS = {
   copy: IconCopy,
   download: IconDownload,
   close: IconClose,
-<<<<<<< HEAD
-=======
-  alertTriangle: IconAlertTriangle,
-  chart: IconChart,
-  grid: IconGrid,
-  list: IconList,
-  mapPin: IconMapPin,
-  x: IconX,
-  chevronUp: IconChevronUp,
-  zoomIn: IconZoomIn,
-  zoomOut: IconZoomOut,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   menu: IconMenu,
   chevronDown: IconChevronDown,
   chevronRight: IconChevronRight,
@@ -825,25 +589,6 @@ export const ICONS = {
   book: IconBook,
   check: IconCheck,
   plus: IconPlus,
-<<<<<<< HEAD
-=======
-  leaf: IconLeaf,
-  shieldCheck: IconShieldCheck,
-  trendingUp: IconTrendingUp,
-  trendingDown: IconTrendingDown,
-  activity: IconActivity,
-  zap: IconZap,
-  users: IconUsers,
-  database: IconDatabase,
-  target: IconTarget,
-  briefcase: IconBriefcase,
-  bookOpen: IconBookOpen,
-  barChart: IconBarChart,
-  pieChart: IconPieChart,
-  award: IconAward,
-  send: IconSend,
-  code: IconCode,
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 } as const;
 
 /** The name of an icon in the registry. */
@@ -854,3 +599,209 @@ export function Icon({ name, ...rest }: { name: IconName } & IconProps) {
   const Component = ICONS[name];
   return <Component {...rest} />;
 }
+
+/* ------------------------------------------- icons brought in with the merge */
+
+export function IconActivity(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </IconShape>
+  );
+}
+
+export function IconAlertTriangle(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </IconShape>
+  );
+}
+
+export function IconAward(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <circle cx="12" cy="8" r="5" />
+      <path d="M9 13l-3 9 6-3 6 3-3-9" />
+    </IconShape>
+  );
+}
+
+export function IconBarChart(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M4 20V10" />
+      <path d="M9 20V4" />
+      <path d="M14 20v-6" />
+      <path d="M19 20V8" />
+    </IconShape>
+  );
+}
+
+export function IconBookOpen(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M2 4h8a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H2Z" />
+      <path d="M22 4h-8a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h8Z" />
+    </IconShape>
+  );
+}
+
+export function IconChart(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+    </IconShape>
+  );
+}
+
+export function IconChevronUp(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <polyline points="18 15 12 9 6 15" />
+    </IconShape>
+  );
+}
+
+export function IconCode(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M16 18l6-6-6-6" />
+      <path d="M8 6l-6 6 6 6" />
+    </IconShape>
+  );
+}
+
+export function IconDatabase(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <ellipse cx="12" cy="5" rx="8" ry="3" />
+      <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+      <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+    </IconShape>
+  );
+}
+
+export function IconGrid(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+    </IconShape>
+  );
+}
+
+export function IconLeaf(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20c4 0 8.68-3.32 9-12Z" />
+      <path d="M17 8c-3 0-5.5 1.5-7 4" />
+    </IconShape>
+  );
+}
+
+export function IconList(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" />
+      <line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" />
+      <line x1="3" y1="18" x2="3.01" y2="18" />
+    </IconShape>
+  );
+}
+
+export function IconMapPin(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </IconShape>
+  );
+}
+
+export function IconPieChart(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+      <path d="M22 12A10 10 0 0 0 12 2v10Z" />
+    </IconShape>
+  );
+}
+
+export function IconTarget(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1.5" />
+    </IconShape>
+  );
+}
+
+export function IconTrendingDown(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M3 7l6 6 4-4 8 8" />
+      <path d="M14 17h7v-7" />
+    </IconShape>
+  );
+}
+
+export function IconUsers(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </IconShape>
+  );
+}
+
+export function IconX(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </IconShape>
+  );
+}
+
+export function IconZap(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8Z" />
+    </IconShape>
+  );
+}
+
+export function IconZoomIn(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      <line x1="11" y1="8" x2="11" y2="14" />
+      <line x1="8" y1="11" x2="14" y2="11" />
+    </IconShape>
+  );
+}
+
+export function IconZoomOut(props: IconProps) {
+  return (
+    <IconShape {...props}>
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      <line x1="8" y1="11" x2="14" y2="11" />
+    </IconShape>
+  );
+}
+

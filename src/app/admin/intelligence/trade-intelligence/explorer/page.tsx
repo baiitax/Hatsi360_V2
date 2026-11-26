@@ -13,6 +13,7 @@ import { createClient } from '@/lib/supabase/server';
 import { PageHeader, Panel, Pill } from '@/components/ops/Primitives';
 import type { PillTone } from '@/components/ops/Primitives';
 import Link from 'next/link';
+import { requirePathAccess } from '@/lib/auth/guards';
 
 export const metadata: Metadata = {
   title: 'Trade Flow Explorer — Nigeria',
@@ -36,6 +37,7 @@ export default async function TradeFlowExplorerPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
+  await requirePathAccess('/admin/intelligence/trade-intelligence/explorer');
   const params = await searchParams;
   const supabase = await createClient();
 

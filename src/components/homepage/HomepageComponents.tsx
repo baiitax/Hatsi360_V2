@@ -212,19 +212,6 @@ export function HomepageHero({
 }) {
   return (
     <div className="relative overflow-hidden border-b border-gray-200 bg-[#0B3D2C]">
-      {/* Parallax hero background image */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: 'url(/brand/hatsi360-hero.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 30%',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-          minHeight: '100%',
-        }}
-      />
-
       {/* Gradient overlays for readability and depth */}
       {/* Bottom-up gradient for text contrast */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#0B3D2C]/95 via-[#0B3D2C]/70 to-[#0B3D2C]/40" />

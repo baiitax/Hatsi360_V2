@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       authors: [article.author],
       images: [
         {
-          url: '/brand/hatsi360-social-preview.png',
+          url: '/brand/hatsi360-social-1200x630.png',
           width: 1200,
           height: 630,
           alt: `${article.title} — agricultural market intelligence from Hatsi360 Markets.`,
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       card: 'summary_large_image',
       title: `${article.title} | Hatsi360 Markets`,
       description: article.excerpt,
-      images: ['/brand/hatsi360-social-preview.png'],
+      images: ['/brand/hatsi360-social-1200x630.png'],
     },
   };
 }

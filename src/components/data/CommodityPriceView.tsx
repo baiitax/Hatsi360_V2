@@ -96,8 +96,6 @@ export function CommodityPriceView({
    * registry. It shows the commodity itself, so the reader can recognise what
    * the page is about before reading a single figure.
    */
-  const image = getCommodityImage(commodity.slug);
-
   /**
    * The commodity's own photograph, matched by its canonical slug through the
    * registry. It shows the commodity itself, so the reader can recognise what

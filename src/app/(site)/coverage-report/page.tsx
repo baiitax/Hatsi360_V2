@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/ui/PageHero';
@@ -25,50 +24,12 @@ export const metadata: Metadata = {
 
 export default async function CoverageReportPage() {
   const source = await getDataSource();
-=======
-import type { Metadata } from 'next';
-import { getDataSource } from '@/lib/data';
-import { CoverageDashboard, type CoverageServerData } from '@/components/data/CoverageDashboard';
-import { PageHero } from '@/components/ui/PageHero';
-import { getPageImage } from '@/lib/images/registry';
-import { BreadcrumbJsonLd } from '@/components/marketing/StructuredData';
-import { BRAND } from '@/lib/brand';
-
-export const metadata: Metadata = {
-  title: 'Market Coverage & Data Freshness | Hatsi360 Markets',
-  description:
-    'Interactive coverage dashboard showing where Hatsi360 collects prices, market reporting status, and data freshness across African agricultural markets.',
-  alternates: { canonical: '/coverage' },
-  openGraph: {
-    type: 'website',
-    siteName: 'Hatsi360 Markets',
-    locale: BRAND.locale,
-    title: 'Market Coverage & Data Freshness | Hatsi360 Markets',
-    description: 'Where Hatsi360 collects prices, market reporting status and data freshness.',
-    url: '/coverage',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Market Coverage & Data Freshness | Hatsi360 Markets',
-    description: 'Where Hatsi360 collects prices and market reporting status.',
-    images: ['/brand/hatsi360-social-preview.png'],
-  },
-};
-
-export const dynamic = 'force-dynamic';
-
-export default async function CoverageReportPage() {
-  const source = await getDataSource();
-
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const [markets, commodities, observations] = await Promise.all([
     source.listMarkets(),
     source.listCommodities(),
     source.listObservationsForAnalysis({}),
   ]);
 
-<<<<<<< HEAD
   const reportingMarketIds = new Set(observations.map((observation) => observation.marketId));
 
   const newest = observations.reduce<string | null>((latest, observation) => {
@@ -105,26 +66,10 @@ export default async function CoverageReportPage() {
         eyebrow="Coverage"
         title="Where Hatsi360 collects — and where it does not"
         lede={`Coverage is the first question any serious user of a price platform should ask. ${BRAND.name} answers it with counts, not claims.`}
-=======
-  const data: CoverageServerData = {
-    markets,
-    commodities,
-    observations,
-  };
-
-  return (
-    <>
-      <BreadcrumbJsonLd items={[{ name: 'Coverage' }]} />
-      <PageHero
-        eyebrow="Coverage Dashboard"
-        title="Where Hatsi360 collects — and where it does not"
-        lede="Interactive coverage analytics showing market reporting status, commodity observation counts, and data freshness across all Nigerian states."
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         breadcrumbs={[{ label: 'Coverage' }]}
         image={getPageImage('reports.coverage')}
       />
 
-<<<<<<< HEAD
       <div className="section bg-ink-50">
         <div className="container-page space-y-10">
           {/* The numbers */}
@@ -298,11 +243,6 @@ export default async function CoverageReportPage() {
               — coverage is built from demand, and a named market is a request we can act on.
             </p>
           </section>
-=======
-      <div className="section">
-        <div className="container-page">
-          <CoverageDashboard data={data} />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         </div>
       </div>
     </>

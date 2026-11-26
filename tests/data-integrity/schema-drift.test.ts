@@ -142,15 +142,12 @@ function extractFilters(source: string): Array<{ table: string; column: string; 
   return out;
 }
 
-<<<<<<< HEAD
 const LOCAL_TEST_DB_CONFIGURED = Boolean(
   process.env.SUPABASE_DB_HOST &&
     process.env.SUPABASE_DB_USER &&
     process.env.SUPABASE_DB_PASSWORD &&
     process.env.SUPABASE_DB_NAME,
 );
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 let columnsByTable: Map<string, Set<string>> | null = null;
 let dbUnavailable: string | null = null;
 
@@ -189,11 +186,7 @@ beforeAll(async () => {
   }
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('schema drift (local test DB only)', () => {
-=======
-describe('schema drift', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('is checked against the live database, or skipped with a reason', () => {
     if (dbUnavailable) {
       console.warn(`[schema-drift] SKIPPED: ${dbUnavailable}`);

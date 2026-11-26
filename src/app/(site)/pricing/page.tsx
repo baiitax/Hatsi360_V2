@@ -17,13 +17,13 @@ export const metadata: Metadata = {
     title: 'Plans & Pricing | Hatsi360 Markets',
     description: 'Public price discovery is free. Professional and enterprise intelligence add extended history, exports and API access.',
     url: '/pricing',
-    images: [{ url: '/brand/hatsi360-social-preview.png', width: 1200, height: 630, type: 'image/png' }],
+    images: [{ url: '/brand/hatsi360-social-1200x630.png', width: 1200, height: 630, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Plans & Pricing | Hatsi360 Markets',
     description: 'Plans and pricing for Hatsi360 Markets agricultural intelligence.',
-    images: ['/brand/hatsi360-social-preview.png'],
+    images: ['/brand/hatsi360-social-1200x630.png'],
   },
 };
 

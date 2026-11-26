@@ -23,15 +23,12 @@ import { Client } from 'pg';
  */
 
 type Row = Record<string, unknown>;
-<<<<<<< HEAD
 const LOCAL_TEST_DB_CONFIGURED = Boolean(
   process.env.SUPABASE_DB_HOST &&
     process.env.SUPABASE_DB_USER &&
     process.env.SUPABASE_DB_PASSWORD &&
     process.env.SUPABASE_DB_NAME,
 );
-=======
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
 let db: { ok: true; client: Client } | { ok: false; reason: string } = {
   ok: false,
@@ -90,11 +87,7 @@ async function queryAsRole(role: string, sql: string): Promise<Row[]> {
   }
 }
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('fixture isolation — the public read path (local test DB only)', () => {
-=======
-describe('fixture isolation — the public read path', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('exposes no fixture row through the published view', async () => {
     if (!db.ok) return console.warn(`[fixture-isolation] SKIPPED: ${db.reason}`);
     const rows = await query(
@@ -144,11 +137,7 @@ describe('fixture isolation — the public read path', () => {
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('fixture isolation — the records themselves (local test DB only)', () => {
-=======
-describe('fixture isolation — the records themselves', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('leaves published_at null on every fixture', async () => {
     if (!db.ok) return console.warn(`[fixture-isolation] SKIPPED: ${db.reason}`);
     const rows = await query(
@@ -196,11 +185,7 @@ describe('fixture isolation — the records themselves', () => {
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('fixture isolation — the connection to the demo accounts (local test DB only)', () => {
-=======
-describe('fixture isolation — the connection to the demo accounts', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('attributes every fixture to the demo agent, not to a real account', async () => {
     if (!db.ok) return console.warn(`[fixture-isolation] SKIPPED: ${db.reason}`);
     const rows = await query(
@@ -247,11 +232,7 @@ describe('fixture isolation — the connection to the demo accounts', () => {
   });
 });
 
-<<<<<<< HEAD
 describe.skipIf(!LOCAL_TEST_DB_CONFIGURED)('fixture isolation — the demonstration is complete (local test DB only)', () => {
-=======
-describe('fixture isolation — the demonstration is complete', () => {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   it('spans more than one verification state, so the queue is worth showing', async () => {
     if (!db.ok) return console.warn(`[fixture-isolation] SKIPPED: ${db.reason}`);
     const rows = await query(

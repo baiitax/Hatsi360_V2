@@ -58,7 +58,6 @@ const navigation: NavSection[] = [
     items: [
       { title: 'Profile', href: '/client/account', icon: IconSettings },
       { title: 'Subscription', href: '/client/subscription', icon: IconShieldCheck },
-      { title: 'API Keys', href: '/client/api', icon: IconCode },
     ],
   },
 ];

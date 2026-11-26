@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { getTradeAccess } from '@/lib/trade/access';
 import { PaidIntelligenceNotice } from '@/components/trade/PaidIntelligenceGate';
 
@@ -6,15 +5,6 @@ import Link from 'next/link';
 import { getDataSource } from '@/lib/data';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { getTradeOverviewData } from '@/lib/trade/queries';
-=======
-import Link from 'next/link';
-import { getDataSource } from '@/lib/data';
-import { isSupabaseConfigured } from '@/lib/supabase/config';
-import {
-  getCommodityFreshness,
-  getMarketMovements,
-} from '@/lib/trade/queries';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { PRICE_STATE_TONES, requiresFreshnessWarning } from '@/lib/trade/freshness';
 import { buildShareMetadata } from '@/lib/metadata';
 import {
@@ -27,15 +17,11 @@ import {
   MarketMovers,
   type MoverRow,
 } from '@/components/market/MarketOverview';
-<<<<<<< HEAD
 import {
   MarketWatchCards,
   MarketWatchTable,
   type MarketWatchRow,
 } from '@/components/market/MarketWatchTable';
-=======
-import { MarketWatchTable, type MarketWatchRow } from '@/components/market/MarketWatchTable';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { EmptyStatePanel, MarketTableSkeleton } from '@/components/feedback/TerminalFeedback';
 import { IconArrowRight, IconScale, IconTrade } from '@/components/ui/icons';
 
@@ -63,7 +49,6 @@ export const dynamic = 'force-dynamic';
  * says so rather than showing a zero that reads as a measured fact.
  */
 export default async function TradeOverviewPage() {
-<<<<<<< HEAD
   const access = await getTradeAccess();
   if (access !== 'admin' && access !== 'paid') {
     return <PaidIntelligenceNotice access={access} returnTo="/trade" product="Trade Intelligence" />;
@@ -80,18 +65,6 @@ export default async function TradeOverviewPage() {
     : [{ commodities: [], movements: [], freshness: [] }, []];
 
   const { commodities, movements, freshness } = overview;
-=======
-  const configured = isSupabaseConfigured();
-
-  const [movements, freshness, commodities, markets] = configured
-    ? await Promise.all([
-        getMarketMovements(40),
-        getCommodityFreshness(),
-        (await getDataSource()).listCommodities(),
-        (await getDataSource()).listMarkets(),
-      ])
-    : [[], [], [], []];
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 
   const rising = movements.filter((m) => (m.change ?? 0) > 0).length;
   const falling = movements.filter((m) => (m.change ?? 0) < 0).length;
@@ -171,11 +144,7 @@ export default async function TradeOverviewPage() {
         <>
           {/* ------------------------------------------------ what is covered */}
           <section aria-label="Coverage">
-<<<<<<< HEAD
             <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3 2xl:grid-cols-6">
-=======
-            <dl className="grid gap-2 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
               <MarketOverviewCard
                 label="Commodities"
                 value={String(commodities.length)}
@@ -255,7 +224,6 @@ export default async function TradeOverviewPage() {
               />
             ) : (
               <>
-<<<<<<< HEAD
                 <div className="hidden md:block">
                   <MarketWatchTable
                     rows={watchRows}
@@ -266,12 +234,6 @@ export default async function TradeOverviewPage() {
                 <div className="terminal-panel overflow-hidden md:hidden">
                   <MarketWatchCards rows={watchRows} showWeekly={false} />
                 </div>
-=======
-                <MarketWatchTable
-                  rows={watchRows}
-                  caption={`Each commodity's latest published observation against the previous one in the same price series, ${movements.length} commodities listed.`}
-                />
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 <p className="mt-2 text-[0.6875rem] leading-relaxed text-terminal-text-muted">
                   A movement is calculated only where both observations share a series key —
                   the same price type, grade, unit and currency. A change in price type is
@@ -292,11 +254,7 @@ export default async function TradeOverviewPage() {
               <EmptyStatePanel kind="no-observations" />
             ) : (
               <>
-<<<<<<< HEAD
                 <div className="hidden overflow-x-auto rounded-panel border border-terminal-border md:block">
-=======
-                <div className="terminal-panel overflow-x-auto">
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                   <table className="terminal-table">
                     <caption className="sr-only">
                       How current each commodity&rsquo;s newest published observation is. The
@@ -312,7 +270,6 @@ export default async function TradeOverviewPage() {
                       </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
                       {freshness.slice(0, 12).map((row) => (
                         <tr key={row.commodityId}>
                           <th scope="row" className="font-medium text-terminal-text">
@@ -370,35 +327,6 @@ export default async function TradeOverviewPage() {
                     </li>
                   ))}
                 </ul>
-=======
-                      {freshness.slice(0, 12).map((row) => {
-                        return (
-                          <tr key={row.commodityId}>
-                            <th scope="row" className="font-medium text-terminal-text">
-                              {row.commodityName}
-                            </th>
-                            <td>
-                              <span
-                                className={`inline-flex items-center rounded-pill border px-2 py-0.5 text-[0.6875rem] font-semibold ${PRICE_STATE_TONES[row.state]}`}
-                              >
-                                {row.label}
-                              </span>
-                            </td>
-                            <td className="num text-terminal-text-secondary">
-                              {row.observationCount}
-                            </td>
-                            <td className="num text-terminal-text-secondary">
-                              {row.collectedAt
-                                ? new Date(row.collectedAt).toLocaleDateString('en-NG')
-                                : '—'}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
                 <p className="mt-2 text-[0.6875rem] leading-relaxed text-terminal-text-muted">
                   A price is <span className="font-semibold">latest verified</span> when it
                   has been checked but is no longer current — it is still the best available
@@ -429,11 +357,7 @@ export default async function TradeOverviewPage() {
 }
 
 /** Trade intelligence while its data loads. */
-<<<<<<< HEAD
 function TradeLoading() {
-=======
-export function TradeLoading() {
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   return (
     <PageContainer>
       <PageHeader

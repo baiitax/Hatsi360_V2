@@ -11,10 +11,17 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 
-describe('Alerts Entitlement Enforcement', () => {
-  const admin = createAdminClient();
-  
+// These suites talk to a live Supabase project through the service role. Without
+// those credentials they cannot mean anything, so they skip rather than fail —
+// the same rule the rest of the database-backed suites follow.
+const DB_CREDENTIALS = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+
+describe.skipIf(!DB_CREDENTIALS)('Alerts Entitlement Enforcement', () => {
+  let admin: ReturnType<typeof createAdminClient>;
+
   beforeAll(async () => {
+    admin = createAdminClient();
     // Clean up any test data
     await admin.from('price_alerts').delete().eq('user_id', 'test-user-1');
     await admin.from('price_alerts').delete().eq('user_id', 'test-user-2');

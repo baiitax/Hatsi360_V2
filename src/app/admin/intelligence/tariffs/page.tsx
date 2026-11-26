@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { PageHeader } from '@/components/ui';
 import { queryTariffs, getTariffStats } from '@/lib/trade/tariffs';
+import { requirePathAccess } from '@/lib/auth/guards';
 
 export default async function TariffsAdminPage() {
+  await requirePathAccess('/admin/intelligence/tariffs');
   const supabase = await createClient();
 
   // Get tariff stats for Nigeria (default focus)

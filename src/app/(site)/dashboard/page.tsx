@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PageHero } from '@/components/ui/PageHero';
 import { getProfile, getSession, isStaffRole } from '@/lib/auth';
-import { getEntitlements, hasEntitlement } from '@/lib/entitlements';
 import { isSupabaseConfigured } from '@/lib/supabase/config';
 import { createClient } from '@/lib/supabase/server';
 import { getDataSource } from '@/lib/data';
@@ -20,29 +20,12 @@ export default async function DashboardPage() {
   if (!session || !profile) {
     return (
       <>
-<<<<<<< HEAD
         <PageHero
           eyebrow="Workspace"
           title="Sign in to your Hatsi360 workspace"
           lede="Save the commodities and markets you follow, set price alerts, and manage your API keys."
           breadcrumbs={[{ label: 'Dashboard' }]}
         />
-=======
-        {/* Terminal-native header — no editorial hero in the dark shell */}
-        <div className="terminal-rail border-b border-terminal-border px-3 py-4 lg:px-4">
-          <div className="container-page">
-            <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-terminal-muted">
-              Workspace
-            </p>
-            <h1 className="mt-1 font-display text-xl font-bold tracking-tight text-terminal-text">
-              Sign in to your workspace
-            </h1>
-            <p className="mt-1 max-w-2xl text-[0.8125rem] text-terminal-muted">
-              Save the commodities and markets you follow, set price alerts, and manage your API keys.
-            </p>
-          </div>
-        </div>
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
         <div className="section">
           <div className="container-page max-w-md">
             <div className="card p-6 sm:p-8">
@@ -69,12 +52,6 @@ export default async function DashboardPage() {
     );
   }
 
-  // Check entitlements for premium features
-  const entitlements = await getEntitlements();
-  const hasWatchlistsEntitlement = hasEntitlement(entitlements, 'watchlists');
-  const hasAlertsEntitlement = hasEntitlement(entitlements, 'alerts');
-  const hasApiEntitlement = hasEntitlement(entitlements, 'api');
-
   const source = await getDataSource();
   const [commodities, markets] = await Promise.all([
     source.listCommodities(),
@@ -91,29 +68,18 @@ export default async function DashboardPage() {
     const supabase = await createClient();
 
     const [savedC, savedM, alertRows, apiRows, subRows] = await Promise.all([
-      // Only query watchlists if user has entitlement (RLS will block anyway, but this is cleaner)
-      hasWatchlistsEntitlement
-        ? supabase.from('saved_commodities').select('commodity_id').eq('user_id', profile.id)
-        : Promise.resolve({ data: null }),
-      hasWatchlistsEntitlement
-        ? supabase.from('saved_markets').select('market_id').eq('user_id', profile.id)
-        : Promise.resolve({ data: null }),
-      // Only query alerts if user has entitlement
-      hasAlertsEntitlement
-        ? supabase
-            .from('price_alerts')
-            .select('direction, threshold_amount, commodity:commodities(name)')
-            .eq('user_id', profile.id)
-            .eq('is_active', true)
-        : Promise.resolve({ data: null }),
-      // Only query API applications if user has entitlement
-      hasApiEntitlement
-        ? supabase
-            .from('api_applications')
-            .select('name, key_prefix, tier, last_used_at')
-            .eq('user_id', profile.id)
-            .eq('is_active', true)
-        : Promise.resolve({ data: null }),
+      supabase.from('saved_commodities').select('commodity_id').eq('user_id', profile.id),
+      supabase.from('saved_markets').select('market_id').eq('user_id', profile.id),
+      supabase
+        .from('price_alerts')
+        .select('direction, threshold_amount, commodity:commodities(name)')
+        .eq('user_id', profile.id)
+        .eq('is_active', true),
+      supabase
+        .from('api_applications')
+        .select('name, key_prefix, tier, last_used_at')
+        .eq('user_id', profile.id)
+        .eq('is_active', true),
       supabase
         .from('customer_subscriptions')
         .select('plan, status')
@@ -151,20 +117,12 @@ export default async function DashboardPage() {
 
   return (
     <>
-      {/* Terminal-native header — no editorial hero in the dark shell */}
-      <div className="terminal-rail border-b border-terminal-border px-3 py-4 lg:px-4">
-        <div className="container-page">
-          <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-terminal-muted">
-            Workspace
-          </p>
-          <h1 className="mt-1 font-display text-xl font-bold tracking-tight text-terminal-text">
-            Welcome back, {profile.fullName ?? profile.email}
-          </h1>
-          <p className="mt-1 max-w-2xl text-[0.8125rem] text-terminal-muted">
-            Your watchlists, alerts, reports and API keys — plus the public price tools, which stay free.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Workspace"
+        title={`Welcome back, ${profile.fullName ?? profile.email}`}
+        lede="Your watchlists, alerts, reports and API keys — plus the public price tools, which stay free."
+        breadcrumbs={[{ label: 'Dashboard' }]}
+      />
 
       <div className="section">
         <div className="container-page space-y-8">
@@ -191,15 +149,7 @@ export default async function DashboardPage() {
             <section className="card p-6">
               <h2 className="text-base font-bold">Saved commodities</h2>
               <p className="mt-1 text-xs text-ink-500">Your watchlist.</p>
-              {!hasWatchlistsEntitlement ? (
-                <p className="mt-4 text-sm text-ink-500">
-                  Watchlists are part of the Professional plan —{' '}
-                  <Link href="/pricing" className="font-semibold text-brand-700 underline">
-                    see plans
-                  </Link>
-                  .
-                </p>
-              ) : savedCommodities.length === 0 ? (
+              {savedCommodities.length === 0 ? (
                 <p className="mt-4 text-sm text-ink-500">
                   Nothing saved yet.{' '}
                   <Link href="/commodities" className="font-semibold text-brand-700 underline">
@@ -221,15 +171,7 @@ export default async function DashboardPage() {
             <section className="card p-6">
               <h2 className="text-base font-bold">Saved markets</h2>
               <p className="mt-1 text-xs text-ink-500">Markets you follow.</p>
-              {!hasWatchlistsEntitlement ? (
-                <p className="mt-4 text-sm text-ink-500">
-                  Watchlists are part of the Professional plan —{' '}
-                  <Link href="/pricing" className="font-semibold text-brand-700 underline">
-                    see plans
-                  </Link>
-                  .
-                </p>
-              ) : savedMarkets.length === 0 ? (
+              {savedMarkets.length === 0 ? (
                 <p className="mt-4 text-sm text-ink-500">
                   Nothing saved yet.{' '}
                   <Link href="/markets" className="font-semibold text-brand-700 underline">
@@ -251,19 +193,11 @@ export default async function DashboardPage() {
             <section className="card p-6">
               <h2 className="text-base font-bold">Price alerts</h2>
               <p className="mt-1 text-xs text-ink-500">Thresholds you have set.</p>
-              {!hasAlertsEntitlement ? (
+              {alerts.length === 0 ? (
                 <p className="mt-4 text-sm text-ink-500">
-                  Alerts are part of the Professional plan —{' '}
+                  No alerts yet. Alerts are part of the Professional plan —{' '}
                   <Link href="/pricing" className="font-semibold text-brand-700 underline">
                     see plans
-                  </Link>
-                  .
-                </p>
-              ) : alerts.length === 0 ? (
-                <p className="mt-4 text-sm text-ink-500">
-                  No alerts yet. Create your first alert from a{' '}
-                  <Link href="/commodities" className="font-semibold text-brand-700 underline">
-                    commodity page
                   </Link>
                   .
                 </p>
@@ -291,15 +225,7 @@ export default async function DashboardPage() {
               <p className="mt-1 text-xs text-ink-500">
                 Keys are shown once at creation and stored only as a hash.
               </p>
-              {!hasApiEntitlement ? (
-                <p className="mt-4 text-sm text-ink-500">
-                  API access is part of the Professional plan —{' '}
-                  <Link href="/pricing" className="font-semibold text-brand-700 underline">
-                    see plans
-                  </Link>
-                  .
-                </p>
-              ) : apiApplications.length === 0 ? (
+              {apiApplications.length === 0 ? (
                 <p className="mt-4 text-sm text-ink-500">
                   No API keys yet.{' '}
                   <Link href="/api-docs" className="font-semibold text-brand-700 underline">

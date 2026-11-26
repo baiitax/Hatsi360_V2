@@ -1,9 +1,5 @@
 import type { Metadata } from 'next';
-<<<<<<< HEAD
 import { requirePathAccess } from '@/lib/auth/guards';
-=======
-import { requireStaff } from '@/lib/auth/guards';
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
 import { listExportJobs } from '@/lib/operations/admin';
 import { DataTable, type Column } from '@/components/ops/DataTable';
 import { PageHeader } from '@/components/ops/Primitives';
@@ -22,11 +18,7 @@ export const metadata: Metadata = {
  * administrator-only for that reason.
  */
 export default async function AdminExportsPage() {
-<<<<<<< HEAD
   await requirePathAccess('/admin/exports');
-=======
-  await requireStaff('/admin/exports');
->>>>>>> b1d2c0d621d9dba5e8a1581c409af2072300d1f2
   const jobs = await listExportJobs(50);
 
   const rows = jobs.map((job) => {
